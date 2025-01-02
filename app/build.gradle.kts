@@ -33,23 +33,36 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
+    buildFeatures {
+        dataBinding= true
+    }
 }
 
 dependencies {
+    val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
 
     // Convertisseur Gson pour parser les données JSON
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+// Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
+// ViewModel et LiveData
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0") // Version actuelle (assure-toi d'avoir la bonne version)
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0") // Si tu utilises LiveData avec coroutines
 
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.common)
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

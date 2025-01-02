@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FamilyApp</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Mot de passe</string>
+    <string name="button_login">Se connecter</string>
+    <string name="logo_family_app">Logo de lapplication familiale</string>
+
 </resources>

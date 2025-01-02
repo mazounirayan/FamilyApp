@@ -9,5 +9,13 @@ data class UserDTO(
     val profession: String,
     val numTel: String,
     val role: String,
-    val idFamille: Int
+    val idFamille: Int,
+    val dateInscription: String,
+    val tokens: List<TokenDTO>
+
+)
+
+data class TokenDTO(
+    val id: Int,
+    val token: String
 )

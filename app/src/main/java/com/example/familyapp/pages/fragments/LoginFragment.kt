@@ -1,80 +1,63 @@
+package com.example.familyapp.ui
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.familyapp.R
+import androidx.lifecycle.ViewModelProvider
+import com.example.familyapp.databinding.FragmentLoginBinding
+import com.example.familyapp.repositories.UserRepository
+import com.example.familyapp.viewmodel.LoginViewModel
+import com.example.familyapp.viewmodel.factories.LoginViewModelFactory
 
 class LoginFragment : Fragment() {
+
+    // Utilisation du pattern Backing Property pour le binding
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
+    // Instance du ViewModel pour la logique de connexion
+    private lateinit var viewModel: LoginViewModel
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Lier le layout au fragment
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+    ): View {
+        // Initialisation du binding
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        // Récupérer les composants du layout
-        val emailInput = view.findViewById<EditText>(R.id.email_input)
-        val passwordInput = view.findViewById<EditText>(R.id.password_input)
-        val loginButton = view.findViewById<Button>(R.id.login_button)
+        // Configuration du ViewModel
+        val repository = UserRepository(requireContext())
+        val factory = LoginViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
 
-        // Ajouter un listener au bouton Log In
-        loginButton.setOnClickListener {
-            // Récupérer les entrées utilisateur
-            val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString().trim()
+        // Configuration du data binding
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-            // Valider les entrées utilisateur
-            if (validateInput(email, password)) {
-                // Appeler la logique de connexion ou navigation
-                handleLogin(email, password)
-            }
+        // Observation du résultat de connexion
+        viewModel.loginResult.observe(viewLifecycleOwner) { result ->
+            result.fold(
+                onSuccess = {
+                    // En cas de succès de connexion
+                    Toast.makeText(requireContext(), "Connexion réussie", Toast.LENGTH_SHORT).show()
+                },
+                onFailure = { exception ->
+                    // En cas d'échec de connexion
+                    Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
-        return view
+        return binding.root
     }
 
-    // Validation des champs de saisie
-    private fun validateInput(email: String, password: String): Boolean {
-        return when {
-            email.isEmpty() -> {
-                Toast.makeText(context, "Email ne peut pas être vide", Toast.LENGTH_SHORT).show()
-                false
-            }
-            password.isEmpty() -> {
-                Toast.makeText(context, "Mot de passe ne peut pas être vide", Toast.LENGTH_SHORT).show()
-                false
-            }
-            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                Toast.makeText(context, "Email invalide", Toast.LENGTH_SHORT).show()
-                false
-            }
-            else -> true
-        }
-    }
-
-    // Logique à exécuter après la validation
-    private fun handleLogin(email: String, password: String) {
-        // Exemple de logique pour la connexion
-        if (email == "test@example.com" && password == "password123") {
-            // Afficher un succès
-            Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
-            // Naviguer vers une autre page (par exemple HomeFragment)
-            navigateToHome()
-        } else {
-            // Afficher un message d'erreur
-            Toast.makeText(context, "Email ou mot de passe incorrect", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // Naviguer vers un autre fragment
-    private fun navigateToHome() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.viewPager, HomeFragment()) // Assure-toi que le container est défini dans ton activité
-            .addToBackStack(null) // Ajoute à la pile pour permettre de revenir en arrière
-            .commit()
+    // Nettoyage du binding pour éviter les fuites de mémoire
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
