@@ -22,7 +22,7 @@ class  MainActivity : AppCompatActivity(), PagerHandler {
         setContentView(R.layout.activity_main)
 
         // Gérer les WindowInsets pour un design edge-to-edge
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.viewPager)) { v, insets ->
+     ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.viewPager)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -34,7 +34,7 @@ class  MainActivity : AppCompatActivity(), PagerHandler {
 
     private fun setUpPager() {
         // Initialise le ViewPager2 et son adaptateur
-        this.familyAppPager = findViewById(R.id.viewPager)
+       // this.familyAppPager = findViewById(R.id.viewPager)
         val pagerAdapter = ViewPagerAdapter(this, this)
         this.familyAppPager.adapter = pagerAdapter
 
