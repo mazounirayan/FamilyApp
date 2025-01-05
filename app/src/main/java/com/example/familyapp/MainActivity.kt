@@ -1,56 +1,61 @@
 package com.example.familyapp
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.familyapp.R
-import com.example.familyapp.pages.interfaces.PagerHandler
-import com.example.familyapp.pages.views.ViewPagerAdapter
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
-class  MainActivity : AppCompatActivity(), PagerHandler {
-    private lateinit var familyAppPager: ViewPager2
+class MainActivity : AppCompatActivity() {
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Gérer les WindowInsets pour un design edge-to-edge
-     ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.viewPager)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        viewPager = findViewById(R.id.viewPager)
+        setupViewPager()
+        setupNavigationClicks()
+    }
+
+    private fun setupViewPager() {
+        val pagerAdapter = MainPagerAdapter(this)
+        viewPager.adapter = pagerAdapter
+
+        // Empêche le "swipe" si nécessaire
+        viewPager.isUserInputEnabled = false
+    }
+
+    private fun setupNavigationClicks() {
+        findViewById<ImageView>(R.id.home_icon).setOnClickListener {
+            viewPager.currentItem = 0
         }
 
-        setUpPager()
+        findViewById<ImageView>(R.id.messages_icon).setOnClickListener {
+            viewPager.currentItem = 1
+        }
 
+        findViewById<ImageView>(R.id.add_icon).setOnClickListener {
+            viewPager.currentItem = 2
+        }
+
+        findViewById<ImageView>(R.id.list_icon).setOnClickListener {
+            viewPager.currentItem = 3
+        }
     }
+}
 
-    private fun setUpPager() {
-        // Initialise le ViewPager2 et son adaptateur
-       this.familyAppPager = findViewById(R.id.viewPager)
-        val pagerAdapter = ViewPagerAdapter(this, this)
-        this.familyAppPager.adapter = pagerAdapter
+class MainPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+    override fun getItemCount(): Int = 4
 
-
-        displaySelectionPage()
-    }
-
-    override fun displaySelectionPage() {
-        this.familyAppPager.currentItem = 0
-    }
-
-    override fun displayLoginPage() {
-        this.familyAppPager.currentItem = 1
-    }
-
-    override fun displaySignInPage() {
-        this.familyAppPager.currentItem = 2
+    override fun createFragment(position: Int): Fragment {
+        return when (position) {
+            0 -> HomeFragment()
+            1 -> HomeFragment()
+            2 -> HomeFragment()
+            3 -> HomeFragment()
+            else -> HomeFragment()
+        }
     }
 }
