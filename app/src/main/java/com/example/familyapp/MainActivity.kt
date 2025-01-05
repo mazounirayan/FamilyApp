@@ -34,7 +34,7 @@ class  MainActivity : AppCompatActivity(), PagerHandler {
 
     private fun setUpPager() {
         // Initialise le ViewPager2 et son adaptateur
-       // this.familyAppPager = findViewById(R.id.viewPager)
+       this.familyAppPager = findViewById(R.id.viewPager)
         val pagerAdapter = ViewPagerAdapter(this, this)
         this.familyAppPager.adapter = pagerAdapter
 
