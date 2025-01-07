@@ -4,5 +4,19 @@
     <string name="hint_password">Mot de passe</string>
     <string name="button_login">Se connecter</string>
     <string name="logo_family_app">Logo de lapplication familiale</string>
+    <string name="new_task">Créer une nouvelle tache !</string>
+    <string name="task_name_form">Nom de la tache</string>
+    <string name="task_description_form">Description de la tache</string>
+    <string name="task_form_choose_start_date">Choisir la date de commencement</string>
+    <string name="task_form_choose_end_date">Choisir la date de fin</string>
+    <string name="task_form_save_button">Sauvegarder</string>
+    <string name="task_form_save_cancel">Annuler</string>
+    <string name="manage_tasks">Mes taches !</string>
+    <string name="recent">Récent</string>
+    <string name="today">Audj</string>
+    <string name="fini">Fini</string>
+    <string name="prioritaire">Prioritaire</string>
+    <string name="filter">Filtre</string>
+    <string name="progress">Progression :</string>
 
 </resources>
