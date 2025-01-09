@@ -4,7 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/bleu">
+
+    <ImageView
+        android:id="@+id/back_button_create_task"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="50dp"
+        android:contentDescription="@string/retour"
+        android:src="@drawable/baseline_arrow_back_24" />
 
     <TextView
         android:id="@+id/title_create_task"
@@ -94,6 +104,14 @@
             android:fontFamily="@font/christmas_stories"
             android:layout_weight="1" />
 
+
+
     </LinearLayout>
+
+
+
+
+
+
 
 </LinearLayout>

@@ -18,5 +18,6 @@
     <string name="prioritaire">Prioritaire</string>
     <string name="filter">Filtre</string>
     <string name="progress">Progression :</string>
+    <string name="retour">retour</string>
 
 </resources>
