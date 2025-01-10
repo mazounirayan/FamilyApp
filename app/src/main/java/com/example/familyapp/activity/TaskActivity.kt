@@ -9,7 +9,7 @@ import com.example.familyapp.R
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.task.NewTaskFragment
 
-class TaskActivity : NavigationBar() {
+class TaskActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +20,9 @@ class TaskActivity : NavigationBar() {
                 .replace(R.id.task_fragment_container, ManageTaskFragment())
                 .commit()
         }
+        NavigationBar.setupNavigationClicks(this)
     }
-    
+
 
     fun navigateToNewTaskFragment() {
         supportFragmentManager.beginTransaction()

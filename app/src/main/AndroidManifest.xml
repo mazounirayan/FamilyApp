@@ -27,7 +27,12 @@
             android:exported="false" />
         <activity
             android:name=".activity.TaskActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTop"/>
+            <!--android:launchMode="singleTask"-->
+
+
+
     </application>
 
 </manifest>

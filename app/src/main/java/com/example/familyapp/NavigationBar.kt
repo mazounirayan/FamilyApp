@@ -1,76 +1,52 @@
 package com.example.familyapp
 
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.familyapp.activity.TaskActivity
-import com.example.familyapp.views.fragments.task.ManageTaskFragment
 
-open class NavigationBar: AppCompatActivity() {
+object NavigationBar{
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_bars)
-
-        findViewById<ImageView>(R.id.back_button).setOnClickListener {
-            handleBackButtonClick(this)
+    fun setupNavigationClicks(activity: AppCompatActivity) {
+        activity.findViewById<ImageView>(R.id.back_button)?.setOnClickListener {
+            activity.onBackPressed()
         }
 
-        findViewById<ImageView>(R.id.user_profile_icon).setOnClickListener {
-            handleUserProfileClick(this)
+        activity.findViewById<ImageView>(R.id.user_profile_icon)?.setOnClickListener {
+            Toast.makeText(activity, "Redirection vers le profil utilisateur", Toast.LENGTH_SHORT).show()
         }
 
-        findViewById<ImageView>(R.id.home_icon).setOnClickListener {
-            handleHomeIconClick(this)
+        activity.findViewById<ImageView>(R.id.home_icon)?.setOnClickListener {
+            val intent = Intent(activity, MainActivity::class.java)
+            activity.startActivity(intent)
         }
 
-        findViewById<ImageView>(R.id.messages_icon).setOnClickListener {
-            handleMessagesIconClick(this)
+        activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
+            navigateToHomeFragment(activity)
+            println("messages_icon")
+
         }
 
-        findViewById<ImageView>(R.id.add_icon).setOnClickListener {
-            handleCreateIconClick(this,)
+        activity.findViewById<ImageView>(R.id.add_icon)?.setOnClickListener {
+
+            navigateToHomeFragment(activity)
+            println("add_icon")
+
         }
 
-        findViewById<ImageView>(R.id.list_icon).setOnClickListener {
-            handleTaskListIconClick(this)
+        activity.findViewById<ImageView>(R.id.list_icon)?.setOnClickListener {
+            val intent = Intent(activity, TaskActivity::class.java)
+            activity.startActivity(intent)
         }
     }
 
-    companion object {
-        fun handleBackButtonClick(context: Context) {
-            Toast.makeText(context, "Redirection vers le l'element précédent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    private fun navigateToHomeFragment(activity: AppCompatActivity) {
+        val fragmentManager = activity.supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
 
-        fun handleUserProfileClick(context: Context) {
-            Toast.makeText(context, "Redirection vers le profil utilisateur", Toast.LENGTH_SHORT)
-                .show()
-        }
-
-        fun handleMessagesIconClick(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-        }
-
-        fun handleHomeIconClick(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-        }
-
-        fun handleCreateIconClick(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-        }
-
-        fun handleTaskListIconClick(context: Context) {
-            val intent = Intent(context, TaskActivity::class.java)
-            context.startActivity(intent)
-        }
-
+        transaction.replace(R.id.fragment_container, HomeFragment())
+            .addToBackStack(null)
+            .commit()
     }
-
 }
