@@ -1,5 +1,6 @@
 package com.example.familyapp.ui
 
+import UserRepository
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.familyapp.AuthenticationActivity
 import com.example.familyapp.databinding.FragmentLoginBinding
-import com.example.familyapp.repositories.UserRepository
 import com.example.familyapp.viewmodel.LoginViewModel
 import com.example.familyapp.viewmodel.factories.LoginViewModelFactory
 
@@ -37,7 +37,6 @@ class LoginFragment : Fragment() {
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->
             result.fold(
                 onSuccess = {
-                    // Connexion réussie, redirection vers MainActivity
                     Toast.makeText(requireContext(), "Connexion réussie", Toast.LENGTH_SHORT).show()
                     (activity as? AuthenticationActivity)?.navigateToMainActivity()
                 },

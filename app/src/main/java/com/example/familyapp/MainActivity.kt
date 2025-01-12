@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val pagerAdapter = MainPagerAdapter(this)
         viewPager.adapter = pagerAdapter
 
-        // Empêche le "swipe" si nécessaire
+
         viewPager.isUserInputEnabled = false
     }
 
@@ -53,8 +53,18 @@ class MainPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activ
         return when (position) {
             0 -> HomeFragment()
             1 -> HomeFragment()
-            2 -> HomeFragment()
-            3 -> HomeFragment()
+            2 -> RewardsFragment().apply {
+                // Rôle pour l'onglet Récompenses (admin)
+                arguments = Bundle().apply {
+                    putString("role", "admin")
+                }
+            }
+            3 -> RewardsFragment().apply {
+                // Rôle pour l'onglet Récompenses (user)
+                arguments = Bundle().apply {
+                    putString("role", "user")
+                }
+            }
             else -> HomeFragment()
         }
     }

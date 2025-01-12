@@ -1,24 +1,23 @@
 package com.example.familyapp.viewmodel
 
+import UserRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.familyapp.repositories.UserRepository
-import com.example.familyapp.network.dto.autentDto.LoginRequest
+import com.example.familyapp.data.model.user.User
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
-
-    // Champs observables pour l'email et le mot de passe
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
 
-    // État de la connexion (succès ou erreur)
-    private val _loginResult = MutableLiveData<Result<Boolean>>()
-    val loginResult: LiveData<Result<Boolean>> = _loginResult
+    private val _loginResult = MutableLiveData<Result<Unit>>()
+    val loginResult: LiveData<Result<Unit>> = _loginResult
 
-    // Fonction pour gérer la logique de connexion
+
+    val userData = userRepository.userData
+
     fun login() {
         val emailValue = email.value.orEmpty().trim()
         val passwordValue = password.value.orEmpty().trim()
@@ -28,13 +27,8 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
             return
         }
 
-        viewModelScope.launch {
-            try {
-                userRepository.login(emailValue, passwordValue)
-                _loginResult.value = Result.success(true)
-            } catch (exception: Exception) {
-                _loginResult.value = Result.failure(exception)
-            }
+        userRepository.login(emailValue, passwordValue) { result ->
+            _loginResult.value = result
         }
     }
 }

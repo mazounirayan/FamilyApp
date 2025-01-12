@@ -1,8 +1,8 @@
 package com.example.familyapp.viewmodel.factories
 
+import UserRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.familyapp.repositories.UserRepository
 import com.example.familyapp.viewmodel.LoginViewModel
 
 class LoginViewModelFactory(

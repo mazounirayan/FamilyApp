@@ -1,0 +1,86 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Section Admin -->
+        <LinearLayout
+            android:id="@+id/admin_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:background="#F0F8FF"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Récompenses (admin)"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- RecyclerView pour la liste des membres -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Liste des récompenses"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- RecyclerView pour la liste des récompenses -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Section User -->
+        <LinearLayout
+            android:id="@+id/user_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Récompenses (user)"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Score user : 10 points"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- RecyclerView pour les récompenses disponibles -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_user_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
