@@ -4,5 +4,6 @@
     <string name="hint_password">Mot de passe</string>
     <string name="button_login">Se connecter</string>
     <string name="logo_family_app">Logo de lapplication familiale</string>
+    <string name="plus_d_information_sur_l_utilisateur">Plus d\'information sur l\'utilisateur</string>
 
 </resources>
