@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bleu">
-
-    <include
-        layout="@layout/layout_bars" />
+    
 
 
     <TextView
@@ -221,8 +219,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ln_progression" />
 
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/task_fragment_manage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tachesfini">
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/direct_messages_rv"
+        android:id="@+id/list_tasks_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -230,6 +236,8 @@
         android:layout_marginTop="20dp"
         tools:itemCount="5"
         tools:listitem="@layout/task_rv_cell" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!--<ImageButton
         android:id="@+id/task_confirm_button"

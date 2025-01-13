@@ -2,12 +2,14 @@ package com.example.familyapp.repositories
 
 import android.content.Context
 import android.util.Log
-import com.example.familyapp.data.model.user.User
 import com.example.familyapp.network.AuthService
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.autentDto.LoginRequest
-import retrofit2.Response
+import com.example.familyapp.network.dto.autentDto.LoginResponse
 import com.example.familyapp.network.mapper.mapUserDtoToUser
+import retrofit2.Call
+import retrofit2.Response
+
 class UserRepository(private val context: Context) {
 
     // Instance du service Retrofit
@@ -21,23 +23,29 @@ class UserRepository(private val context: Context) {
     */
 
     // Fonction pour effectuer un login via l'API
-    suspend fun login(email: String, motDePasse: String): Result<Unit> {
-        return try {
-            val response = authService.login(LoginRequest(email, motDePasse)).execute()
-            if (response.isSuccessful) {
-                val loginResponse = response.body()
-                loginResponse?.let {
-                    val user = mapUserDtoToUser(it.user)
-                    Log.d("UserRepository", "Bienvenue, ${user.nom} ${user.prenom}!")
+    fun login(email: String, motDePasse: String, callback: (Result<Unit>) -> Unit) {
+        val call = authService.login(LoginRequest(email, motDePasse))
+
+        call.enqueue(object : retrofit2.Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    loginResponse?.let {
+                        val user = mapUserDtoToUser(it.user)
+                        Log.d("UserRepository", "Bienvenue, ${user.nom} ${user.prenom}!")
+                    }
+                    callback(Result.success(Unit)) // Connexion réussie
+                } else {
+                    callback(Result.failure(Exception("Erreur : ${response.message()}"))) // Erreur HTTP
                 }
-                Result.success(Unit) // Connexion réussie
-            } else {
-                Result.failure(Exception("Erreur : ${response.message()}")) // Erreur réseau
             }
-        } catch (e: Exception) {
-            Result.failure(e) // Exception réseau
-        }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                callback(Result.failure(t)) // Exception réseau
+            }
+        })
     }
+
 
     /* Fonction pour insérer un utilisateur dans la base de données locale
     suspend fun insertUserFromApi(user: User) {

@@ -4,7 +4,10 @@ import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.familyapp.activity.TaskActivity
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import com.example.familyapp.views.fragments.HomeFragment
+import com.example.familyapp.views.fragments.task.ManageTaskFragment
 
 object NavigationBar{
 
@@ -36,8 +39,16 @@ object NavigationBar{
         }
 
         activity.findViewById<ImageView>(R.id.list_icon)?.setOnClickListener {
-            val intent = Intent(activity, TaskActivity::class.java)
-            activity.startActivity(intent)
+            /*val intent = Intent(activity, TaskActivity::class.java)
+            activity.startActivity(intent)*/
+            val supportFragmentManager = activity.supportFragmentManager
+
+            supportFragmentManager.commit {
+                replace<ManageTaskFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name") // Name can be null
+            }
+
         }
     }
 

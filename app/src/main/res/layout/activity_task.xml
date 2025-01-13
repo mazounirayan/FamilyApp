@@ -6,8 +6,6 @@
     android:focusable="true"
     >
 
-    <include
-        layout="@layout/layout_bars" />
 
 
     <FrameLayout
