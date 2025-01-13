@@ -1,10 +1,12 @@
 package com.example.familyapp.views.fragments.task
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -28,12 +30,35 @@ class ManageTaskFragment : Fragment() {
         TaskViewModelFactory(TaskRepository(this.requireContext()),this)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_manage_task, container, false)
+        val pourcentage = view.findViewById<TextView>(R.id.pourcentage)
+        val textTacheFini = view.findViewById<TextView>(R.id.tachesfini)
 
+        var pourcentageCalcul = 0
+        taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
+            for (task in tasks) {
+
+                if(task.status == "Fini"){
+                    pourcentageCalcul+=1
+                }
+
+            }
+            if(tasks.size == 0){
+                textTacheFini.text = "Aucune tache a faire !"
+            }else if(tasks.size == 1){
+                textTacheFini.text = "$pourcentageCalcul tache sur ${tasks.size} fini !"
+            }else{
+                textTacheFini.text = "$pourcentageCalcul taches sur ${tasks.size} fini !"
+            }
+
+            pourcentageCalcul = pourcentageCalcul*100/tasks.size
+            pourcentage.text = "$pourcentageCalcul %"
+        }
         view.findViewById<Button>(R.id.add_task_button).setOnClickListener {
             val supportFragmentManager = activity?.supportFragmentManager
 
