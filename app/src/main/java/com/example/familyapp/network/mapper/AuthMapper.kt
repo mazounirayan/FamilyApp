@@ -18,6 +18,9 @@ fun mapUserDtoToUser(userDto: UserDTO): User {
         idFamille = userDto.idFamille,
         dateInscription = userDto.dateInscription,
         motDePasse = userDto.motDePasse
-
+        , avatar = userDto.avatar,
+        coins= userDto.coins,
+        totalPoints= userDto.totalPoints
+        ,
     )
 }

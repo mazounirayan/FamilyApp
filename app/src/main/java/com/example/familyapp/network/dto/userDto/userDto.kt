@@ -10,6 +10,8 @@ data class UserDTO(
     val role: String,
     val idFamille: Int,
     val dateInscription: String,
-
+    val avatar:String ,
+    val coins: Int,
+    val totalPoints : Int  ,
 
 )
