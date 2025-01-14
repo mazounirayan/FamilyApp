@@ -41,10 +41,9 @@ android {
 }
 
 dependencies {
-
-        implementation("androidx.recyclerview:recyclerview:1.3.2") // ou une version plus récente
-
+    implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.recyclerview)
+    implementation("androidx.recyclerview:recyclerview:1.3.2") // ou une version plus récente
     implementation(libs.androidx.lifecycle.viewmodel.android)
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
@@ -72,7 +71,8 @@ dependencies {
     implementation(libs.androidx.room.common)
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

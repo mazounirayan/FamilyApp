@@ -1,0 +1,117 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/bleu">
+
+    <ImageView
+        android:id="@+id/back_button_create_task"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="50dp"
+        android:contentDescription="@string/retour"
+        android:src="@drawable/baseline_arrow_back_24" />
+
+    <TextView
+        android:id="@+id/title_create_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_task"
+        android:fontFamily="@font/baby_sparkle"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:layout_marginBottom="30dp" />
+
+    <EditText
+        android:id="@+id/task_name_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/task_name_form"
+        android:fontFamily="@font/christmas_stories"
+        android:inputType="text"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginBottom="22dp" />
+
+    <EditText
+        android:id="@+id/task_description_form"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:autofillHints=""
+
+        android:hint="@string/task_description_form"
+        android:fontFamily="@font/christmas_stories"
+        android:inputType="text"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginBottom="22dp" />
+
+    <Spinner
+        android:id="@+id/assignee_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/black"
+        android:minHeight="48dp"
+        android:layout_marginBottom="22dp"/>
+
+    <Button
+        android:id="@+id/start_date_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_stories"
+        android:textStyle="bold"
+        android:text="@string/task_form_choose_start_date"
+        android:layout_marginBottom="22dp" />
+
+    <Button
+        android:id="@+id/end_date_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_stories"
+        android:textStyle="bold"
+        android:text="@string/task_form_choose_end_date"
+        android:layout_marginBottom="55dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/task_form_save_button"
+            android:fontFamily="@font/christmas_stories"
+            android:textStyle="bold"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/task_form_save_cancel"
+            android:fontFamily="@font/christmas_stories"
+            android:layout_weight="1" />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>

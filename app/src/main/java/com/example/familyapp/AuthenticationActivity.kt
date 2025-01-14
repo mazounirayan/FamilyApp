@@ -11,7 +11,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.familyapp.pages.interfaces.PagerHandler
 import com.example.familyapp.pages.views.ViewPagerAdapter
-import com.example.familyapp.ui.LoginFragment
 
 
 class AuthenticationActivity : AppCompatActivity(), PagerHandler {

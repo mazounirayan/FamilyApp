@@ -1,5 +1,6 @@
 package com.example.familyapp.viewmodel
 
+
 import UserRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     val userData = userRepository.userData
 
     fun login() {
+
         val emailValue = "a@a.aaa"//email.value.orEmpty().trim()
         val passwordValue = "azerty"//password.value.orEmpty().trim()
 
