@@ -3,10 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:background="@color/primary_background">
 
     <include
-        layout="@layout/layout_bars" />
+        layout="@layout/layout_bars"
+        android:background="@color/primary_background"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

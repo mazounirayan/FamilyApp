@@ -7,16 +7,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.familyapp.views.fragments.HomeFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
 
 object NavigationBar{
 
     fun setupNavigationClicks(activity: AppCompatActivity) {
-        activity.findViewById<ImageView>(R.id.back_button)?.setOnClickListener {
-            activity.onBackPressed()
-        }
 
         activity.findViewById<ImageView>(R.id.user_profile_icon)?.setOnClickListener {
             Toast.makeText(activity, "Redirection vers le profil utilisateur", Toast.LENGTH_SHORT).show()
@@ -33,7 +29,6 @@ object NavigationBar{
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
-            navigateToHomeFragment(activity)
             println("messages_icon")
 
         }
@@ -61,12 +56,4 @@ object NavigationBar{
 
     }
 
-    private fun navigateToHomeFragment(activity: AppCompatActivity) {
-        val fragmentManager = activity.supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-
-        transaction.replace(R.id.fragment_container, HomeFragment())
-            .addToBackStack(null)
-            .commit()
-    }
 }
