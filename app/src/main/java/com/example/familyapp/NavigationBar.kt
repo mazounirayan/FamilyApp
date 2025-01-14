@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.familyapp.views.fragments.HomeFragment
+import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
 
 object NavigationBar{
@@ -41,9 +43,7 @@ object NavigationBar{
             }
         }
 
-        /*activity.findViewById<ImageView>(R.id.list_icon)?.setOnClickListener {
-            /*val intent = Intent(activity, TaskActivity::class.java)
-            activity.startActivity(intent)*/
+        activity.findViewById<ImageView>(R.id.list_icon)?.setOnClickListener {
             val supportFragmentManager = activity.supportFragmentManager
 
             supportFragmentManager.commit {
@@ -51,8 +51,8 @@ object NavigationBar{
                 setReorderingAllowed(true)
                 addToBackStack("name") // Name can be null
             }
+        }
 
-        }*/
     }
 
     private fun navigateToHomeFragment(activity: AppCompatActivity) {

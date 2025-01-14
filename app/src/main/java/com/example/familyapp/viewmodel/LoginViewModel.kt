@@ -1,5 +1,6 @@
 package com.example.familyapp.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +23,8 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     fun login() {
         val emailValue = email.value.orEmpty().trim()
         val passwordValue = password.value.orEmpty().trim()
-
+        //val emailValue = "pierre.dupont@mail.com"
+        //val passwordValue = "motdepasse123"
         if (emailValue.isEmpty() || passwordValue.isEmpty()) {
             _loginResult.value = Result.failure(Exception("Les champs ne peuvent pas être vides"))
             return
@@ -30,7 +32,16 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
         viewModelScope.launch {
             try {
-                userRepository.login(emailValue, passwordValue)
+                userRepository.login(emailValue, passwordValue) { result ->
+                    result.onSuccess {
+                        // Connexion réussie
+                        println("ok")
+                        // Naviguer vers une autre activité ou mettre à jour l'interface utilisateur
+                    }.onFailure { exception ->
+                        // Échec de la connexion
+                        println(exception)
+                    }
+                }
                 _loginResult.value = Result.success(true)
             } catch (exception: Exception) {
                 _loginResult.value = Result.failure(exception)
