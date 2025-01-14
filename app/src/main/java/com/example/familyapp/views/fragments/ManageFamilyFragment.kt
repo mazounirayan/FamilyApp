@@ -22,9 +22,9 @@ class ManageFamilyFragment : Fragment() {
     private val userList = mutableListOf<User>()
 
     private val familyMembers = listOf(
-        User(1, "Fils", "Prenom", "email@example.com", "1234", "Profession", "0000", "User", 1, "2023-01-01",65),
-        User(2, "Fils01", "Prenom", "email@example.com", "5678", "Profession", "0000", "User", 1, "2023-01-01",70),
-        User(2, "Fils02", "Prenom", "email@example.com", "5678", "Profession", "0000", "User", 1, "2023-01-01",70)
+        User(1, "Fils", "Prenom", "email@example.com", "1234",  "0000", "User", 1, "2023-01-01",65,"",0),
+        User(2, "Fils01", "Prenom", "email@example.com", "5678", "0000", "User", 1, "2023-01-01",70,"",0),
+        User(2, "Fils02", "Prenom", "email@example.com", "5678",  "0000", "User", 1, "2023-01-01",70,"",0)
     )
 
     override fun onCreateView(

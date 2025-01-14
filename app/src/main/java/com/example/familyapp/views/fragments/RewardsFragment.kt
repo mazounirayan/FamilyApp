@@ -51,9 +51,9 @@ class RewardsFragment : Fragment() {
     private fun observeData() {
         // Données de test
         val mockUsers = listOf(
-            User(1, "Martin", "Sophie", "sophie@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14", "avatar1.jpg", 1500, 2000),
-            User(2, "Martin", "Lucas", "lucas@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14", "avatar2.jpg", 1200, 1800),
-            User(3, "Martin", "Emma", "emma@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14", "avatar3.jpg", 800, 1200)
+            User(1, "Martin", "Sophie", "sophie@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14",  1500, "avatar1.jpg",2000),
+            User(2, "Martin", "Lucas", "lucas@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14",  1200, "avatar2.jpg",1800),
+            User(3, "Martin", "Emma", "emma@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14",  800, "avatar3.jpg",1200)
         )
 
         val mockRecompenses = listOf(

@@ -1,15 +1,15 @@
-package com.example.familyapp
+package com.example.familyapp.views.fragments
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.familyapp.R
 import com.example.familyapp.data.model.user.TaskDashbord
 import com.example.familyapp.data.model.user.User
 import com.example.familyapp.views.Adapters.TaskDashboardAdapter
 import com.example.familyapp.views.Adapters.UserDashboardAdapter
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardFragment : AppCompatActivity() {
 
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var taskRecyclerView: RecyclerView
@@ -18,9 +18,9 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var taskDashboardAdapter: TaskDashboardAdapter
 
      private val userList: List<User> = listOf(
-        User(1, "Fils", "Prenom", "email@example.com", "1234", "Profession", "0000", "User", 1, "2023-01-01",65),
-        User(2, "Fils01", "Prenom", "email@example.com", "5678", "Profession", "0000", "User", 1, "2023-01-01",70),
-         User(2, "Fils02", "Prenom", "email@example.com", "5678", "Profession", "0000", "User", 1, "2023-01-01",70)
+        User(1, "Fils", "Prenom", "email@example.com", "1234",  "0000", "User", 1, "2023-01-01",65,"fils",2),
+        User(2, "Fils01", "Prenom", "email@example.com", "5678", "0000", "User", 1, "2023-01-01",70,"fils",2),
+         User(2, "Fils02", "Prenom", "email@example.com", "5678", "0000", "User", 1, "2023-01-01",70,"fils",2)
 
      )
 
