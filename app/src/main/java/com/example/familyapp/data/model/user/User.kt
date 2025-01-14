@@ -11,4 +11,5 @@ data class User(
     val role: String,
     val idFamille: Int,
     val dateInscription: String,
+    val score: Int
 )

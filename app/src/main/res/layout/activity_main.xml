@@ -9,3 +9,4 @@
         layout="@layout/layout_bars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
