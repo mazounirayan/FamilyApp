@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-
+import com.example.familyapp.views.fragments.RewardsFragment
 class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
 
@@ -54,13 +54,13 @@ class MainPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activ
             0 -> HomeFragment()
             1 -> HomeFragment()
             2 -> RewardsFragment().apply {
-                // Rôle pour l'onglet Récompenses (admin)
+                // role pour l'onglet Récompenses (admin)
                 arguments = Bundle().apply {
                     putString("role", "admin")
                 }
             }
             3 -> RewardsFragment().apply {
-                // Rôle pour l'onglet Récompenses (user)
+                // Role pour l'onglet Récompenses (user)
                 arguments = Bundle().apply {
                     putString("role", "user")
                 }
