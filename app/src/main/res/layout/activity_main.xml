@@ -8,5 +8,5 @@
     <include
         layout="@layout/layout_bars" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 
+</androidx.constraintlayout.widget.ConstraintLayout>

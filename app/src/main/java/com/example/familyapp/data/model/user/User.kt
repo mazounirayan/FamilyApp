@@ -6,10 +6,11 @@ data class User(
     val prenom: String,
     val email: String,
     val motDePasse: String,
-    val profession: String,
     val numTel: String,
     val role: String,
-    val idFamille: Int,
+    val idFamille: Int?,
     val dateInscription: String,
-    val score: Int
+    val avatar:String? ,
+    val coins: Int,
+    val totalPoints : Int  ,
 )

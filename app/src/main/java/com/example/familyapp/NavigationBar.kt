@@ -1,5 +1,6 @@
 package com.example.familyapp
 
+import RewardsFragment
 import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
@@ -22,8 +23,13 @@ object NavigationBar{
         }
 
         activity.findViewById<ImageView>(R.id.home_icon)?.setOnClickListener {
-            val intent = Intent(activity, MainActivity::class.java)
-            activity.startActivity(intent)
+            val supportFragmentManager = activity.supportFragmentManager
+
+            supportFragmentManager.commit {
+                replace<RewardsFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name") // Name can be null
+            }
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {

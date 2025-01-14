@@ -1,68 +1,70 @@
-package com.example.familyapp.repositories
-
-import android.content.Context
 import android.util.Log
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.familyapp.data.model.user.User
 import com.example.familyapp.network.AuthService
 import com.example.familyapp.network.RetrofitClient
-import com.example.familyapp.network.dto.autentDto.LoginRequest
 import com.example.familyapp.network.dto.autentDto.LoginResponse
-import com.example.familyapp.network.mapper.mapUserDtoToUser
 import retrofit2.Call
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import retrofit2.Callback
 import retrofit2.Response
+import android.content.Context
+import android.widget.Toast
+import com.example.familyapp.network.dto.autentDto.LoginRequest
+import com.example.familyapp.network.mapper.mapUserDtoToUser
 
-class UserRepository(private val context: Context) {
 
-    // Instance du service Retrofit
+class UserRepository(context: Context) {
     private val authService = RetrofitClient.instance.create(AuthService::class.java)
+    private val _userData = MutableLiveData<User>()
+    val userData: LiveData<User> get() = _userData
 
-    /* Base de données locale
+  /*
     private val db = Room.databaseBuilder(
         context,
         AppDatabase::class.java, "family_app_db"
     ).build()
-    */
+*/
+    val scope = CoroutineScope(SupervisorJob())
 
-    // Fonction pour effectuer un login via l'API
-    fun login(email: String, motDePasse: String, callback: (Result<Unit>) -> Unit) {
-        val call = authService.login(LoginRequest(email, motDePasse))
+    fun login(email: String, password: String, onResult: (Result<Unit>) -> Unit) {
+        val loginRequest = LoginRequest(email, password)
+        val call = authService.login(loginRequest)
 
-        call.enqueue(object : retrofit2.Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
-                        Log.d("UserRepository", "Bienvenue, ${user.nom} ${user.prenom}!")
+                        _userData.value = user
+
+                        /*scope.launch {
+                            insertUserInDb(user)
+                        }*/
+
+                        onResult(Result.success(Unit))
                     }
-                    callback(Result.success(Unit)) // Connexion réussie
                 } else {
-                    callback(Result.failure(Exception("Erreur : ${response.message()}"))) // Erreur HTTP
+                    onResult(Result.failure(Exception("Erreur : ${response.message()}")))
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                callback(Result.failure(t)) // Exception réseau
+                Log.e("LoginError", t.message ?: "Erreur réseau")
+                onResult(Result.failure(t))
             }
         })
     }
 
+    /*private suspend fun insertUserInDb(user: User) {
 
-    /* Fonction pour insérer un utilisateur dans la base de données locale
-    suspend fun insertUserFromApi(user: User) {
-        val userDao = db.userDao()
-
-        val userEntity = UserEntity(
-            id = user.id,
-            nom = user.nom,
-            prenom = user.prenom,
-            email = user.email,
-            profession = user.profession,
-            numTel = user.numTel,
-            role = user.role,
-            idFamille = user.idFamille
-        )
-
-        userDao.insertUser(userEntity)
-    }
-    */
+    }*/
 }

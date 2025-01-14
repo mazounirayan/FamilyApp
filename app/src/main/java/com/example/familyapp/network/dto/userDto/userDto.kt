@@ -6,16 +6,12 @@ data class UserDTO(
     val prenom: String,
     val email: String,
     val motDePasse: String,
-    val profession: String,
     val numTel: String,
     val role: String,
     val idFamille: Int,
     val dateInscription: String,
-    val tokens: List<TokenDTO>
+    val avatar:String ,
+    val coins: Int,
+    val totalPoints : Int  ,
 
-)
-
-data class TokenDTO(
-    val id: Int,
-    val token: String
 )
