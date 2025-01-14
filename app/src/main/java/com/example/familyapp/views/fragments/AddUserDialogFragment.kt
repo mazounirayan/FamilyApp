@@ -12,7 +12,7 @@ import com.example.familyapp.data.model.user.User
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddUserDialog(private val onUserAdded: (User) -> Unit) : DialogFragment() {
+class AddUserDialogFragment(private val onUserAdded: (User) -> Unit) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
