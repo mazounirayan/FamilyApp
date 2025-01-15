@@ -33,7 +33,7 @@
         android:text="Ajouter !"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/categories_layout"
+        app:layout_constraintBottom_toTopOf="@+id/ln_progression"
         app:layout_constraintEnd_toStartOf="@+id/title_manage_task"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -54,73 +54,14 @@
         android:drawableLeft="@drawable/filter"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/categories_layout"
+        app:layout_constraintBottom_toTopOf="@+id/ln_progression"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/title_manage_task"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="40dp"
         android:layout_marginStart="20dp" />
 
-    <LinearLayout
-        android:id="@+id/categories_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_manage_task"
-        android:layout_marginTop="40dp">
 
-        <TextView
-            android:id="@+id/recent_textview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/christmas_stories"
-            android:textStyle="bold"
-            android:text="@string/recent"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:layout_weight="0.25"
-            android:layout_marginHorizontal="15dp" />
-
-        <TextView
-            android:id="@+id/today_textview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/christmas_stories"
-            android:textStyle="bold"
-            android:text="@string/today"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:layout_weight="0.15"
-            android:layout_marginHorizontal="10dp" />
-
-        <TextView
-            android:id="@+id/prioritaire_textview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/christmas_stories"
-            android:textStyle="bold"
-            android:text="@string/prioritaire"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:layout_weight="0.45"
-            android:layout_marginHorizontal="10dp" />
-
-        <TextView
-            android:id="@+id/fini_textview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/christmas_stories"
-            android:textStyle="bold"
-            android:text="@string/fini"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:layout_weight="0.15"
-            android:layout_marginHorizontal="15dp" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ln_progression"
@@ -129,7 +70,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categories_layout"
+        app:layout_constraintTop_toBottomOf="@+id/title_manage_task"
         android:gravity="center_vertical"
         android:layout_marginTop="20dp">
 
@@ -234,7 +175,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tachesfini"
         android:layout_marginTop="20dp"
         android:paddingTop="20dp"
-
         tools:itemCount="5"
         tools:listitem="@layout/task_rv_cell" />
 

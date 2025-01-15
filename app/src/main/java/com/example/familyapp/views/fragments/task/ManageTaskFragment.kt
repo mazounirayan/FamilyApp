@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -38,9 +39,10 @@ class ManageTaskFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_manage_task, container, false)
         val pourcentage = view.findViewById<TextView>(R.id.pourcentage)
         val textTacheFini = view.findViewById<TextView>(R.id.tachesfini)
+        val progressBar = view.findViewById<ProgressBar>(R.id.stats_progressbar)
 
-        var pourcentageCalcul = 0
         taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
+            var pourcentageCalcul = 0
             for (task in tasks) {
 
                 if(task.status == "Fini"){
@@ -56,7 +58,8 @@ class ManageTaskFragment : Fragment() {
                 textTacheFini.text = "$pourcentageCalcul taches sur ${tasks.size} fini !"
             }
 
-            pourcentageCalcul = pourcentageCalcul*100/tasks.size
+            pourcentageCalcul = (pourcentageCalcul*100)/tasks.size
+            progressBar.progress = pourcentageCalcul
             pourcentage.text = "$pourcentageCalcul %"
         }
         view.findViewById<Button>(R.id.add_task_button).setOnClickListener {
@@ -72,7 +75,7 @@ class ManageTaskFragment : Fragment() {
         this.swipeRefreshLayout = view.findViewById(R.id.task_fragment_manage)
 
 
-        taskViewModel.fetchTask(1)
+        taskViewModel.fetchTask(5)
 
         return view
     }
