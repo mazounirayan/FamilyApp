@@ -6,5 +6,33 @@
     <color name="bleu">#e7f5ff</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="progress_primary">#4CAF50</color>
+    <color name="secondary_dark">#FF03DAC5</color>
+    <color name="secondary_variant_dark">#FF018786</color>
+    <color name="on_secondary_dark">#FFFFFFFF</color>
+    <color name="primary">#FF6200EE</color>
+    <color name="primary_variant">#FF3700B3</color>
+    <color name="primary_dark">#FF3700B3</color>
+    <color name="on_primary">#FFFFFFFF</color>
+
+    <!-- Couleurs secondaires -->
+    <color name="secondary">#FF03DAC5</color>
+    <color name="secondary_variant">#FF018786</color>
+    <color name="on_secondary">#FF000000</color>
+
+    <!-- Couleurs de fond -->
+    <color name="background">#FFFFFFFF</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="error">#FFB00020</color>
+
+    <!-- Couleurs texte -->
+    <color name="text_primary">#DE000000</color>
+    <color name="text_secondary">#99000000</color>
+    <color name="text_hint">#61000000</color>
+
+    <!-- Couleurs status -->
+    <color name="success">#FF4CAF50</color>
+    <color name="warning">#FFFFC107</color>
+    <color name="danger">#FFF44336</color>
+    <color name="info">#FF2196F3</color>
 
 </resources>

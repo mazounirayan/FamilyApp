@@ -45,6 +45,12 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation("androidx.recyclerview:recyclerview:1.3.2") // ou une version plus récente
     implementation(libs.androidx.lifecycle.viewmodel.android)
+
+    //splash
+    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation(libs.play.services.cast.framework)
+
+
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -54,7 +60,7 @@ dependencies {
 // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
-
+    implementation("com.google.android.material:material:1.11.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
