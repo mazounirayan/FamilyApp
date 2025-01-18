@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.familyapp.views.fragments.DashboardFragment
 import com.example.familyapp.views.fragments.HomeFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
@@ -33,8 +34,13 @@ object NavigationBar{
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
-            navigateToHomeFragment(activity)
-            println("messages_icon")
+            val supportFragmentManager = activity.supportFragmentManager
+
+            supportFragmentManager.commit {
+                replace<DashboardFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name")
+            }
 
         }
 

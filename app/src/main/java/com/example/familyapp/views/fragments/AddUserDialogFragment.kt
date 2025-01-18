@@ -50,12 +50,13 @@ class AddUserDialogFragment(private val onUserAdded: (User) -> Unit) : DialogFra
                 prenom = prenom,
                 email = email,
                 motDePasse = "default_password",
-                profession = profession,
                 numTel = numTel,
                 role = role,
                 idFamille = 1,
                 dateInscription = currentDate,
-                score = 0
+                coins = 0,
+                avatar = "",
+                totalPoints = 1
             )
 
              onUserAdded(user)

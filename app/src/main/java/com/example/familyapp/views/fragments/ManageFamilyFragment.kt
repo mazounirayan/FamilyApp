@@ -22,9 +22,9 @@ class ManageFamilyFragment : Fragment() {
     private val userList = mutableListOf<User>()
 
     private val familyMembers = listOf(
-        User(1, "Fils", "Prenom", "email@example.com", "1234", "Profession", "0000", "User", 1, "2023-01-01",65),
-        User(2, "Fils01", "Prenom", "email@example.com", "5678", "Profession", "0000", "User", 1, "2023-01-01",70),
-        User(2, "Fils02", "Prenom", "email@example.com", "5678", "Profession", "0000", "User", 1, "2023-01-01",70)
+        User(1, "Fils", "Prenom", "email@example.com", "1234",  "0000", "User", 1, "2023-01-01",65,"",0),
+        User(2, "Fils01", "Prenom", "email@example.com", "5678", "0000", "User", 1, "2023-01-01",70,"",0),
+        User(2, "Fils02", "Prenom", "email@example.com", "5678",  "0000", "User", 1, "2023-01-01",70,"",0)
     )
 
     override fun onCreateView(
@@ -32,25 +32,26 @@ class ManageFamilyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_manage_family,container,false)
+        val view = inflater.inflate(R.layout.fragment_manage_family,container,false)
         userMembershipAdapter = UserMembershipAdapter(familyMembers)
 
-        view.findViewById<FloatingActionButton>(R.id.add_member_button).setOnClickListener{
+        view.findViewById<FloatingActionButton>(R.id.add_member_button).setOnClickListener {
+            val dialogFragment = AddUserDialogFragment { newUser ->
+                 userList.add(newUser)
+
+                userMembershipAdapter.notifyItemInserted(userList.size - 1)
+            }
+            dialogFragment.show(parentFragmentManager, "AddUserDialog")
+        }
 
             /*AddUserDialog { user ->
                 userList.add(user)
                 userMembershipAdapter.notifyItemInserted(userList.size - 1)
             }*/
 
-            val supportFragmentManager = activity?.supportFragmentManager
 
-            supportFragmentManager?.commit {
-                replace<AddUserDialogFragment>(R.id.fragment_container)
-                setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
-            }
 
-        }
+
 
         return view;
     }
