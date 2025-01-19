@@ -27,4 +27,8 @@ class TaskViewModel(
 
         this.taskRepo.getTaskFromUser(idUser)
     }
+
+    fun addTask(task:Task){
+        this.taskRepo.addTask(task)
+    }
 }

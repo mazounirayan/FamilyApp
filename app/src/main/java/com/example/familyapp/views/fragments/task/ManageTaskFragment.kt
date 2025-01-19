@@ -45,7 +45,7 @@ class ManageTaskFragment : Fragment() {
             var pourcentageCalcul = 0
             for (task in tasks) {
 
-                if(task.status == "Fini"){
+                if(task.status.toString() == "Fini"){
                     pourcentageCalcul+=1
                 }
 
@@ -58,9 +58,15 @@ class ManageTaskFragment : Fragment() {
                 textTacheFini.text = "$pourcentageCalcul taches sur ${tasks.size} fini !"
             }
 
-            pourcentageCalcul = (pourcentageCalcul*100)/tasks.size
-            progressBar.progress = pourcentageCalcul
-            pourcentage.text = "$pourcentageCalcul %"
+            if(tasks.isNotEmpty()){
+                pourcentageCalcul = (pourcentageCalcul*100)/tasks.size
+                progressBar.progress = pourcentageCalcul
+                pourcentage.text = "$pourcentageCalcul %"
+            }else{
+                progressBar.progress = 0
+                pourcentage.text = "0 %"
+            }
+
         }
         view.findViewById<Button>(R.id.add_task_button).setOnClickListener {
             val supportFragmentManager = activity?.supportFragmentManager
@@ -105,12 +111,12 @@ class ManageTaskFragment : Fragment() {
         }
 
         // La vue demande de la donnée
-        taskViewModel.fetchTask(1)
+        taskViewModel.fetchTask(5)
     }
 
     private fun setUpSwipeToRefreshListeners() {
         this.swipeRefreshLayout.setOnRefreshListener {
-            this.taskViewModel.fetchTask(1)
+            this.taskViewModel.fetchTask(5)
         }
     }
 

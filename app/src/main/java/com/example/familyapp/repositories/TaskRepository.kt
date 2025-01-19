@@ -47,4 +47,27 @@ class TaskRepository(context: Context) {
             }
         })
     }
+
+    fun addTask(task:Task){
+        val call = taskService.addTask(task)
+
+        call.enqueue(object : Callback<TaskDto> {
+            override fun onResponse(
+                call: Call<TaskDto>,
+                response: Response<TaskDto>
+            ) {
+
+                if (response.isSuccessful) {
+                    return
+                } else {
+                    Log.e("TaskRepository", "Erreur HTTP : ${response.errorBody()?.contentType()}")
+                    Log.e("TaskRepository", "Erreur HTTP : ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TaskDto>, t: Throwable) {
+                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+            }
+        })
+    }
 }

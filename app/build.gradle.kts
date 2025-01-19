@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation("androidx.recyclerview:recyclerview:1.3.2") // ou une version plus récente
     implementation(libs.androidx.lifecycle.viewmodel.android)
+    implementation(libs.places)
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

@@ -13,4 +13,8 @@ data class User(
     val coins: Int,
     val avatar:String? ,
     val totalPoints : Int  ,
-)
+) {
+    override fun toString(): String {
+        return prenom
+    }
+}

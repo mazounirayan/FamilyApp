@@ -67,8 +67,8 @@ class UserRepository(context: Context) {
         })
     }
 
-    fun getAllUsers() {
-        val call = userService.getAllUsers()
+    fun getAllUsers(id:Int) {
+        val call = userService.getAllUsers(id)
 
         call.enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(
@@ -76,14 +76,15 @@ class UserRepository(context: Context) {
                 response: Response<List<UserDTO>>
             ) {
 
+
                 if (response.isSuccessful) {
-                    val response = response.body()
-                    _users.value = response?.let {
-                        it.map{ value ->
-                            mapUserDtoToUser(value)
-                        }
+                    val responseBody = response.body()
+                    _users.value = responseBody?.map { userDto ->
+                        mapUserDtoToUser(userDto) // Mapper chaque UserDTO en User
                     }
-                } else {
+                }
+
+                 else {
                     Log.e("UserRepository", "Erreur HTTP : ${response.code()}")
                 }
             }
@@ -95,6 +96,5 @@ class UserRepository(context: Context) {
     }
 
     /*private suspend fun insertUserInDb(user: User) {
-
     }*/
 }
