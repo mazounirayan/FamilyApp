@@ -9,13 +9,18 @@ import com.example.familyapp.R
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.familyapp.data.model.recompense.Recompense
 
 import androidx.recyclerview.widget.RecyclerView
 
-class RecompenseAdapter : ListAdapter<Recompense, RecompenseAdapter.RecompenseViewHolder>(
+class RecompenseAdapter(
+    private val isParent: Boolean,
+    private val onModifierClick: (Recompense) -> Unit,
+    private val onSupprimerClick: (Recompense) -> Unit
+) : ListAdapter<Recompense, RecompenseAdapter.RecompenseViewHolder>(
     object : DiffUtil.ItemCallback<Recompense>() {
         override fun areItemsTheSame(oldItem: Recompense, newItem: Recompense): Boolean {
             return oldItem.idRecompense == newItem.idRecompense
@@ -36,7 +41,8 @@ class RecompenseAdapter : ListAdapter<Recompense, RecompenseAdapter.RecompenseVi
         holder.bind(getItem(position))
     }
 
-    class RecompenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner   class RecompenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val btnMenu: ImageButton = itemView.findViewById(R.id.btnMenu)
         private val tvNom: TextView = itemView.findViewById(R.id.tvNom)
         private val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
         private val tvCout: TextView = itemView.findViewById(R.id.tvCout)
@@ -51,9 +57,32 @@ class RecompenseAdapter : ListAdapter<Recompense, RecompenseAdapter.RecompenseVi
 
             btnEchanger.isEnabled = recompense.estDisponible && recompense.stock > 0
             btnEchanger.setOnClickListener {
-                // Implémenter la logique d'échange ici
+                //onEchangeClick(recompense)
             }
+            btnMenu.visibility = if (isParent) View.VISIBLE else View.GONE
+
+            btnMenu.setOnClickListener { view ->
+                PopupMenu(view.context, view).apply {
+                    inflate(R.menu.menu_recompense)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.action_modifier -> {
+                                onModifierClick(recompense)
+                                true
+                            }
+                            R.id.action_supprimer -> {
+                                onSupprimerClick(recompense)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    show()
+                }
+            }
+
         }
+
     }
 }
 

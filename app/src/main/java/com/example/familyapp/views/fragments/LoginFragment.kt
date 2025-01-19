@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.familyapp.AuthenticationActivity
 import com.example.familyapp.databinding.FragmentLoginBinding
-import com.example.familyapp.viewmodel.LoginViewModel
-import com.example.familyapp.viewmodel.factories.LoginViewModelFactory
+import com.example.familyapp.viewmodel.UserViewModel
+import com.example.familyapp.viewmodel.factories.UserViewModelFactory
+
+
+
 import com.example.familyapp.utils.SessionManager
 class LoginFragment : Fragment() {
 
@@ -19,7 +22,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var sessionManager: SessionManager
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,8 +33,8 @@ class LoginFragment : Fragment() {
 
         sessionManager = SessionManager(requireContext())
         val repository = UserRepository(requireContext())
-        val factory = LoginViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
+        val factory = UserViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

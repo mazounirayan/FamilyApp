@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+
+    <color name="primary">#4A90E2</color>
+
+    <color name="primary_dark">#357ABD</color>
+    <color name="accent">#9B51E0</color>
+    <color name="background">#F5F5F5</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="background_color">#F5F5F5</color>
+
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lavender">#8692f7</color>
-    <color name="bleu">#e7f5ff</color>
+    <color name="lavender">#CCB8CA</color>
+    <color name="bleu">#FAECDC</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="progress_primary">#4CAF50</color>
-    <color name="secondary_dark">#FF03DAC5</color>
-    <color name="secondary_variant_dark">#FF018786</color>
-    <color name="on_secondary_dark">#FFFFFFFF</color>
-    <color name="primary">#FF6200EE</color>
-    <color name="primary_variant">#FF3700B3</color>
-    <color name="primary_dark">#FF3700B3</color>
-    <color name="on_primary">#FFFFFFFF</color>
 
-    <!-- Couleurs secondaires -->
-    <color name="secondary">#FF03DAC5</color>
-    <color name="secondary_variant">#FF018786</color>
-    <color name="on_secondary">#FF000000</color>
+    <!-- Couleurs principales -->
+    <color name="primary_background">#C9E4CA</color> <!-- Bleu clair -->
+    <color name="primary_buttons">#87BBA2</color> <!-- Vert clair -->
+    <color name="accent_notifications">#FFF5C0</color> <!-- Jaune doux -->
+    <color name="secondary_text_elements">#F0F0F0</color> <!-- Gris clair -->
 
-    <!-- Couleurs de fond -->
-    <color name="background">#FFFFFFFF</color>
-    <color name="surface">#FFFFFFFF</color>
-    <color name="error">#FFB00020</color>
+    <!-- Couleurs pour les boutons -->
+    <color name="secondary_buttons">#A0E7B788</color> <!-- Rouge doux -->
+    <color name="neutral_buttons">#BED4AF</color> <!-- Bleu gris -->
 
-    <!-- Couleurs texte -->
-    <color name="text_primary">#DE000000</color>
-    <color name="text_secondary">#99000000</color>
-    <color name="text_hint">#61000000</color>
+    <!-- Couleurs d'arrière-plan -->
+    <color name="card_background">#FAF9F6</color> <!-- Blanc cassé -->
 
-    <!-- Couleurs status -->
-    <color name="success">#FF4CAF50</color>
-    <color name="warning">#FFFFC107</color>
-    <color name="danger">#FFF44336</color>
-    <color name="info">#FF2196F3</color>
+    <!-- Couleurs de texte -->
+    <color name="title_text">#333333</color> <!-- Noir ou bleu/gris très foncé -->
+    <color name="body_text">#4F4F4F</color> <!-- Gris foncé -->
 
 </resources>

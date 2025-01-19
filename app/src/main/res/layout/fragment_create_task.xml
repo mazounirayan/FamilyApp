@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center"
-    android:background="@color/bleu">
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/back_button_create_task"
@@ -69,7 +68,8 @@
         android:fontFamily="@font/christmas_stories"
         android:textStyle="bold"
         android:text="@string/task_form_choose_start_date"
-        android:layout_marginBottom="22dp" />
+        android:layout_marginBottom="22dp"
+        android:backgroundTint="@color/lavender"/>
 
     <Button
         android:id="@+id/end_date_button"

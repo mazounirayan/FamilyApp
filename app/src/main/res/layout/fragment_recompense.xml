@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- Card pour les points de l'utilisateur -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardUserPoints"
         android:layout_width="match_parent"
@@ -13,31 +19,40 @@
         app:cardElevation="4dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/tvPointsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mes points"
+                android:layout_marginBottom="8dp"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/tvPoints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="1500"
                 android:textColor="@color/primary"
                 android:textSize="32sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/tvPointsLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Titre pour le classement -->
     <TextView
         android:id="@+id/tvRankingTitle"
         android:layout_width="wrap_content"
@@ -49,15 +64,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardUserPoints" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUserRanking"
+    <!-- Card pour le classement -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardFamillePoints"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="1"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintTop_toBottomOf="@id/tvRankingTitle" />
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvRankingTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUserRanking"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"  />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Titre pour les récompenses -->
     <TextView
         android:id="@+id/tvRecompensesTitle"
         android:layout_width="wrap_content"
@@ -67,14 +92,33 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvUserRanking" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRecompenses"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/cardFamillePoints" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddRecompense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRecompensesTitle" />
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Card pour les récompenses -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardRecompense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvRecompensesTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecompenses"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"  />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

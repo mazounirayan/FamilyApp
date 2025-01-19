@@ -1,15 +1,23 @@
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    android:layout_marginHorizontal="20dp"
+    cardview:cardCornerRadius="16dp"
+    cardview:cardElevation="2dp"
+    android:padding="16dp"
+    android:gravity="center"
+    android:backgroundTint="@color/neutral_buttons">
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="@color/white"
-    android:elevation="2dp"
-    android:layout_marginBottom="8dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="16dp">
 
-    <!-- Nom de la tâche -->
     <TextView
         android:id="@+id/task_name"
         android:layout_width="0dp"
@@ -27,12 +35,14 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:src="@drawable/check"
-        android:background="@color/white"/>
+        android:background="#7DA960"
+        android:layout_marginHorizontal="20dp" />
 
     <ImageButton
         android:id="@+id/task_unfold_button"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:src="@drawable/down_button"
-        android:background="@color/white"/>
-</LinearLayout>
+        android:background="#72788D"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
