@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -122,20 +123,45 @@ class NewTaskFragment : Fragment() {
         val descriptionTask = view?.findViewById<TextView>(R.id.task_description_form)
 
 
-        Log.d("addTask", "Nom task : ${nomTask?.text.toString()}")
+
+
+
+        if(nomTask.toString() == "" || startYear == 0 || startMonth == 0 || startDay == 0 || endYear == 0 || endMonth == 0 || endDay == 0  || descriptionTask.toString() == "" ){
+            Toast.makeText(
+                requireContext(),
+                "Veuillez remplir tous les champs obligatoires.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        val dateDebut = LocalDate.of(startYear,startMonth,startDay);
+        val dateFin = LocalDate.of(endYear,endMonth,endDay)
+
+        if(dateDebut>dateFin){
+            Toast.makeText(
+                requireContext(),
+                "La date de début ne peut pas être postérieure à la date de fin.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+
+        /*Log.d("addTask", "Nom task : ${nomTask?.text.toString()}")
         Log.d("addTask", "description task : ${descriptionTask?.text.toString()}")
         Log.d("addTask", "typeTaskSp : $typeTache")
         Log.d("addTask", "typePrioriteSp : $typePriorite")
         Log.d("addTask", "usersSp : ${selectedUser.id}")
         Log.d("addTask", "dateDebut : ${LocalDate.of(startYear,startMonth,startDay)}")
         Log.d("addTask", "dateFin : ${LocalDate.of(endYear,endMonth,endDay)}")
-
+        */
 
         taskViewModel.addTask(Task(
             abs((0..999999999999).random()).toInt(),
             nom = nomTask?.text.toString(),
-            dateDebut = LocalDate.of(startYear,startMonth,startDay).toString() ,
-            dateFin = LocalDate.of(endYear,endMonth,endDay).toString(),
+            dateDebut = dateDebut.toString() ,
+            dateFin = dateFin.toString(),
             status = StatusTache.A_FAIRE,
             type = typeTache,
             description = descriptionTask?.text.toString() ,
