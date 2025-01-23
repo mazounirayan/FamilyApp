@@ -35,11 +35,11 @@ data class Task(
     @SerializedName("date_fin")
     val dateFin: String,
 
-    val status: StatusTache,
-    val type: TypeTache,
+    var status: String,
+    val type: String,
     val description: String,
     @Transient
-    val priorite: Priorite,
+    val priorite: String,
     val idUser: Int,
     val idFamille: Int
 )

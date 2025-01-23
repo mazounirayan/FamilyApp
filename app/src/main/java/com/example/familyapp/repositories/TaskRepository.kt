@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.familyapp.data.model.task.Task
+import com.example.familyapp.data.model.task.TaskUpdate
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.mapper.mapTaskDtoToTask
@@ -50,6 +51,30 @@ class TaskRepository(context: Context) {
 
     fun addTask(task:Task){
         val call = taskService.addTask(task)
+
+        call.enqueue(object : Callback<TaskDto> {
+            override fun onResponse(
+                call: Call<TaskDto>,
+                response: Response<TaskDto>
+            ) {
+
+                if (response.isSuccessful) {
+                    Log.d("TaskRepository",response.message())
+                    return
+                } else {
+                    Log.e("TaskRepository", "Erreur HTTP : ${response.errorBody()?.contentType()}")
+                    Log.e("TaskRepository", "Erreur HTTP : ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TaskDto>, t: Throwable) {
+                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+            }
+        })
+    }
+
+    fun patchTask(id:Int, task: TaskUpdate){
+        val call = taskService.patchTask(id,task)
 
         call.enqueue(object : Callback<TaskDto> {
             override fun onResponse(

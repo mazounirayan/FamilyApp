@@ -32,7 +32,6 @@ import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import java.time.LocalDate
 import java.util.Calendar
-import kotlin.math.abs
 
 class NewTaskFragment : Fragment() {
 
@@ -84,7 +83,6 @@ class NewTaskFragment : Fragment() {
                 startMonth = month
                 startYear = year
 
-                // Met à jour le TextView avec la date formatée
                 startDateTextView.text = "Date de début : $day/$month/$year"
             }
         }
@@ -95,7 +93,6 @@ class NewTaskFragment : Fragment() {
                 endMonth = month
                 endYear = year
 
-                // Met à jour le TextView avec la date formatée
                 endDateTextView.text = "Date de fin : $day/$month/$year"
             }
 
@@ -135,7 +132,7 @@ class NewTaskFragment : Fragment() {
             return
         }
 
-        val dateDebut = LocalDate.of(startYear,startMonth,startDay);
+        val dateDebut = LocalDate.of(startYear,startMonth,startDay)
         val dateFin = LocalDate.of(endYear,endMonth,endDay)
 
         if(dateDebut>dateFin){
@@ -158,14 +155,14 @@ class NewTaskFragment : Fragment() {
         */
 
         taskViewModel.addTask(Task(
-            abs((0..999999999999).random()).toInt(),
+            0,
             nom = nomTask?.text.toString(),
             dateDebut = dateDebut.toString() ,
             dateFin = dateFin.toString(),
-            status = StatusTache.A_FAIRE,
-            type = typeTache,
+            status = StatusTache.A_FAIRE.toString(),
+            type = typeTache.toString(),
             description = descriptionTask?.text.toString() ,
-            priorite = typePriorite,
+            priorite = typePriorite.toString(),
             idUser = selectedUser.id,
             idFamille = 1
         ))

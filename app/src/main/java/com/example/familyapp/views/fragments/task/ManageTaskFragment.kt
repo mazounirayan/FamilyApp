@@ -45,12 +45,12 @@ class ManageTaskFragment : Fragment() {
             var pourcentageCalcul = 0
             for (task in tasks) {
 
-                if(task.status.toString() == "Fini"){
+                if(task.status == "FINI"){
                     pourcentageCalcul+=1
                 }
 
             }
-            if(tasks.size == 0){
+            if(tasks.isEmpty()){
                 textTacheFini.text = "Aucune tache a faire !"
             }else if(tasks.size == 1){
                 textTacheFini.text = "$pourcentageCalcul tache sur ${tasks.size} fini !"
@@ -74,14 +74,11 @@ class ManageTaskFragment : Fragment() {
             supportFragmentManager?.commit {
                 replace<NewTaskFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
+                addToBackStack("name")
             }
         }
 
         this.swipeRefreshLayout = view.findViewById(R.id.task_fragment_manage)
-
-
-        taskViewModel.fetchTask(5)
 
         return view
     }
@@ -97,10 +94,10 @@ class ManageTaskFragment : Fragment() {
         return data
     }
 
-    private fun setUpTasksRv(posts: List<Task>, fragmentView: View) {
+    private fun setUpTasksRv(tasks: List<Task>, fragmentView: View) {
         this.tasksRv = fragmentView.findViewById(R.id.list_tasks_rv)
         this.tasksRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        this.tasksRv.adapter = TasksRvAdapter(posts)
+        this.tasksRv.adapter = TasksRvAdapter(tasks, taskViewModel)
     }
 
     private fun fetchData(fragmentView: View) {
@@ -109,14 +106,12 @@ class ManageTaskFragment : Fragment() {
             setUpTasksRv(getTasks(data), fragmentView)
             this.swipeRefreshLayout.isRefreshing = false
         }
-
-        // La vue demande de la donnée
-        taskViewModel.fetchTask(5)
+        taskViewModel.fetchTask(1)
     }
 
     private fun setUpSwipeToRefreshListeners() {
         this.swipeRefreshLayout.setOnRefreshListener {
-            this.taskViewModel.fetchTask(5)
+            this.taskViewModel.fetchTask(1)
         }
     }
 

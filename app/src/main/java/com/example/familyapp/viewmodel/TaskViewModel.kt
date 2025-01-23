@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.task.Task
+import com.example.familyapp.data.model.task.TaskUpdate
 import com.example.familyapp.repositories.TaskRepository
 
 class TaskViewModel(
@@ -30,5 +31,14 @@ class TaskViewModel(
 
     fun addTask(task:Task){
         this.taskRepo.addTask(task)
+    }
+
+    fun patchTask(id:Int,task: TaskUpdate){
+        this.taskRepo.patchTask(id,task)
+    }
+
+    fun refreshTasks() {
+        // Force une mise à jour des données observées
+        _task.postValue(_task.value)
     }
 }
