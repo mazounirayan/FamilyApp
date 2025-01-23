@@ -8,7 +8,7 @@ import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 
 fun mapRewardDtoToReward(rewardDto: rewardsDto): Recompense {
     return Recompense(
-     idRecompense =rewardDto.idRecompense,
+     idRecompense = rewardDto.idRecompense!! ,
      nom=rewardDto.nom,
      description =rewardDto.description,
      cout =rewardDto.cout,

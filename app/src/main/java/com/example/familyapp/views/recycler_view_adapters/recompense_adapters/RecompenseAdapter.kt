@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 class RecompenseAdapter(
     private val isParent: Boolean,
     private val onModifierClick: (Recompense) -> Unit,
-    private val onSupprimerClick: (Recompense) -> Unit
+    private val onSupprimerClick: (Recompense) -> Unit,
+    private val onEchangerClick: (Recompense) -> Unit
 ) : ListAdapter<Recompense, RecompenseAdapter.RecompenseViewHolder>(
     object : DiffUtil.ItemCallback<Recompense>() {
         override fun areItemsTheSame(oldItem: Recompense, newItem: Recompense): Boolean {
@@ -57,7 +58,7 @@ class RecompenseAdapter(
 
             btnEchanger.isEnabled = recompense.estDisponible && recompense.stock > 0
             btnEchanger.setOnClickListener {
-                //onEchangeClick(recompense)
+                onEchangerClick(recompense)
             }
             btnMenu.visibility = if (isParent) View.VISIBLE else View.GONE
 

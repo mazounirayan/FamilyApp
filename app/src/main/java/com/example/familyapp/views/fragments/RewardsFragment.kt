@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,10 +27,9 @@ import com.example.familyapp.views.recycler_view_adapters.recompense_adapters.Us
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class RewardsFragment : Fragment(), AjoutRecompenseDialog.OnRecompenseAjouteeListener {
+class RewardsFragment : Fragment(), AjoutRecompenseDialog.OnRecompenseAjouteeListener ,ModifierRecompenseDialog.OnRecompenseModifieeListener {
     private lateinit var userAdapter: UserRankAdapter
     private lateinit var recompenseAdapter: RecompenseAdapter
-    private val viewModel: RewardsViewModel by viewModels()
     private val rewardsViewModel: RewardsViewModel by viewModels {
         RewardsViewModelFactory(
             RewardsRepository(this.requireContext()),
@@ -40,8 +40,13 @@ class RewardsFragment : Fragment(), AjoutRecompenseDialog.OnRecompenseAjouteeLis
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_recompense, container, false)
     }
-    override fun onRecompenseAjoutee(nom: String, description: String, cout: Int, stock: Int) {
-        rewardsViewModel.ajouterRecompense(nom, description, cout, stock)
+    override fun onRecompenseAjoutee(nom: String, description: String, cout: Int, stock: Int,estDisponible:Boolean) {
+        rewardsViewModel.ajouterRecompense(nom, description, cout, stock,estDisponible)
+        fetchData()
+    }
+    override fun onRecompenseModifiee(idRecompense:Int , nom: String, description: String, cout: Int, stock: Int,estDisponible:Boolean) {
+        rewardsViewModel.updateRecompense(idRecompense,nom, description, cout, stock,estDisponible)
+        fetchData()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,16 +66,55 @@ class RewardsFragment : Fragment(), AjoutRecompenseDialog.OnRecompenseAjouteeLis
     }
     private fun showAjoutDialog() {
         AjoutRecompenseDialog().show(childFragmentManager, "ajout_recompense")
+
     }
     private fun setupRecyclerViews() {
+        val isParent = rewardsViewModel.currentUser.value?.role == "PARENT"
+
         userAdapter = UserRankAdapter()
         recompenseAdapter = RecompenseAdapter(
-            isParent = rewardsViewModel.currentUser.value?.role == "PARENT",
+            isParent = isParent,
             onModifierClick = { recompense ->
-                showModifierDialog(recompense)
+                if (isParent) {
+                    showModifierDialog(recompense)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Seuls les parents peuvent modifier les récompenses",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             },
             onSupprimerClick = { recompense ->
-                showConfirmationDialog(recompense)
+                if (isParent) {
+                    showConfirmationDialog(recompense)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Seuls les parents peuvent supprimer les récompenses",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            },
+            onEchangerClick = { recompense ->
+                if (!isParent) {
+                    val currentUser = rewardsViewModel.currentUser.value
+                    if (currentUser != null && currentUser.coins >= recompense.cout) {
+                        rewardsViewModel.echangerRecompense(recompense.idRecompense)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Pas assez de points pour échanger cette récompense",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Seuls les enfants peuvent échanger des récompenses",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         )
 
@@ -85,8 +129,6 @@ class RewardsFragment : Fragment(), AjoutRecompenseDialog.OnRecompenseAjouteeLis
             adapter = recompenseAdapter
             layoutManager = GridLayoutManager(context, 2)
         }
-
-
     }
 
     private fun showModifierDialog(recompense: Recompense) {
@@ -132,6 +174,8 @@ class RewardsFragment : Fragment(), AjoutRecompenseDialog.OnRecompenseAjouteeLis
         rewardsViewModel.fetchRecompense(familyId)
         rewardsViewModel.fetchMembers(familyId)
     }
+
+
 
 }
 

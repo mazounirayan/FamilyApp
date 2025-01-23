@@ -9,49 +9,47 @@ import androidx.fragment.app.DialogFragment
 import com.example.familyapp.R
 import com.example.familyapp.data.model.recompense.Recompense
 
+
+
+
 class ModifierRecompenseDialog : DialogFragment() {
     interface OnRecompenseModifieeListener {
-        fun onRecompenseModifiee(id: Int, nom: String, description: String, cout: Int, stock: Int)
+        fun onRecompenseModifiee(
+            id: Int,
+            nom: String,
+            description: String,
+            cout: Int,
+            stock: Int,
+            estDisponible: Boolean
+        )
     }
 
     private var listener: OnRecompenseModifieeListener? = null
+    private lateinit var recompense: Recompense
 
     companion object {
-        private const val ARG_ID = "id"
-        private const val ARG_NOM = "nom"
-        private const val ARG_DESCRIPTION = "description"
-        private const val ARG_COUT = "cout"
-        private const val ARG_STOCK = "stock"
-
-        fun newInstance(recompense: Recompense) = ModifierRecompenseDialog().apply {
-            arguments = Bundle().apply {
-                putInt(ARG_ID, recompense.idRecompense)
-                putString(ARG_NOM, recompense.nom)
-                putString(ARG_DESCRIPTION, recompense.description)
-                putInt(ARG_COUT, recompense.cout)
-                putInt(ARG_STOCK, recompense.stock)
-            }
+        fun newInstance(recompense: Recompense): ModifierRecompenseDialog {
+            val fragment = ModifierRecompenseDialog()
+            fragment.recompense = recompense
+            return fragment
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = parentFragment as? OnRecompenseModifieeListener
+            ?: throw RuntimeException("$context must implement OnRecompenseModifieeListener")
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val id = arguments?.getInt(ARG_ID) ?: 0
-        val nom = arguments?.getString(ARG_NOM) ?: ""
-        val description = arguments?.getString(ARG_DESCRIPTION) ?: ""
-        val cout = arguments?.getInt(ARG_COUT) ?: 0
-        val stock = arguments?.getInt(ARG_STOCK) ?: 0
-
         val view = layoutInflater.inflate(R.layout.dialog_modifier_recompense, null)
 
-        view.findViewById<EditText>(R.id.etNom).setText(nom)
-        view.findViewById<EditText>(R.id.etDescription).setText(description)
-        view.findViewById<EditText>(R.id.etCout).setText(cout.toString())
-        view.findViewById<EditText>(R.id.etStock).setText(stock.toString())
+        // Initialisation des champs avec les données existantes
+        view.findViewById<EditText>(R.id.etNom).setText(recompense.nom)
+        view.findViewById<EditText>(R.id.etDescription).setText(recompense.description)
+        view.findViewById<EditText>(R.id.etCout).setText(recompense.cout.toString())
+        view.findViewById<EditText>(R.id.etStock).setText(recompense.stock.toString())
+        val switchDisponible = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switchDisponible)
 
         return AlertDialog.Builder(requireContext())
             .setTitle("Modifier la récompense")
@@ -62,9 +60,22 @@ class ModifierRecompenseDialog : DialogFragment() {
                 val newCout = view.findViewById<EditText>(R.id.etCout).text.toString().toIntOrNull() ?: 0
                 val newStock = view.findViewById<EditText>(R.id.etStock).text.toString().toIntOrNull() ?: 0
 
-                listener?.onRecompenseModifiee(id, newNom, newDescription, newCout, newStock)
+                listener?.onRecompenseModifiee(
+                    recompense.idRecompense,
+                    newNom,
+                    newDescription,
+                    newCout,
+                    newStock,
+                    switchDisponible.isChecked
+                )
+                dismiss()
             }
             .setNegativeButton("Annuler", null)
             .create()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 }

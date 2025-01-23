@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.familyapp.data.model.recompense.Recompense
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.user.User
+import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import com.example.familyapp.repositories.RewardsRepository
 import kotlinx.coroutines.launch
 
@@ -22,23 +23,39 @@ class RewardsViewModel (
     val recompenses: LiveData<List<Recompense>> = _rewards
     val users = userRepository.users
 
-
-
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
     fun fetchRecompense(idFamille: Int) {
-        _rewards.value
-        this.rewardsRepo.rewards.observe(this.context) { data ->
-            this@RewardsViewModel._rewards.value = data
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                rewardsRepo.getRewards(idFamille)
+                rewardsRepo.rewards.observe(context) { data ->
+                    _rewards.value = data
+                    _loading.value = false
+                }
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de la récupération des récompenses"
+                _loading.value = false
+            }
         }
-
-        this.rewardsRepo.getRewards(idFamille)
     }
 
+
+
     fun fetchMembers(familyId: Int) {
-        userRepository.getMembers(familyId)
+        viewModelScope.launch {
+            try {
+                userRepository.getMembers(familyId)
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de la récupération des membres"
+            }
+        }
     }
     private val _currentUser = MutableLiveData<User>()
     val currentUser: LiveData<User> = _currentUser
-
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
     init {
         loadMockData()
     }
@@ -47,44 +64,100 @@ class RewardsViewModel (
         // Simulation des données
         _currentUser.value = User(
             1, "Martin", "Sophie", "sophie@email.com",
-            "xxx", "123456789", "PARENT", 1,
+            "xxx", "123456789", "ENFANT", 1,
             "2024-01-14",  1500, "avatar1.jpg",2000
         )
 
-        _users.value = listOf(
-            User(1, "Martin", "Sophie", "sophie@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14",  1500,"avatar1.jpg", 2000),
-            User(2, "Martin", "Lucas", "lucas@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14", 1200, "avatar1.jpg",1800),
-            User(3, "Martin", "Emma", "emma@email.com", "xxx", "123456789", "ENFANT", 1, "2024-01-14", 800,"avatar1.jpg", 1200)
-        )
+
 
 
     }
 
-    fun echangerRecompense(recompense: Recompense) {
-        // Implémenter la logique d'échange ici
-    }
 
-
-    fun ajouterRecompense(nom: String, description: String, cout: Int, stock: Int) {
+    fun echangerRecompense(idRecompense: Int) {
         viewModelScope.launch {
-            RewardsRepository.ajouterRecompense(nom, description, cout, stock)
-            // Rafraîchir la liste après l'ajout
-            fetchRecompense(1)
+            try {
+                _loading.value = true
+                rewardsRepo.buyRecompense(idRecompense, mapOf("idUser" to currentUser.value!!.id))
+                currentUser.value!!.idFamille?.let { fetchRecompense(it) }
+                _loading.value = false
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de l'échange de la récompense"
+                _loading.value = false
+            }
         }
     }
 
-    fun updateRecompense(id: Int, nom: String, description: String, cout: Int, stock: Int) {
+
+
+    fun ajouterRecompense(nom: String, description: String, cout: Int, stock: Int, estDisponible: Boolean) {
         viewModelScope.launch {
-            RewardsRepository.updateRecompense(id, nom, description, cout, stock)
-            // Rafraîchir la liste après la modification
-            fetchRecompense(1)
+            try {
+                _loading.value = true
+                val newReward = rewardsDto(
+                    idRecompense = null,
+                    nom = nom,
+                    description = description,
+                    cout = cout,
+                    stock = stock,
+                    estDisponible = estDisponible
+                )
+                val addedReward = rewardsRepo.ajouterRecompense(1, newReward)
+                if (addedReward != null) {
+                    val currentRewards = _rewards.value.orEmpty().toMutableList()
+                    currentRewards.add(addedReward)
+                    _rewards.value = currentRewards
+                }
+                _loading.value = false
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de l'ajout de la récompense"
+                _loading.value = false
+            }
         }
     }
-    fun supprimerRecompense(id: Int) {
+    fun updateRecompense(idRecompense: Int, nom: String, description: String, cout: Int, stock: Int, estDisponible: Boolean) {
         viewModelScope.launch {
-            RewardsRepository.supprimerRecompense(id)
-            // Rafraîchir la liste après la suppression
-            fetchRecompense(1)
+            try {
+                _loading.value = true
+                val updatedReward = rewardsDto(
+                    idRecompense = null,
+                    nom = nom,
+                    description = description,
+                    cout = cout,
+                    stock = stock,
+                    estDisponible = estDisponible
+                )
+                val modifiedReward = rewardsRepo.updateRecompense(idRecompense, updatedReward)
+                if (modifiedReward != null) {
+                    val currentRewards = _rewards.value.orEmpty().map {
+                        if (it.idRecompense == idRecompense) modifiedReward else it
+                    }
+                    _rewards.value = currentRewards
+                }
+                _loading.value = false
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de la modification de la récompense"
+                _loading.value = false
+            }
+        }
+    }
+    fun supprimerRecompense(idRecompense: Int) {
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                rewardsRepo.supprimerRecompense(idRecompense)
+
+
+                val currentRewards = _rewards.value.orEmpty().filterNot {
+                    it.idRecompense == idRecompense
+                }
+                _rewards.value = currentRewards
+
+                _loading.value = false
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de la suppression de la récompense"
+                _loading.value = false
+            }
         }
     }
 }
