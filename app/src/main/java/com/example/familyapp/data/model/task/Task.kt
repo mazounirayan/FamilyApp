@@ -38,7 +38,6 @@ data class Task(
     var status: String,
     val type: String,
     val description: String,
-    @Transient
     val priorite: String,
     val idUser: Int,
     val idFamille: Int

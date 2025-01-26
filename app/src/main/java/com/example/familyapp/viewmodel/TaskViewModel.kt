@@ -37,8 +37,8 @@ class TaskViewModel(
         this.taskRepo.patchTask(id,task)
     }
 
-    fun refreshTasks() {
+    /*fun refreshTasks() {
         // Force une mise à jour des données observées
         _task.postValue(_task.value)
-    }
+   */
 }

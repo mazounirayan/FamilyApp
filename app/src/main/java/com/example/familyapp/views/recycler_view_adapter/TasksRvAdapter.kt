@@ -2,31 +2,25 @@ package com.example.familyapp.views.recycler_view_adapter
 
 import android.annotation.SuppressLint
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
+import com.example.familyapp.app_utils.TaskUpdateListener
 import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
-import com.example.familyapp.network.dto.taskDto.TaskDto
-import com.example.familyapp.repositories.TaskRepository
 import com.example.familyapp.viewmodel.TaskViewModel
-import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.views.viewholders.TasksRvViewHolder
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class TasksRvAdapter(
-    private val tasks: List<Task>,
-    private val taskViewModel: TaskViewModel
+    private var tasks: List<Task>,
+    private val taskViewModel: TaskViewModel,
+    private val taskUpdateListener: TaskUpdateListener
 ) : RecyclerView.Adapter<TasksRvViewHolder>() {
-
 
     private val expandedPositions = mutableSetOf<Int>()
 
@@ -46,12 +40,9 @@ class TasksRvAdapter(
         holder.taskName.text = taskData.nom
         holder.taskDescription.text = taskData.description
         holder.taskDueDate.text = "Date limite : ${taskData.dateFin}"
+        holder.taskDetailsSection.visibility = if (expandedPositions.contains(position)) View.VISIBLE else View.GONE
 
-        if (expandedPositions.contains(position)) {
-            holder.taskDetailsSection.visibility = View.VISIBLE
-        } else {
-            holder.taskDetailsSection.visibility = View.GONE
-        }
+        TransitionManager.beginDelayedTransition(holder.itemView as ViewGroup)
 
         when (taskData.status) {
             "A_FAIRE" -> {
@@ -70,7 +61,6 @@ class TasksRvAdapter(
                 holder.cardViewTask.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.grey_card))
                 holder.taskUnfoldButton.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.grey_card))
             }
-
         }
 
         holder.itemView.setOnClickListener {
@@ -98,9 +88,15 @@ class TasksRvAdapter(
 
     private fun updateTaskStatus(id: Int, status: String, position: Int) {
         val taskUpdate = TaskUpdate(status)
-        taskViewModel.patchTask(id,taskUpdate)
+        taskViewModel.patchTask(id, taskUpdate)
         tasks[position].status = status
         notifyItemChanged(position)
-        taskViewModel.refreshTasks()
+        taskUpdateListener.onTaskUpdated()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTasks(newTasks: List<Task>) {
+        this.tasks = newTasks
+        notifyDataSetChanged()
     }
 }

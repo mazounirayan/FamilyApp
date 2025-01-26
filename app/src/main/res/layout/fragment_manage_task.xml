@@ -42,24 +42,19 @@
 
 
 
-    <Button
-        android:id="@+id/filter_button"
+    <Spinner
+        android:id="@+id/filter_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/secondary_buttons"
-        android:drawablePadding="8dp"
-        android:fontFamily="@font/baby_sparkle"
-        android:padding="10dp"
-        android:text="@string/filter"
-        android:drawableLeft="@drawable/filter"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        style="@style/CustomSpinnerStyle"
         app:layout_constraintBottom_toTopOf="@+id/ln_progression"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/title_manage_task"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="40dp"
         android:layout_marginStart="20dp" />
+
+
 
 
 
