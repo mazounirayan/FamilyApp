@@ -2,9 +2,14 @@ package com.example.familyapp.viewmodel
 
 
 import UserRepository
+import androidx.activity.result.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.familyapp.data.model.user.User
+import com.example.familyapp.network.dto.rewardsDto.rewardsDto
+import kotlinx.coroutines.launch
 
 class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     val email = MutableLiveData<String>()
@@ -12,6 +17,10 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     private val _loginResult = MutableLiveData<Result<Unit>>()
     val loginResult: LiveData<Result<Unit>> = _loginResult
+
+    private val _signInResult = MutableLiveData<Result<Unit>>()
+    val signInResult: LiveData<Result<Unit>> = _signInResult
+
 
 
     val userData = userRepository.userData
@@ -31,6 +40,17 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
+    private val _loading = MutableLiveData<Boolean>()
+
+
+    val signUpResult: LiveData<SignUpResponseDto?> = userRepository.signUpResult
+
+    fun signUp(nom: String, prenom: String, email: String, motDePasse: String, idFamille: Int) {
+        val signUpRequest = SignUpRequestDto(nom, prenom, email, motDePasse, idFamille)
+        viewModelScope.launch {
+            authRepo.signUp(signUpRequest)
+        }
+    }
     /*fun fetchTask(idUser: Int) {
         _task.value
         this.taskRepo.tasks.observe(this.context) { data ->
