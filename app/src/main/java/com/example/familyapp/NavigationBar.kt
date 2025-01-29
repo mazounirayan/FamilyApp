@@ -27,6 +27,7 @@ object NavigationBar{
                 setReorderingAllowed(true)
                 addToBackStack("name") // Name can be null
             }
+            
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
