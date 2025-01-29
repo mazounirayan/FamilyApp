@@ -2,27 +2,39 @@ package com.example.familyapp.viewmodel
 
 
 import UserRepository
+import android.util.Log
 import androidx.activity.result.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.familyapp.data.model.user.User
+import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
+import android.view.View
 
 class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-
+    val nom = MutableLiveData<String>()
+    val prenom = MutableLiveData<String>()
+    val motDePasse = MutableLiveData<String>()
+    val role = MutableLiveData<String>()
+    val codeFamille = MutableLiveData<String>()
     private val _loginResult = MutableLiveData<Result<Unit>>()
     val loginResult: LiveData<Result<Unit>> = _loginResult
-
+    val isChild = MutableLiveData<Boolean>()
+    val nomFamille = MutableLiveData<String>()
     private val _signInResult = MutableLiveData<Result<Unit>>()
     val signInResult: LiveData<Result<Unit>> = _signInResult
 
 
-
+    init {
+        role.observeForever { selectedRole ->
+            isChild.value = selectedRole == "Enfant"
+        }
+    }
     val userData = userRepository.userData
 
     fun login() {
@@ -40,17 +52,35 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    private val _loading = MutableLiveData<Boolean>()
+    private val _signUpResult = MutableLiveData<Result<Unit>>()
+    val signUpResult: LiveData<Result<Unit>> = _signUpResult
 
-
-    val signUpResult: LiveData<SignUpResponseDto?> = userRepository.signUpResult
-
-    fun signUp(nom: String, prenom: String, email: String, motDePasse: String, idFamille: Int) {
-        val signUpRequest = SignUpRequestDto(nom, prenom, email, motDePasse, idFamille)
+    fun signUp() {
         viewModelScope.launch {
-            authRepo.signUp(signUpRequest)
+            try {
+
+                val signUpRequest = SignUpRequest(
+                    nom = nom.value.orEmpty().trim(),
+                    prenom = prenom.value.orEmpty().trim(),
+                    email = email.value.orEmpty().trim(),
+                    motDePasse = motDePasse.value.orEmpty().trim(),
+                    role = role.value.orEmpty(),
+                    codeFamille = if (isChild.value == true) codeFamille.value?.trim() else null,
+                    nomFamille = if (isChild.value != true) nomFamille.value?.trim() else null
+                )
+
+                // Envoi de la requête via le repository
+                userRepository.signUp(signUpRequest) { result ->
+                    _signUpResult.value = result.map { } // Conversion en Result<Unit>
+                }
+            } catch (e: Exception) {
+                // Capture des erreurs générales
+                Log.e("SignUp", "Erreur lors de l'inscription : ${e.message}")
+                _signUpResult.value = Result.failure(e)
+            }
         }
     }
+
     /*fun fetchTask(idUser: Int) {
         _task.value
         this.taskRepo.tasks.observe(this.context) { data ->

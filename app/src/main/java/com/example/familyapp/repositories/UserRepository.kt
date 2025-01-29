@@ -13,6 +13,8 @@ import retrofit2.Response
 import android.content.Context
 import com.example.familyapp.network.UserService
 import com.example.familyapp.network.dto.autentDto.LoginRequest
+import com.example.familyapp.network.dto.autentDto.SignUpRequest
+import com.example.familyapp.network.dto.autentDto.SignUpResponse
 import com.example.familyapp.network.dto.userDto.UserDTO
 import com.example.familyapp.network.mapper.mapUserDtoToUser
 
@@ -37,7 +39,6 @@ class UserRepository(context: Context) {
     fun login(email: String, password: String, onResult: (Result<Unit>) -> Unit) {
         val loginRequest = LoginRequest(email, password)
         val call = userService.login(loginRequest)
-
         call.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
                 call: Call<LoginResponse>,
@@ -48,12 +49,7 @@ class UserRepository(context: Context) {
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
-
-                        /*scope.launch {
-                            insertUserInDb(user)
-                        }*/
-
-                        onResult(Result.success(Unit))
+                                       onResult(Result.success(Unit))
                     }
                 } else {
                     onResult(Result.failure(Exception("Erreur : ${response.message()}")))
@@ -67,7 +63,30 @@ class UserRepository(context: Context) {
         })
     }
 
+    fun signUp(signUpRequest: SignUpRequest, onResult: (Result<Boolean>) -> Unit) {
+        val call = userService.signUp(signUpRequest)
 
+        call.enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                if (response.isSuccessful) {
+                    // Inscription réussie
+                    onResult(Result.success(true))
+                } else {
+                    // Gestion des erreurs HTTP avec un message détaillé
+                    val errorMessage = "Erreur HTTP ${response.code()}: ${response.errorBody()?.string() ?: response.message()}"
+                    Log.e("SignUpResponse", errorMessage)
+                    onResult(Result.failure(Exception(errorMessage)))
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                // Gestion des erreurs réseau
+                val errorMessage = t.message ?: "Erreur réseau inconnue"
+                Log.e("SignUpFailure", errorMessage)
+                onResult(Result.failure(Exception(errorMessage)))
+            }
+        })
+    }
 
     fun getMembers(familyId: Int) {
         userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {

@@ -113,11 +113,22 @@
         app:layout_constraintEnd_toEndOf="parent">
 
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRecompenses"
             android:layout_width="match_parent"
-            android:layout_height="250dp"  />
-
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@drawable/gradient_overlay"
+            app:layout_constraintBottom_toBottomOf="@id/rvRecompenses"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
