@@ -101,13 +101,10 @@ class SignupFragment : Fragment() {
         viewModel.signUpResult.observe(viewLifecycleOwner) { result ->
             result.fold(
                 onSuccess = {
-                    // L'inscription a réussi
                     Toast.makeText(requireContext(), "Inscription réussie", Toast.LENGTH_SHORT).show()
-                    // Rediriger l'utilisateur vers l'écran de connexion
                     (activity as? AuthenticationActivity)?.navigateToLoginFragment()
                 },
                 onFailure = { exception ->
-                    // Gérer les erreurs
                     Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
                 }
             )
