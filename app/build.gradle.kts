@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.socket.io.client)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.recyclerview) // ou une version plus récente

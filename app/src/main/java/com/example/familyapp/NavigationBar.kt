@@ -1,7 +1,6 @@
 package com.example.familyapp
 
 import RewardsFragment
-import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +26,7 @@ object NavigationBar{
                 setReorderingAllowed(true)
                 addToBackStack("name") // Name can be null
             }
-            
+
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
