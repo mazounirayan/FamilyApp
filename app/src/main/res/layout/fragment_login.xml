@@ -5,13 +5,12 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.familyapp.viewmodel.LoginViewModel" />
+            type="com.example.familyapp.viewmodel.UserViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_background">
+        android:layout_height="match_parent">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"

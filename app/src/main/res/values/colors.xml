@@ -2,9 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lavender">#8692f7</color>
-    <color name="bleu">#e7f5ff</color>
+    <color name="lavender">#CCB8CA</color>
+    <color name="bleu">#FAECDC</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="progress_primary">#4CAF50</color>
+    <color name="primary_background">#C9E4CA</color>
+    <color name="primary_buttons">#87BBA2</color>
+    <color name="primary_red">#BB8787</color>
+    <color name="primary_yellow">#BBB287</color>
+    <color name="primary_green">#BED4AF</color>
+    <color name="red_card">#D4AFAF</color>
+    <color name="yellow_card">#D4CEAF</color>
+    <color name="grey_card">#B4B4B4</color>
 
+    <color name="secondary_buttons">#A0E7B788</color>
 </resources>

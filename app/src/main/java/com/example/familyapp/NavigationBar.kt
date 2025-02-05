@@ -1,7 +1,6 @@
 package com.example.familyapp
 
 import RewardsFragment
-import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,13 +10,11 @@ import com.example.familyapp.views.fragments.DashboardFragment
 import com.example.familyapp.views.fragments.HomeFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
+import com.example.familyapp.views.fragments.message.ChatFragment
 
 object NavigationBar{
 
     fun setupNavigationClicks(activity: AppCompatActivity) {
-        activity.findViewById<ImageView>(R.id.back_button)?.setOnClickListener {
-            activity.onBackPressed()
-        }
 
         activity.findViewById<ImageView>(R.id.user_profile_icon)?.setOnClickListener {
             Toast.makeText(activity, "Redirection vers le profil utilisateur", Toast.LENGTH_SHORT).show()
@@ -31,6 +28,7 @@ object NavigationBar{
                 setReorderingAllowed(true)
                 addToBackStack("name") // Name can be null
             }
+
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
@@ -42,6 +40,11 @@ object NavigationBar{
                 addToBackStack("name")
             }
 
+            supportFragmentManager.commit {
+                replace<ChatFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name") // Name can be null
+            }
         }
 
         activity.findViewById<ImageView>(R.id.add_icon)?.setOnClickListener {
@@ -67,12 +70,4 @@ object NavigationBar{
 
     }
 
-    private fun navigateToHomeFragment(activity: AppCompatActivity) {
-        val fragmentManager = activity.supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-
-        transaction.replace(R.id.fragment_container, HomeFragment())
-            .addToBackStack(null)
-            .commit()
-    }
 }

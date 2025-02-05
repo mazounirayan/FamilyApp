@@ -3,25 +3,28 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.familyapp.data.model.user.User
-import com.example.familyapp.network.AuthService
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.autentDto.LoginResponse
 import retrofit2.Call
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import retrofit2.Callback
 import retrofit2.Response
 import android.content.Context
-import android.widget.Toast
+import com.example.familyapp.network.UserService
 import com.example.familyapp.network.dto.autentDto.LoginRequest
+import com.example.familyapp.network.dto.userDto.UserDTO
 import com.example.familyapp.network.mapper.mapUserDtoToUser
 
 
 class UserRepository(context: Context) {
-    private val authService = RetrofitClient.instance.create(AuthService::class.java)
     private val _userData = MutableLiveData<User>()
     val userData: LiveData<User> get() = _userData
+
+    private val userService = RetrofitClient.instance.create(UserService::class.java)
+    private val _users = MutableLiveData<List<User>>()
+    val users: LiveData<List<User>> get() = _users
+
 
   /*
     private val db = Room.databaseBuilder(
@@ -33,7 +36,7 @@ class UserRepository(context: Context) {
 
     fun login(email: String, password: String, onResult: (Result<Unit>) -> Unit) {
         val loginRequest = LoginRequest(email, password)
-        val call = authService.login(loginRequest)
+        val call = userService.login(loginRequest)
 
         call.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
@@ -64,7 +67,34 @@ class UserRepository(context: Context) {
         })
     }
 
-    /*private suspend fun insertUserInDb(user: User) {
+    fun getAllUsers(id:Int) {
+        val call = userService.getAllUsers(id)
 
+        call.enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(
+                call: Call<List<UserDTO>>,
+                response: Response<List<UserDTO>>
+            ) {
+
+
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    _users.value = responseBody?.map { userDto ->
+                        mapUserDtoToUser(userDto) // Mapper chaque UserDTO en User
+                    }
+                }
+
+                 else {
+                    Log.e("UserRepository", "Erreur HTTP : ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
+                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+            }
+        })
+    }
+
+    /*private suspend fun insertUserInDb(user: User) {
     }*/
 }
