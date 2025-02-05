@@ -21,22 +21,14 @@
     <color name="lavender">#CCB8CA</color>
     <color name="bleu">#FAECDC</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="primary_background">#C9E4CA</color>
+    <color name="primary_buttons">#87BBA2</color>
+    <color name="primary_red">#BB8787</color>
+    <color name="primary_yellow">#BBB287</color>
+    <color name="primary_green">#BED4AF</color>
+    <color name="red_card">#D4AFAF</color>
+    <color name="yellow_card">#D4CEAF</color>
+    <color name="grey_card">#B4B4B4</color>
 
-    <!-- Couleurs principales -->
-    <color name="primary_background">#C9E4CA</color> <!-- Bleu clair -->
-    <color name="primary_buttons">#87BBA2</color> <!-- Vert clair -->
-    <color name="accent_notifications">#FFF5C0</color> <!-- Jaune doux -->
-    <color name="secondary_text_elements">#F0F0F0</color> <!-- Gris clair -->
-
-    <!-- Couleurs pour les boutons -->
-    <color name="secondary_buttons">#A0E7B788</color> <!-- Rouge doux -->
-    <color name="neutral_buttons">#BED4AF</color> <!-- Bleu gris -->
-
-    <!-- Couleurs d'arrière-plan -->
-    <color name="card_background">#FAF9F6</color> <!-- Blanc cassé -->
-
-    <!-- Couleurs de texte -->
-    <color name="title_text">#333333</color> <!-- Noir ou bleu/gris très foncé -->
-    <color name="body_text">#4F4F4F</color> <!-- Gris foncé -->
-
+    <color name="secondary_buttons">#A0E7B788</color>
 </resources>

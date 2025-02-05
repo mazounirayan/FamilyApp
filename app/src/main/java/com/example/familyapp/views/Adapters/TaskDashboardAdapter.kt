@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
-import com.example.familyapp.data.model.user.TaskDashbord
+import com.example.familyapp.data.model.task.TaskDashbord
 import com.example.familyapp.views.Holders.TaskDashboardHolder
 
 class TaskDashboardAdapter(private val taskList: List<TaskDashbord>) : RecyclerView.Adapter<TaskDashboardHolder>() {

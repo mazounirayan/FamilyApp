@@ -28,7 +28,8 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     val nomFamille = MutableLiveData<String>()
     private val _signInResult = MutableLiveData<Result<Unit>>()
     val signInResult: LiveData<Result<Unit>> = _signInResult
-
+    private val _user = MutableLiveData<List<User>>()
+    val user: LiveData<List<User>> get() = _user
 
     init {
         role.observeForever { selectedRole ->
@@ -79,6 +80,15 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
                 _signUpResult.value = Result.failure(e)
             }
         }
+    }
+    
+    fun fetchUser(id:Int){
+        _user.value
+        this.userRepository.users.observe(this.context) { data ->
+            this@UserViewModel._user.value = data
+        }
+
+        this.userRepository.getAllUsers(id)
     }
 
     /*fun fetchTask(idUser: Int) {

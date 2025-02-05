@@ -63,6 +63,7 @@ class UserRepository(context: Context) {
         })
     }
 
+    
     fun signUp(signUpRequest: SignUpRequest, onResult: (Result<Boolean>) -> Unit) {
         val call = userService.signUp(signUpRequest)
 
@@ -87,28 +88,32 @@ class UserRepository(context: Context) {
             }
         })
     }
+    
+    fun getMembers(id:Int) {
+        val call = userService.getAllUsers(id)
 
-    fun getMembers(familyId: Int) {
-        userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {
-            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
+        call.enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(
+                call: Call<List<UserDTO>>,
+                response: Response<List<UserDTO>>
+            ) {
+
+
                 if (response.isSuccessful) {
-                    val response = response.body()
-                    _users.value = response?.let {
-                        it.map{ value ->
-                            mapUserDtoToUser(value)
-                        }
+                    val responseBody = response.body()
+                    _users.value = responseBody?.map { userDto ->
+                        mapUserDtoToUser(userDto) // Mapper chaque UserDTO en User
                     }
-                } else {
+                }
+
+                 else {
                     Log.e("UserRepository", "Erreur HTTP : ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
-                Log.e("UserRepository", "Erreur réseau : ${t.message}")
+                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
             }
         })
     }
-    /*private suspend fun insertUserInDb(user: User) {
-
-    }*/
 }
