@@ -32,25 +32,26 @@ class ManageFamilyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_manage_family,container,false)
+        val view = inflater.inflate(R.layout.fragment_manage_family,container,false)
         userMembershipAdapter = UserMembershipAdapter(familyMembers)
 
-        view.findViewById<FloatingActionButton>(R.id.add_member_button).setOnClickListener{
+        view.findViewById<FloatingActionButton>(R.id.add_member_button).setOnClickListener {
+            val dialogFragment = AddUserDialogFragment { newUser ->
+                 userList.add(newUser)
+
+                userMembershipAdapter.notifyItemInserted(userList.size - 1)
+            }
+            dialogFragment.show(parentFragmentManager, "AddUserDialog")
+        }
 
             /*AddUserDialog { user ->
                 userList.add(user)
                 userMembershipAdapter.notifyItemInserted(userList.size - 1)
             }*/
 
-            val supportFragmentManager = activity?.supportFragmentManager
 
-            supportFragmentManager?.commit {
-                replace<AddUserDialogFragment>(R.id.fragment_container)
-                setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
-            }
 
-        }
+
 
         return view;
     }

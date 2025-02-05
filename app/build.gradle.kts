@@ -73,9 +73,12 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout")
     implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 
 }
