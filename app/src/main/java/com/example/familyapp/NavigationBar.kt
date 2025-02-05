@@ -17,6 +17,8 @@ object NavigationBar{
 
         activity.findViewById<ImageView>(R.id.user_profile_icon)?.setOnClickListener {
             Toast.makeText(activity, "Redirection vers le profil utilisateur", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, ProfileActivity::class.java)
+            activity.startActivity(intent)
         }
 
         activity.findViewById<ImageView>(R.id.home_icon)?.setOnClickListener {

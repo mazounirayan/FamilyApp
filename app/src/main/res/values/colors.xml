@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+        <color name="light_gray">#E0E0E0</color>
+        <color name="points_background">#F0F0F0</color>
+    <color name="primary">#4A90E2</color>
+    <color name="stock_color_available">#4CAF50</color>
+    <color name="stock_color_low">#FFC107</color>
+    <color name="stock_color_out">#F44336</color>
+    <color name="primary_dark">#357ABD</color>
+    <color name="accent">#9B51E0</color>
+    <color name="background">#F5F5F5</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="background_color">#F5F5F5</color>
+
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#CCB8CA</color>

@@ -1,4 +1,4 @@
-package com.example.familyapp.ui
+package com.example.familyapp
 
 import UserRepository
 import android.os.Bundle
@@ -13,10 +13,14 @@ import com.example.familyapp.databinding.FragmentLoginBinding
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 
+
+
+import com.example.familyapp.utils.SessionManager
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private lateinit var sessionManager: SessionManager
 
     private lateinit var viewModel: UserViewModel
 
@@ -27,6 +31,7 @@ class LoginFragment : Fragment() {
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+        sessionManager = SessionManager(requireContext())
         val repository = UserRepository(requireContext())
         val factory = UserViewModelFactory(repository,this)
         viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
@@ -38,6 +43,8 @@ class LoginFragment : Fragment() {
             result.fold(
                 onSuccess = {
                     Toast.makeText(requireContext(), "Connexion réussie", Toast.LENGTH_SHORT).show()
+
+                    sessionManager.saveLoginState(binding.emailInput.text.toString())
                     (activity as? AuthenticationActivity)?.navigateToMainActivity()
                 },
                 onFailure = { exception ->

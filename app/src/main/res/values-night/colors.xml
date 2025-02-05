@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs de fond dark -->
+    <color name="background">#FF121212</color>
+    <color name="surface">#FF121212</color>
+
+    <!-- Couleurs texte dark -->
+    <color name="text_primary">#DEFFFFFF</color>
+    <color name="text_secondary">#99FFFFFF</color>
+    <color name="text_hint">#61FFFFFF</color>
+
+
+
+    <!-- Couleurs secondaires dark -->
+    <color name="secondary_dark">#FF03DAC5</color>
+    <color name="secondary_variant_dark">#FF018786</color>
+    <color name="on_secondary_dark">#FFFFFFFF</color>
+</resources>

@@ -1,7 +1,9 @@
 package com.example.familyapp.network
 
+import com.example.familyapp.data.model.user.User
 import com.example.familyapp.network.dto.autentDto.LoginRequest
 import com.example.familyapp.network.dto.autentDto.LoginResponse
+import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import com.example.familyapp.network.dto.userDto.UserDTO
 import retrofit2.Call
 import retrofit2.http.Body
@@ -11,11 +13,18 @@ import retrofit2.http.Path
 
 
 interface UserService {
+    @GET("users")
+    fun getAllUsers(): Call<List<UserDTO>>
+
     @GET("users/family/{id}")
-    fun getAllUsers(@Path("id") id:Int): Call<List<UserDTO>>
+    fun getMembers(@Path("id") id:Int): Call<List<UserDTO>>
 
     @POST("auth/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
+
+    @POST("/auth/signup")
+    fun signUp(@Body request: SignUpRequest): Call<UserDTO>
+
 }
 
 

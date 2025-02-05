@@ -1,7 +1,5 @@
 package com.example.familyapp
 
-
-
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -11,7 +9,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.familyapp.pages.interfaces.PagerHandler
 import com.example.familyapp.pages.views.ViewPagerAdapter
-
 
 class AuthenticationActivity : AppCompatActivity(), PagerHandler {
 
@@ -23,7 +20,6 @@ class AuthenticationActivity : AppCompatActivity(), PagerHandler {
         enableEdgeToEdge()
         setContentView(R.layout.activity_authentication)
 
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.viewPager)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -31,26 +27,28 @@ class AuthenticationActivity : AppCompatActivity(), PagerHandler {
         }
 
         setUpPager()
-
     }
 
     private fun setUpPager() {
-        // Initialise le ViewPager2 et son adaptateur
+        // Initialise ViewPager2 et son adaptateur
         this.familyAppPager = findViewById(R.id.viewPager)
         val pagerAdapter = ViewPagerAdapter(this, this)
         this.familyAppPager.adapter = pagerAdapter
 
-
         displaySelectionPage()
     }
+
     fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-        finish() // Terminer AuthenticationActivity pour éviter de revenir en arrière
+        finish() // Terminer l'Activity actuelle pour éviter de revenir en arrière
     }
+
     override fun displaySelectionPage() {
         this.familyAppPager.currentItem = 0
     }
+
+
 
     override fun displayLoginPage() {
         this.familyAppPager.currentItem = 1
@@ -59,4 +57,13 @@ class AuthenticationActivity : AppCompatActivity(), PagerHandler {
     override fun displaySignInPage() {
         this.familyAppPager.currentItem = 2
     }
+
+
+    override fun navigateToLoginFragment() {
+        this.familyAppPager.currentItem = 1
+    }
+
+
+
+
 }

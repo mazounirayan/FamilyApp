@@ -4,4 +4,5 @@ interface PagerHandler {
     fun displayLoginPage()
     fun displaySignInPage()
     fun displaySelectionPage()
+    fun navigateToLoginFragment()
 }
