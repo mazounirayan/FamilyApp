@@ -13,8 +13,13 @@ import retrofit2.http.Path
 
 
 interface UserService {
+
     @GET("users")
     fun getAllUsers(): Call<List<UserDTO>>
+
+    @GET("users/family/{id}")
+    fun getAllUsers(@Path("id") id:Int): Call<List<UserDTO>>
+
 
     @GET("users/family/{id}")
     fun getMembers(@Path("id") id:Int): Call<List<UserDTO>>
@@ -26,3 +31,5 @@ interface UserService {
     fun signUp(@Body request: SignUpRequest): Call<UserDTO>
 
 }
+
+

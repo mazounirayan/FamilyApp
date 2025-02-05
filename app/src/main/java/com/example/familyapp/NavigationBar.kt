@@ -1,14 +1,16 @@
 package com.example.familyapp
 
 import RewardsFragment
-import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.familyapp.views.fragments.DashboardFragment
+import com.example.familyapp.views.fragments.HomeFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
+import com.example.familyapp.views.fragments.message.ChatFragment
 
 object NavigationBar{
 
@@ -28,11 +30,23 @@ object NavigationBar{
                 setReorderingAllowed(true)
                 addToBackStack("name") // Name can be null
             }
+
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
-            println("messages_icon")
+            val supportFragmentManager = activity.supportFragmentManager
 
+            supportFragmentManager.commit {
+                replace<DashboardFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name")
+            }
+
+            supportFragmentManager.commit {
+                replace<ChatFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name") // Name can be null
+            }
         }
 
         activity.findViewById<ImageView>(R.id.add_icon)?.setOnClickListener {

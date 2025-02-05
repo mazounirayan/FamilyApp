@@ -2,6 +2,7 @@ package com.example.familyapp.viewmodel
 
 
 import UserRepository
+
 import android.util.Log
 import androidx.activity.result.launch
 import androidx.lifecycle.LiveData
@@ -14,7 +15,17 @@ import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
 import android.view.View
 
-class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.familyapp.data.model.task.Task
+import com.example.familyapp.data.model.user.User
+
+
+class UserViewModel(private val userRepository: UserRepository,
+                    val context: LifecycleOwner
+) : ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val nom = MutableLiveData<String>()
@@ -30,6 +41,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     val signInResult: LiveData<Result<Unit>> = _signInResult
 
 
+
     init {
         role.observeForever { selectedRole ->
             isChild.value = selectedRole == "Enfant"
@@ -37,10 +49,15 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     }
     val userData = userRepository.userData
 
+    private val _user = MutableLiveData<List<User>>()
+
+    val user: LiveData<List<User>> get() = _user
+
+
     fun login() {
 
-        val emailValue = "a@a.aaa"//email.value.orEmpty().trim()
-        val passwordValue = "azerty"//password.value.orEmpty().trim()
+        val emailValue = "jean.dupont@example.com"//email.value.orEmpty().trim()
+        val passwordValue = "password123"//password.value.orEmpty().trim()
 
         if (emailValue.isEmpty() || passwordValue.isEmpty()) {
             _loginResult.value = Result.failure(Exception("Les champs ne peuvent pas être vides"))
@@ -51,6 +68,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
             _loginResult.value = result
         }
     }
+
 
     private val _signUpResult = MutableLiveData<Result<Unit>>()
     val signUpResult: LiveData<Result<Unit>> = _signUpResult
@@ -85,8 +103,14 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         _task.value
         this.taskRepo.tasks.observe(this.context) { data ->
             this@TaskViewModel._task.value = data
+
+    fun fetchUser(id:Int){
+        _user.value
+        this.userRepository.users.observe(this.context) { data ->
+            this@UserViewModel._user.value = data
+
         }
 
-        this.taskRepo.getTaskFromUser(idUser)
-    }*/
+        this.userRepository.getAllUsers(id)
+    }
 }

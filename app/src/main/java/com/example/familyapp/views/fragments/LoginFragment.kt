@@ -33,7 +33,7 @@ class LoginFragment : Fragment() {
 
         sessionManager = SessionManager(requireContext())
         val repository = UserRepository(requireContext())
-        val factory = UserViewModelFactory(repository)
+        val factory = UserViewModelFactory(repository,this)
         viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
         binding.viewModel = viewModel

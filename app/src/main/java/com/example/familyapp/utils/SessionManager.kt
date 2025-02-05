@@ -1,5 +1,6 @@
 package com.example.familyapp.utils
 
+
 import android.content.Context
 
 class SessionManager(context: Context) {
@@ -20,4 +21,3 @@ class SessionManager(context: Context) {
     fun logout() {
         sharedPreferences.edit().clear().apply()
     }
-}
