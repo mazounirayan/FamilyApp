@@ -12,6 +12,7 @@ import com.example.familyapp.views.fragments.message.ChatFragment
 
 object NavigationBar{
 
+    
     fun setupNavigationClicks(activity: AppCompatActivity) {
 
         activity.findViewById<ImageView>(R.id.user_profile_icon)?.setOnClickListener {
