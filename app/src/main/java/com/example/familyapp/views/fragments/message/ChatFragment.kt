@@ -83,13 +83,19 @@ class ChatFragment : Fragment() {
 
 
     fun messageReceived(content: String, userId: Int) {
+        requireActivity().runOnUiThread {
             addMessageToChat(content, userId)
+        }
     }
 
     /**
      * Ajoute un message à la liste et met à jour l'interface utilisateur.
      */
     private fun addMessageToChat(content: String, userId: Int) {
+        if (!::chatAdapter.isInitialized) {
+            println("Erreur : chatAdapter n'est pas encore initialisé")
+            return
+        }
 
         val newMessage = Message(
             id = System.currentTimeMillis().toString(),
@@ -114,6 +120,7 @@ class ChatFragment : Fragment() {
 
         chatAdapter.notifyDataSetChanged()
     }
+
     private fun getCurrentTimestamp(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         return dateFormat.format(Date())

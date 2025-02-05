@@ -1,5 +1,6 @@
 package com.example.familyapp.websocket
 import com.example.familyapp.views.fragments.message.ChatFragment
+import com.example.instaclone.app_utils.URL_WEBSOCKET
 import io.socket.client.IO
 import io.socket.client.Socket
 import org.json.JSONObject
@@ -10,15 +11,12 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
 
     fun connect(userId: Int) {
         try {
-            // Configuration du client
             val options = IO.Options()
-            options.transports = arrayOf("websocket") // Forcer l'utilisation de WebSocket
-            options.reconnection = true // Activer la reconnexion automatique
+            options.transports = arrayOf("websocket")
+            options.reconnection = true
 
-            // URL du serveur
-            socket = IO.socket("http://10.0.2.2:3000", options)
+            socket = IO.socket(URL_WEBSOCKET, options)
 
-            // Écouter les événements
             socket.on(Socket.EVENT_CONNECT) {
                 println("Connexion réussie")
                 socket.emit("joinFamily", userId)
@@ -27,11 +25,11 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
             socket.on("message") { args ->
                 if (args.isNotEmpty()) {
                     val data = args[0] as JSONObject
-                    val messageReceived = data.get("content")
-                    val idUser = data.get("senderId") as Int
+                    val messageReceived = data.getString("content")
+                    val idUser = data.getInt("senderId")
 
                     // Appelez la méthode messageReceived sur le fragment existant
-                    chatFragment.messageReceived(messageReceived.toString(), idUser)
+                    chatFragment.messageReceived(messageReceived, idUser)
                     println("Message reçu : $data")
                 }
             }
@@ -40,7 +38,6 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
                 println("Déconnecté du serveur")
             }
 
-            // Connecter au serveur
             socket.connect()
 
         } catch (e: Exception) {
@@ -49,13 +46,9 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
     }
 
     fun sendMessage(message: String) {
-        if (::socket.isInitialized && socket.connected()) {
-            socket.emit("sendMessage", message)
+        if (::socket.isInitialized && socket.connected()) { socket.emit("sendMessage", message)
         } else {
             println("Socket non connecté")
         }
     }
-
-
 }
-
