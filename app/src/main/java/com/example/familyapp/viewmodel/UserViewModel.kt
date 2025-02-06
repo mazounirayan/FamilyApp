@@ -81,22 +81,22 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
             }
         }
     }
-    
-    fun fetchUser(id:Int){
-        _user.value
-        this.userRepository.users.observe(this.context) { data ->
-            this@UserViewModel._user.value = data
-        }
 
-        this.userRepository.getAllUsers(id)
-    }
+/*  fun fetchUser(id:Int){
+      _user.value
+      this.userRepository.users.observe(this.context) { data ->
+          this@UserViewModel._user.value = data
+      }
 
-    /*fun fetchTask(idUser: Int) {
-        _task.value
-        this.taskRepo.tasks.observe(this.context) { data ->
-            this@TaskViewModel._task.value = data
-        }
+      this.userRepository.getMembers(id)
+  }*/
 
-        this.taskRepo.getTaskFromUser(idUser)
-    }*/
+  /*fun fetchTask(idUser: Int) {
+      _task.value
+      this.taskRepo.tasks.observe(this.context) { data ->
+          this@TaskViewModel._task.value = data
+      }
+
+      this.taskRepo.getTaskFromUser(idUser)
+  }*/
 }

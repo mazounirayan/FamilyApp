@@ -54,7 +54,10 @@ class SignupFragment : Fragment() {
 
     private fun setupViewModel() {
         val repository = UserRepository(requireContext())
-        val factory = UserViewModelFactory(repository)
+        val factory = UserViewModelFactory(
+            repository,
+           this
+        )
         viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
     }
 
