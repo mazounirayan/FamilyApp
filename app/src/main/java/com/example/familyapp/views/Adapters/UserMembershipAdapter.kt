@@ -7,8 +7,10 @@ import com.example.familyapp.R
 import com.example.familyapp.data.model.user.User
  import com.example.familyapp.views.Holders.UserMembershipHolder
 
+
+
 class UserMembershipAdapter(
-    private val members: List<User>
+    private var members: MutableList<User>
 ) : RecyclerView.Adapter<UserMembershipHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserMembershipHolder {
@@ -24,4 +26,12 @@ class UserMembershipAdapter(
     }
 
     override fun getItemCount(): Int = members.size
+
+     fun updateData(newMembers: List<User>) {
+        members.clear()
+        members.addAll(newMembers)
+        notifyDataSetChanged()
+    }
 }
+
+

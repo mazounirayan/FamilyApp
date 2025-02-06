@@ -1,4 +1,3 @@
 package com.example.familyapp.data.model.task
 
-class TaskStatus {
-}
+data class TaskStatus(val taskName: String, val score: Int)

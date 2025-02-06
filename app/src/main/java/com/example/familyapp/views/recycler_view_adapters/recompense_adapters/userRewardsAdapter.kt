@@ -32,8 +32,8 @@ class UserRankAdapter : ListAdapter<User, UserRankAdapter.UserViewHolder>(
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvRank: TextView = itemView.findViewById(R.id.tvRank)
-        private val tvName: TextView = itemView.findViewById(R.id.tvName)
+        private val tvRank: TextView = itemView.findViewById(R.id.tvCout)
+        private val tvName: TextView = itemView.findViewById(R.id.tvPoints)
         private val tvPoints: TextView = itemView.findViewById(R.id.tvPoints)
 
         fun bind(user: User, position: Int) {

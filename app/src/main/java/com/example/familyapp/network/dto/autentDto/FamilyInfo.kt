@@ -1,4 +1,4 @@
 package com.example.familyapp.network.dto.autentDto
-
-class FamilyInfo {
-}
+data class FamilyInfo(
+    val idFamille: Int
+)

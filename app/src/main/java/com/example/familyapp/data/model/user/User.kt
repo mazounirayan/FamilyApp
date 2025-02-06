@@ -8,7 +8,7 @@ data class User(
     val motDePasse: String,
     val numTel: String,
     val role: String,
-    val idFamille: Int?,
+    val idFamille: Int,
     val dateInscription: String,
     val coins: Int,
     val avatar:String? ,

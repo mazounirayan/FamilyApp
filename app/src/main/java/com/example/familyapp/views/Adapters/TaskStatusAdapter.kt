@@ -7,14 +7,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
+import com.example.familyapp.data.model.task.TaskStatus
 
-class TaskStatusAdapter(private val statusList: List<Pair<String, Int>>) :
-    RecyclerView.Adapter<TaskStatusAdapter.TaskStatusViewHolder>() {
+class TaskStatusAdapter(
+    private val tasks: List<TaskStatus>
+) : RecyclerView.Adapter<TaskStatusAdapter.TaskStatusViewHolder>() {
 
-    class TaskStatusViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.task_status_title)
-        val progressCircle: ProgressBar = itemView.findViewById(R.id.tv_progress_percentage)
-        val percentage: TextView = itemView.findViewById(R.id.task_title)
+    // ViewHolder pour lier les vues
+    class TaskStatusViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val taskStatusTitle: TextView = view.findViewById(R.id.task_status_title)
+        val progressPercentage: TextView = view.findViewById(R.id.tv_progress_percentage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskStatusViewHolder {
@@ -24,11 +26,13 @@ class TaskStatusAdapter(private val statusList: List<Pair<String, Int>>) :
     }
 
     override fun onBindViewHolder(holder: TaskStatusViewHolder, position: Int) {
-        val (statusTitle, progress) = statusList[position]
-        holder.title.text = statusTitle
-        holder.progressCircle.progress = progress
-        holder.percentage.text = "$progress%"
+        val task = tasks[position]
+
+        // Lier les données
+        holder.taskStatusTitle.text = task.taskName
+        holder.progressPercentage.text = "${task.score}%"
     }
 
-    override fun getItemCount(): Int = statusList.size
+    override fun getItemCount(): Int = tasks.size
 }
+

@@ -27,7 +27,7 @@ object NavigationBar{
             val supportFragmentManager = activity.supportFragmentManager
 
             supportFragmentManager.commit {
-                replace<RewardsFragment>(R.id.fragment_container)
+                replace<DashboardFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
                 addToBackStack("name") // Name can be null
             }
@@ -36,11 +36,7 @@ object NavigationBar{
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
             val supportFragmentManager = activity.supportFragmentManager
 
-            supportFragmentManager.commit {
-                replace<DashboardFragment>(R.id.fragment_container)
-                setReorderingAllowed(true)
-                addToBackStack("name")
-            }
+
 
         }
 

@@ -1,16 +1,24 @@
 package com.example.familyapp.views.fragments
 
+
+import UserRepository
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
-import com.example.familyapp.data.model.user.User
+import com.example.familyapp.data.model.user.AddUserRequest  // Assurez-vous que cela est correctement importé
+import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.viewmodel.TaskViewModel
+import com.example.familyapp.viewmodel.UserViewModel
+import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
+import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import com.example.familyapp.views.Adapters.UserMembershipAdapter
 import com.example.familyapp.views.AddUserDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,65 +27,36 @@ class ManageFamilyFragment : Fragment() {
 
     private lateinit var familyRecyclerView: RecyclerView
     private lateinit var userMembershipAdapter: UserMembershipAdapter
-    private val userList = mutableListOf<User>()
 
-    private val familyMembers = listOf(
-        User(1, "Fils", "Prenom", "email@example.com", "1234",  "0000", "User", 1, "2023-01-01",65,"",0),
-        User(2, "Fils01", "Prenom", "email@example.com", "5678", "0000", "User", 1, "2023-01-01",70,"",0),
-        User(2, "Fils02", "Prenom", "email@example.com", "5678",  "0000", "User", 1, "2023-01-01",70,"",0)
-    )
+    private val viewModel: UserViewModel by viewModels {
+        UserViewModelFactory(UserRepository(this.requireContext()))
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_manage_family,container,false)
-        userMembershipAdapter = UserMembershipAdapter(familyMembers)
+        val view = inflater.inflate(R.layout.fragment_manage_family, container, false)
 
-        view.findViewById<FloatingActionButton>(R.id.add_member_button).setOnClickListener {
-            val dialogFragment = AddUserDialogFragment { newUser ->
-                 userList.add(newUser)
+        familyRecyclerView = view.findViewById(R.id.family_recycler_view)
+         userMembershipAdapter = UserMembershipAdapter(mutableListOf())
+        familyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        familyRecyclerView.adapter = userMembershipAdapter
 
-                userMembershipAdapter.notifyItemInserted(userList.size - 1)
+        viewModel.users.observe(viewLifecycleOwner, Observer { users ->
+            userMembershipAdapter.updateData(users)
+        })
+
+        viewModel.fetchUsers(1)
+
+        val addButton = view.findViewById<Button>(R.id.add_member_button)
+        addButton.setOnClickListener {
+            val dialogFragment = AddUserDialogFragment { newUserRequest ->
+                viewModel.addUser(newUserRequest)
             }
             dialogFragment.show(parentFragmentManager, "AddUserDialog")
         }
 
-            /*AddUserDialog { user ->
-                userList.add(user)
-                userMembershipAdapter.notifyItemInserted(userList.size - 1)
-            }*/
-
-
-
-
-
-        return view;
+        return view
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        this.familyRecyclerView = view.findViewById(R.id.family_recycler_view)
-        familyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-        familyRecyclerView.adapter = userMembershipAdapter
-
-    }
-    /*override fun onCreateView(savedInstanceState: Bundle?,inflater: LayoutInflater, container:ViewGroup?) {
-        super.onCreate(savedInstanceState)
-        val view = infla(R.layout.activity_manage_family)
-
-        familyRecyclerView = findViewById(R.id.family_recycler_view)
-        userMembershipAdapter = UserMembershipAdapter(familyMembers)
-        familyRecyclerView.layoutManager = LinearLayoutManager(this)
-        familyRecyclerView.adapter = userMembershipAdapter
-
-        val addButton = findViewById<FloatingActionButton>(R.id.add_member_button)
-        addButton.setOnClickListener {
-            AddUserDialog { user ->
-                 userList.add(user)
-                userMembershipAdapter.notifyItemInserted(userList.size - 1)
-            }.show(supportFragmentManager, "AddUserDialog")
-        }
-    }*/
 }
+

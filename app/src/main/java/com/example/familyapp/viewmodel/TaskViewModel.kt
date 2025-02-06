@@ -1,6 +1,7 @@
 package com.example.familyapp.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,4 +28,17 @@ class TaskViewModel(
 
         this.taskRepo.getTaskFromUser(idUser)
     }
+    fun fetchAllTasks(idFamille: Int) {
+        Log.d("TaskViewModel", "🔹 Début du fetchAllTasks pour idFamille : $idFamille") // 🔥 Vérifie si c'est bien appelé
+
+        _task.value = emptyList() // Réinitialise la liste des tâches avant de charger
+        this.taskRepo.tasks.observe(this.context) { data ->
+            Log.d("TaskViewModel", "🔹 Tâches reçues du repo : ${data.size}") // 🔥 Vérifie si le repo retourne des données
+            _task.value = data
+        }
+
+        this.taskRepo.getAllTasks(idFamille)
+        Log.d("TaskViewModel", "🔹 Après appel de getAllTasks dans le repository") // 🔥 Vérifie si ça plante après
+    }
+
 }

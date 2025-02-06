@@ -7,5 +7,8 @@ import retrofit2.http.Path
 
 interface TaskService {
     @GET("taches/user/{id}")
-    fun getTaskFromUser(@Path("id") id:Int): Call<List<TaskDto>>
+    fun getTaskFromUser(@Path("id") id: Int): Call<List<TaskDto>>
+
+    @GET("taches/famille/{id}")
+    fun getAllTasks(@Path("id") id: Int): Call<List<TaskDto>>
 }
