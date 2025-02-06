@@ -13,8 +13,9 @@ import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 
-class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+class UserViewModel(private val userRepository: UserRepository, val context: LifecycleOwner) : ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val nom = MutableLiveData<String>()
@@ -81,22 +82,22 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
             }
         }
     }
+    
+    fun fetchUser(id:Int){
+        _user.value
+        this.userRepository.users.observe(this.context) { data ->
+            this@UserViewModel._user.value = data
+        }
 
-/*  fun fetchUser(id:Int){
-      _user.value
-      this.userRepository.users.observe(this.context) { data ->
-          this@UserViewModel._user.value = data
-      }
+        this.userRepository.getMembers(id)
+    }
 
-      this.userRepository.getMembers(id)
-  }*/
+    /*fun fetchTask(idUser: Int) {
+        _task.value
+        this.taskRepo.tasks.observe(this.context) { data ->
+            this@TaskViewModel._task.value = data
+        }
 
-  /*fun fetchTask(idUser: Int) {
-      _task.value
-      this.taskRepo.tasks.observe(this.context) { data ->
-          this@TaskViewModel._task.value = data
-      }
-
-      this.taskRepo.getTaskFromUser(idUser)
-  }*/
+        this.taskRepo.getTaskFromUser(idUser)
+    }*/
 }

@@ -13,7 +13,7 @@ class UserViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-            return UserViewModel(userRepository) as T
+            return UserViewModel(userRepository, fragment) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
