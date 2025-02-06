@@ -90,7 +90,7 @@ class UserRepository(context: Context) {
     }
     
     fun getMembers(id:Int) {
-        val call = userService.getAllUsers(id)
+        val call = userService.getMembers(id)
 
         call.enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(
