@@ -13,8 +13,9 @@ import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 
-class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+class UserViewModel(private val userRepository: UserRepository, val context: LifecycleOwner) : ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val nom = MutableLiveData<String>()
@@ -88,7 +89,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
             this@UserViewModel._user.value = data
         }
 
-        this.userRepository.getAllUsers(id)
+        this.userRepository.getMembers(id)
     }
 
     /*fun fetchTask(idUser: Int) {

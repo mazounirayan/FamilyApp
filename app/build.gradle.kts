@@ -53,6 +53,7 @@ dependencies {
 
 
     implementation(libs.places)
+    implementation(libs.androidx.material3.android)
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
     implementation(libs.retrofit)

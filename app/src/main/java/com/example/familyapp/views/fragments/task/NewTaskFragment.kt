@@ -279,6 +279,6 @@ class NewTaskFragment : Fragment() {
                 setUpUsersSp(getUsers(data), fragmentView)
             }
         }
-        userViewModel.fetchUser(1)
+      //  userViewModel.fetchUser(1)
     }
 }

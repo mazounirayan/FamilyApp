@@ -1,6 +1,7 @@
 package com.example.familyapp
 
 import RewardsFragment
+import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
