@@ -55,7 +55,7 @@ class ChatAdapter(
 
         fun bind(message: Message) {
             contenuText.text = message.contenu
-            dateText.text = message.date_envoie
+            dateText.text = message.dateEnvoie
         }
     }
 
@@ -66,7 +66,7 @@ class ChatAdapter(
 
         fun bind(message: Message) {
             contenuText.text = message.contenu
-            dateText.text = message.date_envoie
+            dateText.text = message.dateEnvoie
         }
     }
 }

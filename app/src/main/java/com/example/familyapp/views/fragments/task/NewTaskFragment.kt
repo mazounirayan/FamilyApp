@@ -25,7 +25,9 @@ import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TypeTache
 import com.example.familyapp.data.model.user.User
+import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
@@ -101,6 +103,8 @@ class NewTaskFragment : Fragment() {
             addTask()
         }
 
+        userViewModel.fetchUser(SessionManager.currentUser!!.id)
+
         return view
     }
 
@@ -154,8 +158,8 @@ class NewTaskFragment : Fragment() {
         Log.d("addTask", "dateFin : ${LocalDate.of(endYear,endMonth,endDay)}")
         */
 
-        taskViewModel.addTask(Task(
-            0,
+        taskViewModel.addTask(
+            TaskDto(0,
             nom = nomTask?.text.toString(),
             dateDebut = dateDebut.toString() ,
             dateFin = dateFin.toString(),
@@ -164,8 +168,8 @@ class NewTaskFragment : Fragment() {
             description = descriptionTask?.text.toString() ,
             priorite = typePriorite.toString(),
             idUser = selectedUser.id,
-            idFamille = 1
-        ))
+            idFamille = 1)
+        )
 
 
     }

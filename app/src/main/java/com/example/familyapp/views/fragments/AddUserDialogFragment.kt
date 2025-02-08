@@ -56,7 +56,8 @@ class AddUserDialogFragment(private val onUserAdded: (User) -> Unit) : DialogFra
                 dateInscription = currentDate,
                 coins = 0,
                 avatar = "",
-                totalPoints = 1
+                totalPoints = 1,
+                listOf()
             )
 
              onUserAdded(user)

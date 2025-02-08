@@ -22,6 +22,8 @@ import com.example.familyapp.network.mapper.mapUserDtoToUser
 class UserRepository(context: Context) {
     private val _userData = MutableLiveData<User>()
     val userData: LiveData<User> get() = _userData
+    private val _tokenData = MutableLiveData<String>()
+    val tokenData: LiveData<String> get() = _tokenData
 
     private val userService = RetrofitClient.instance.create(UserService::class.java)
     private val _users = MutableLiveData<List<User>>()
@@ -49,7 +51,9 @@ class UserRepository(context: Context) {
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
-                                       onResult(Result.success(Unit))
+                        onResult(Result.success(Unit))
+                        _tokenData.value = it.token
+
                     }
                 } else {
                     onResult(Result.failure(Exception("Erreur : ${response.message()}")))

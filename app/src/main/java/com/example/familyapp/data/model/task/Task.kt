@@ -1,8 +1,6 @@
 package com.example.familyapp.data.model.task
 
-import com.google.firebase.encoders.annotations.Encodable.Ignore
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
 
 enum class Priorite {
     HAUTE,
@@ -28,13 +26,8 @@ data class Task(
     @Transient
     val idTache: Int,
     val nom: String,
-
-    @SerializedName("date_debut")
     val dateDebut: String,
-
-    @SerializedName("date_fin")
     val dateFin: String,
-
     var status: String,
     val type: String,
     val description: String,

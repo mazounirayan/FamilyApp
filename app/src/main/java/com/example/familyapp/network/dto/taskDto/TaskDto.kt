@@ -1,12 +1,10 @@
 package com.example.familyapp.network.dto.taskDto
 
-import com.example.familyapp.data.model.task.Priorite
-import com.example.familyapp.data.model.task.StatusTache
-import com.example.familyapp.data.model.task.TypeTache
+
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
 
 data class TaskDto(
+    @Transient
     val idTache: Int,
     val nom: String,
     @SerializedName("date_debut")

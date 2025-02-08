@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.repositories.TaskRepository
 
 class TaskViewModel(
@@ -29,7 +30,7 @@ class TaskViewModel(
         this.taskRepo.getTaskFromUser(idUser)
     }
 
-    fun addTask(task:Task){
+    fun addTask(task:TaskDto){
         this.taskRepo.addTask(task)
     }
 

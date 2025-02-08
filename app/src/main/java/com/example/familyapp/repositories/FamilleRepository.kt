@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-import com.example.familyapp.data.model.famille.famille
+import com.example.familyapp.data.model.famille.Famille
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.familleDto.FamilleDto
 import com.example.familyapp.network.mapper.mapFamilleDtoToFamille
@@ -17,8 +17,8 @@ import retrofit2.Response
 class FamilleRepository(context: Context) {
     private val familleService = RetrofitClient.instance.create(FamilleService::class.java)
 
-    private val _familles = MutableLiveData<List<famille>>()
-    val familles: LiveData<List<famille>> get() = _familles
+    private val _familles = MutableLiveData<List<Famille>>()
+    val familles: LiveData<List<Famille>> get() = _familles
 
     fun getFamilles(idFamille: Int) {
         val call = familleService.getFamilles(idFamille)

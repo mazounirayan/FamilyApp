@@ -20,5 +20,6 @@ fun mapUserDtoToUser(userDto: UserDTO): User {
         avatar = userDto.avatar,
         coins= userDto.coins,
         totalPoints= userDto.totalPoints,
+        chats = userDto.chats
     )
 }

@@ -1,5 +1,6 @@
 package com.example.familyapp.network.dto.userDto
 
+import com.example.familyapp.data.model.chat.Chat
 import com.example.familyapp.network.dto.familleDto.FamilleDto
 
 data class UserDTO(
@@ -14,5 +15,6 @@ data class UserDTO(
     val coins: Int,
     val totalPoints: Int,
     val famille: FamilleDto?,
-    val numTel: String
+    val numTel: String,
+    val chats: List<Chat>
 )

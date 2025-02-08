@@ -14,14 +14,19 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.familyapp.AuthenticationActivity
 import com.example.familyapp.R
+import com.example.familyapp.utils.LocalStorage
 import com.example.familyapp.views.PagerHandlerProfile
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ProfileFragment : Fragment() {
 
+    private lateinit var localStorage: LocalStorage
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        localStorage = LocalStorage(requireContext())
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -125,6 +130,7 @@ class ProfileFragment : Fragment() {
             .setTitle("Déconnexion")
             .setMessage("Êtes-vous sûr de vouloir vous déconnecter ?")
             .setPositiveButton("Déconnexion") { _, _ ->
+                localStorage.logout()
                 requireContext().getSharedPreferences("user_session", AppCompatActivity.MODE_PRIVATE)
                     .edit()
                     .clear()

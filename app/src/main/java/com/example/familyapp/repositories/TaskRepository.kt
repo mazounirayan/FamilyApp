@@ -49,7 +49,7 @@ class TaskRepository(context: Context) {
         })
     }
 
-    fun addTask(task:Task){
+    fun addTask(task:TaskDto){
         val call = taskService.addTask(task)
 
         call.enqueue(object : Callback<TaskDto> {

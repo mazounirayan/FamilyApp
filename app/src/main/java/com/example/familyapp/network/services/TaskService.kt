@@ -1,6 +1,5 @@
 package com.example.familyapp.network.services
 
-import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
 import com.example.familyapp.network.dto.taskDto.TaskDto
 import retrofit2.Call
@@ -17,7 +16,7 @@ interface TaskService {
     fun getTaskFromUser(@Path("id") id:Int): Call<List<TaskDto>>
 
     @POST("taches")
-    fun addTask(@Body task: Task): Call<TaskDto>
+    fun addTask(@Body task: TaskDto): Call<TaskDto>
 
     @PATCH("taches/{id}")
     fun patchTask(@Path("id") id:Int, @Body task: TaskUpdate): Call<TaskDto>
