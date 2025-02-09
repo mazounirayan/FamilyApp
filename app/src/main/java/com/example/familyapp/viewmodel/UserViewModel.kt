@@ -14,6 +14,7 @@ import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import com.example.familyapp.utils.SessionManager
 
 class UserViewModel(private val userRepository: UserRepository, val context: LifecycleOwner) : ViewModel() {
     val email = MutableLiveData<String>()
@@ -31,6 +32,7 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
     val signInResult: LiveData<Result<Unit>> = _signInResult
     private val _user = MutableLiveData<List<User>>()
     val user: LiveData<List<User>> get() = _user
+    val logoutStatus: LiveData<Boolean> get() = userRepository.logoutStatus
 
     init {
         role.observeForever { selectedRole ->
@@ -38,8 +40,10 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
         }
     }
     val userData = userRepository.userData
-
     val tokenData = userRepository.tokenData
+    private val _userByTokenResult = MutableLiveData<Result<Unit>>()
+    val userByTokenResult: LiveData<Result<Unit>> get() = _userByTokenResult
+    val userDataByToken: LiveData<User> get() = userRepository.userDataByToken
 
     fun login() {
 
@@ -53,6 +57,22 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
 
         userRepository.login(emailValue, passwordValue) { result ->
             _loginResult.value = result
+        }
+    }
+
+
+    fun getUserByToken(token: String) {
+        userRepository.getUserByToken(token) { result ->
+            result.fold(
+                onSuccess = {
+                    Log.d("UserViewModel", "Utilisateur récupéré avec succès")
+                    _userByTokenResult.value = Result.success(Unit)
+                },
+                onFailure = { exception ->
+                    Log.e("UserViewModel", "Erreur lors de la récupération de l'utilisateur : ${exception.message}")
+                    _userByTokenResult.value = Result.failure(exception)
+                }
+            )
         }
     }
 
@@ -83,6 +103,10 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
                 _signUpResult.value = Result.failure(e)
             }
         }
+    }
+
+    fun logout(userId: Int) {
+        userRepository.logout(userId)
     }
     
     fun fetchUser(id:Int){

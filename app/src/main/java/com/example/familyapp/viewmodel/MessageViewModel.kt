@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.message.Message
 import com.example.familyapp.network.dto.messageDto.MessageDto
+import com.example.familyapp.network.dto.messageDto.NewMessageDto
 import com.example.familyapp.repositories.MessageRepository
 
 class MessageViewModel(
@@ -26,7 +27,7 @@ class MessageViewModel(
         messageRepo.getMessagesOfChat(chatId)
     }
 
-    fun addMessage(message: MessageDto) {
+    fun addMessage(message: NewMessageDto) {
         val tempLiveData = MutableLiveData<Boolean>()
         messageRepo.addMessage(message)
 

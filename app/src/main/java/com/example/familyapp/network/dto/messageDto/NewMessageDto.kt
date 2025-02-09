@@ -1,14 +1,13 @@
 package com.example.familyapp.network.dto.messageDto
 
-import com.example.familyapp.data.model.user.User
 import com.example.familyapp.data.model.user.UserMessage
 import com.google.gson.annotations.SerializedName
 
-data class MessageDto (
+data class NewMessageDto(
     val contenu: String,
     @SerializedName("date_envoie")
     val dateEnvoie: String,
     val isVue: Boolean,
-    val user: UserMessage,
+    val idUser: Int,
     val idChat: Int,
 )

@@ -1,6 +1,7 @@
 package com.example.familyapp.views.fragments.message
 
 import android.os.Bundle
+import android.se.omapi.Session
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.message.Message
-import com.example.familyapp.network.dto.messageDto.MessageDto
+import com.example.familyapp.data.model.user.UserMessage
+import com.example.familyapp.network.dto.messageDto.NewMessageDto
 import com.example.familyapp.repositories.MessageRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.MessageViewModel
 import com.example.familyapp.viewmodel.factories.MessageViewModelFactory
 import com.example.familyapp.views.Adapters.ChatAdapter
@@ -26,13 +29,16 @@ import java.util.Locale
 
 class ChatFragment : Fragment() {
 
-    private val currentUserId = 1 // ID de l'utilisateur actuel
+    private val currentUserId = SessionManager.currentUser!!.id
     private val chatId = 1 // ID du chat (constante)
 
     private lateinit var webSocketClient: SocketIOClient
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
     private val messages = mutableListOf<Message>()
+    private val nom = SessionManager.currentUser!!.nom
+    private val prenom = SessionManager.currentUser!!.prenom
+
 
     private val messageViewModel: MessageViewModel by viewModels {
         MessageViewModelFactory(MessageRepository(requireContext()),this)
@@ -89,7 +95,7 @@ class ChatFragment : Fragment() {
 
     private fun sendMessage(content: String) {
 
-        val newMessageDto = MessageDto(
+        val newMessageDto = NewMessageDto(
             contenu = content,
             idUser = currentUserId,
             idChat = chatId,
@@ -98,21 +104,21 @@ class ChatFragment : Fragment() {
         )
         messageViewModel.addMessage(newMessageDto)
 
-        addMessageToChat(content, currentUserId)
+        addMessageToChat(content, currentUserId, nom, prenom)
         webSocketClient.sendMessage(createMessageJson(content).toString())
     }
 
 
-    fun messageReceived(content: String, userId: Int) {
+    fun messageReceived(content: String, userId: Int, nom:String, prenom: String) {
         requireActivity().runOnUiThread {
-            addMessageToChat(content, userId)
+            addMessageToChat(content, userId, nom,prenom)
         }
     }
 
     /**
      * Ajoute un message à la liste et met à jour l'interface utilisateur.
      */
-    private fun addMessageToChat(content: String, userId: Int) {
+    private fun addMessageToChat(content: String, userId: Int, nom:String, prenom:String) {
         if (!::chatAdapter.isInitialized) {
             println("Erreur : chatAdapter n'est pas encore initialisé")
             return
@@ -123,7 +129,7 @@ class ChatFragment : Fragment() {
             contenu = content,
             dateEnvoie = getCurrentTimestamp(),
             isVue = false,
-            idUser = userId,
+            user = UserMessage(userId,nom,prenom),
             idChat = chatId
         )
 
@@ -142,6 +148,8 @@ class ChatFragment : Fragment() {
         return JSONObject().apply {
             put("familyId", chatId)
             put("senderId", currentUserId)
+            put("senderNom", nom)
+            put("senderPrenom", prenom)
             put("content", content)
         }
     }

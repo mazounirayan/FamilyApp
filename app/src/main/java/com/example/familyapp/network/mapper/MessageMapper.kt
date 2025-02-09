@@ -9,7 +9,7 @@ fun mapMessageDtoToMessage(messageDto: MessageDto): Message {
         contenu = messageDto.contenu,
         dateEnvoie = messageDto.dateEnvoie,
         isVue = messageDto.isVue,
-        idUser = messageDto.idUser,
+        user =  messageDto.user,
         idChat = messageDto.idChat,
     )
 }

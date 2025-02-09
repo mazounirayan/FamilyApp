@@ -1,5 +1,6 @@
 package com.example.familyapp.views.fragments
 
+import UserRepository
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,9 +13,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.familyapp.AuthenticationActivity
 import com.example.familyapp.R
 import com.example.familyapp.utils.LocalStorage
+import com.example.familyapp.utils.SessionManager
+import com.example.familyapp.viewmodel.UserViewModel
+import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import com.example.familyapp.views.PagerHandlerProfile
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -22,6 +27,9 @@ class ProfileFragment : Fragment() {
 
     private lateinit var localStorage: LocalStorage
 
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory(UserRepository(this.requireContext()),this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -130,7 +138,9 @@ class ProfileFragment : Fragment() {
             .setTitle("Déconnexion")
             .setMessage("Êtes-vous sûr de vouloir vous déconnecter ?")
             .setPositiveButton("Déconnexion") { _, _ ->
+                userViewModel.logout(SessionManager.currentUser!!.id)
                 localStorage.logout()
+
                 requireContext().getSharedPreferences("user_session", AppCompatActivity.MODE_PRIVATE)
                     .edit()
                     .clear()

@@ -11,12 +11,14 @@ import kotlinx.coroutines.SupervisorJob
 import retrofit2.Callback
 import retrofit2.Response
 import android.content.Context
+import com.example.familyapp.data.model.user.LogoutResponse
 import com.example.familyapp.network.UserService
 import com.example.familyapp.network.dto.autentDto.LoginRequest
 import com.example.familyapp.network.dto.autentDto.SignUpRequest
-import com.example.familyapp.network.dto.autentDto.SignUpResponse
+import com.example.familyapp.network.dto.autentDto.UsersbytokenRequest
 import com.example.familyapp.network.dto.userDto.UserDTO
 import com.example.familyapp.network.mapper.mapUserDtoToUser
+import com.example.familyapp.utils.SessionManager
 
 
 class UserRepository(context: Context) {
@@ -28,8 +30,10 @@ class UserRepository(context: Context) {
     private val userService = RetrofitClient.instance.create(UserService::class.java)
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> get() = _users
-
-
+    private val _logoutStatus = MutableLiveData<Boolean>()
+    val logoutStatus: MutableLiveData<Boolean> get() = _logoutStatus
+    private val _userDataByToken = MutableLiveData<User>()
+    val userDataByToken: LiveData<User> get() = _userDataByToken
   /*
     private val db = Room.databaseBuilder(
         context,
@@ -37,6 +41,7 @@ class UserRepository(context: Context) {
     ).build()
 */
     val scope = CoroutineScope(SupervisorJob())
+
 
     fun login(email: String, password: String, onResult: (Result<Unit>) -> Unit) {
         val loginRequest = LoginRequest(email, password)
@@ -51,8 +56,8 @@ class UserRepository(context: Context) {
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
-                        onResult(Result.success(Unit))
                         _tokenData.value = it.token
+                        onResult(Result.success(Unit))
 
                     }
                 } else {
@@ -62,6 +67,30 @@ class UserRepository(context: Context) {
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("LoginError", t.message ?: "Erreur réseau")
+                onResult(Result.failure(t))
+            }
+        })
+    }
+
+    fun getUserByToken(token: String, onResult: (Result<Unit>) -> Unit) {
+        val call = userService.getUserByToken(token)
+        call.enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                if (response.isSuccessful) {
+                    val userDto = response.body()
+                    userDto?.let {
+                        val user = mapUserDtoToUser(it) // Convertir UserDTO en User
+                        _userDataByToken.value = user
+                        SessionManager.currentUser = user
+                        onResult(Result.success(Unit))
+                    } ?: onResult(Result.failure(Exception("Réponse vide")))
+                } else {
+                    onResult(Result.failure(Exception("Erreur HTTP : ${response.code()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                Log.e("UserRepository", "Erreur réseau : ${t.message}")
                 onResult(Result.failure(t))
             }
         })
@@ -117,6 +146,27 @@ class UserRepository(context: Context) {
 
             override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
                 Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+            }
+        })
+    }
+
+    fun logout(userId: Int) {
+        val call = userService.logout(userId)
+
+        call.enqueue(object : Callback<LogoutResponse> {
+            override fun onResponse(call: Call<LogoutResponse>, response: Response<LogoutResponse>) {
+                if (response.isSuccessful) {
+                    Log.d("UserRepository", "Déconnexion réussie : ${response.body()}")
+                    _logoutStatus.value = true
+                } else {
+                    Log.e("UserRepository", "Erreur HTTP : ${response.code()}")
+                    _logoutStatus.value = false
+                }
+            }
+
+            override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
+                Log.e("UserRepository", "Erreur réseau : ${t.message}")
+                _logoutStatus.value = false
             }
         })
     }

@@ -27,9 +27,10 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
                     val data = args[0] as JSONObject
                     val messageReceived = data.getString("content")
                     val idUser = data.getInt("senderId")
+                    val nomUser = data.getString("senderNom")
+                    val prenomUser = data.getString("senderPrenom")
 
-                    // Appelez la méthode messageReceived sur le fragment existant
-                    chatFragment.messageReceived(messageReceived, idUser)
+                    chatFragment.messageReceived(messageReceived, idUser, nomUser, prenomUser)
                     println("Message reçu : $data")
                 }
             }

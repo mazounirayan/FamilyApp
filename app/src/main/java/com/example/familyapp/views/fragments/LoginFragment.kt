@@ -2,6 +2,7 @@ package com.example.familyapp.views.fragments
 
 import UserRepository
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,9 +43,11 @@ class LoginFragment : Fragment() {
                 onSuccess = {
                     Toast.makeText(requireContext(), "Connexion réussie", Toast.LENGTH_SHORT).show()
 
-                    viewModel.loginResult.value
                     SessionManager.currentUser = viewModel.userData.value
-                    viewModel.tokenData.value?.let { it1 -> localStorage.saveLoginState(it1) }
+                    viewModel.tokenData.value?.let { token ->
+                        Log.d("LoginFragment", "Token reçu : $token")
+                        localStorage.saveLoginState(token)
+                    } ?: Log.e("LoginFragment", "Erreur : Aucun token reçu")
                     (activity as? AuthenticationActivity)?.navigateToMainActivity()
                 },
                 onFailure = { exception ->

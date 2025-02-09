@@ -54,6 +54,7 @@ dependencies {
 
     implementation(libs.places)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.media3.common.ktx)
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
     implementation(libs.retrofit)
