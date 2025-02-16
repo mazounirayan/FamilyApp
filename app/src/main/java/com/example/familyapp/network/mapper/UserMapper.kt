@@ -3,26 +3,23 @@ package com.example.familyapp.network.mapper
 import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.User
 import com.example.familyapp.network.dto.userDto.UserDTO
+import com.example.familyapp.network.dto.userDto.AddUserRequestDTO
 
 
 
 
-    fun mapAddUserRequestToUserDto(request: AddUserRequest): UserDTO {
-        return UserDTO(
-            id = 0,
-            nom = request.nom,
-            prenom = request.prenom,
-            email = request.email,
-            motDePasse = request.motDePasse,
-            numTel = "",
-            role = request.role,
-            idFamille = 0,
-            dateInscription = "",
-            avatar = "",
-            coins = 0,
-            totalPoints = 0
-        )
-    }
+
+fun mapAddUserRequestToUserDto(request: AddUserRequest): AddUserRequestDTO {
+    return AddUserRequestDTO(
+        nom = request.nom,
+        prenom = request.prenom,
+        email = request.email,
+        motDePasse = request.motDePasse,
+        role = request.role
+    )
+}
+
+
     fun mapUserToUserDto(user: User): UserDTO {
         return UserDTO(
             id = user.id,

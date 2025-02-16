@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.familyapp.data.model.conversation.Conversation
+import com.example.familyapp.views.fragments.Conversation.ConversationsFragment
 import com.example.familyapp.views.fragments.DashboardFragment
 import com.example.familyapp.views.fragments.HomeFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
@@ -29,14 +31,18 @@ object NavigationBar{
             supportFragmentManager.commit {
                 replace<DashboardFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
+                addToBackStack("name")
             }
         }
 
         activity.findViewById<ImageView>(R.id.messages_icon)?.setOnClickListener {
             val supportFragmentManager = activity.supportFragmentManager
 
-
+            supportFragmentManager.commit {
+                replace<ConversationsFragment>(R.id.fragment_container)
+                setReorderingAllowed(true)
+                addToBackStack("name")
+            }
 
         }
 
@@ -47,7 +53,7 @@ object NavigationBar{
             supportFragmentManager.commit {
                 replace<ManageFamilyFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
+                addToBackStack("name")
             }
         }
 

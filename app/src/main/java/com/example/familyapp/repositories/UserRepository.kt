@@ -85,37 +85,57 @@ class UserRepository(context: Context) {
         })
         return data
     }
+    fun deleteUser(userId: Int, onResult: (Result<Unit>) -> Unit) {
+        userService.deleteUser(userId).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                     onResult(Result.success(Unit))
+                } else {
+                     onResult(Result.failure(Exception("Erreur de suppression : ${response.code()} - ${response.message()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                 onResult(Result.failure(Exception("Erreur réseau lors de la suppression: ${t.message}")))
+            }
+        })
+    }
 
 
 
-    fun createUser(addUserRequest: AddUserRequest, onResult: (Result<User>) -> Unit) {
-        val userDTO =mapAddUserRequestToUserDto(addUserRequest)
-        userService.createUser(userDTO).enqueue(object : Callback<UserDTO> {
+    fun createUser(addUserRequest: AddUserRequest, idFamille: Int, onResult: (Result<User>) -> Unit) {
+        val addUserRequestDTO = mapAddUserRequestToUserDto(addUserRequest)
+        userService.createUser(addUserRequestDTO).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     response.body()?.let { userDto ->
                         try {
-                            val user =  mapUserDtoToUser(userDto)
-                            addUserToFamille(user.id, 1, { familyResult ->
+                            val user = mapUserDtoToUser(userDto)
+                            _users.postValue(listOf(user))
+                            addUserToFamille(user.id, idFamille, { familyResult ->
                                 if (familyResult.isSuccess) {
-                                     _users.postValue(listOf(user)) // Simule un ajout à LiveData s'il est utilisé dans le contexte d'une liste
-                                    onResult(Result.success(user)) // Réponse au callback
+                                    onResult(Result.success(user))
                                 } else {
                                     onResult(Result.failure(Exception("Failed to add user to family")))
                                 }
                             })
                         } catch (e: Exception) {
+                            Log.e("CreateUser", "Failed to map user data: ${e.message}", e)
                             onResult(Result.failure(Exception("Failed to map user data: ${e.message}")))
                         }
                     } ?: run {
+                        Log.e("CreateUser", "No user data received")
                         onResult(Result.failure(Exception("Failed to parse user data")))
                     }
                 } else {
-                    onResult(Result.failure(Exception("Failed to create user: ${response.message()}")))
+                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
+                    Log.e("CreateUser", "Failed to create user: $errorBody")
+                    onResult(Result.failure(Exception("Failed to create user: $errorBody")))
                 }
             }
 
             override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                Log.e("CreateUser", "Network error: ${t.message}", t)
                 onResult(Result.failure(Exception("Network error: ${t.message}")))
             }
         })
