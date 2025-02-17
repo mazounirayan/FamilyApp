@@ -30,7 +30,7 @@ class AuthenticationActivity : AppCompatActivity(), PagerHandler {
     }
 
     private fun setUpPager() {
-        // Initialise ViewPager2 et son adaptateur
+
         this.familyAppPager = findViewById(R.id.viewPager)
         val pagerAdapter = ViewPagerAdapter(this, this)
         this.familyAppPager.adapter = pagerAdapter
@@ -41,7 +41,7 @@ class AuthenticationActivity : AppCompatActivity(), PagerHandler {
     fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-        finish() // Terminer l'Activity actuelle pour éviter de revenir en arrière
+        finish()
     }
 
     override fun displaySelectionPage() {

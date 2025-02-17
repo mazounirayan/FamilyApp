@@ -27,7 +27,7 @@ class UserRepository(context: Context) {
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> get() = _users
 
-
+    private val userSessionManager = UserSessionManager(context)
   /*
     private val db = Room.databaseBuilder(
         context,
@@ -49,7 +49,8 @@ class UserRepository(context: Context) {
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
-                                       onResult(Result.success(Unit))
+                        userSessionManager.saveUserId(user.id)
+                       onResult(Result.success(Unit))
                     }
                 } else {
                     onResult(Result.failure(Exception("Erreur : ${response.message()}")))
@@ -70,10 +71,8 @@ class UserRepository(context: Context) {
         call.enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
-                    // Inscription réussie
                     onResult(Result.success(true))
                 } else {
-                    // Gestion des erreurs HTTP avec un message détaillé
                     val errorMessage = "Erreur HTTP ${response.code()}: ${response.errorBody()?.string() ?: response.message()}"
                     Log.e("SignUpResponse", errorMessage)
                     onResult(Result.failure(Exception(errorMessage)))
@@ -81,7 +80,6 @@ class UserRepository(context: Context) {
             }
 
             override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                // Gestion des erreurs réseau
                 val errorMessage = t.message ?: "Erreur réseau inconnue"
                 Log.e("SignUpFailure", errorMessage)
                 onResult(Result.failure(Exception(errorMessage)))

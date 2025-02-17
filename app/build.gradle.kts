@@ -69,6 +69,7 @@ dependencies {
 
     implementation(libs.glide.v4120)
     annotationProcessor(libs.compiler)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
 // ViewModel et LiveData
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v250)
@@ -89,5 +90,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+
 
 }

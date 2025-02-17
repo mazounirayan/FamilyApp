@@ -81,7 +81,3 @@ class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
     }
 }
 
-data class ProfileTile(
-    val title: String,
-    val iconName: String
-)
