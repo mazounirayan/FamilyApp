@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.user.AddUserRequest
+import com.example.familyapp.data.model.user.User
 import com.example.familyapp.repositories.TaskRepository
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
@@ -23,6 +24,7 @@ import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import com.example.familyapp.views.Adapters.UserMembershipAdapter
 import com.example.familyapp.views.AddUserDialogFragment
+import com.example.familyapp.views.fragments.manageFamily.UpdateUserDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ManageFamilyFragment : Fragment() {
@@ -40,10 +42,25 @@ class ManageFamilyFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_manage_family, container, false)
 
+
+
         familyRecyclerView = view.findViewById(R.id.family_recycler_view)
-        userMembershipAdapter = UserMembershipAdapter(mutableListOf(), { userId ->
-            viewModel.deleteUser(userId,1)
+        userMembershipAdapter = UserMembershipAdapter(mutableListOf(),
+            onDeleteUser = { userId ->
+                viewModel.deleteUser(userId,1)
+            },
+            onEditUser = { user ->
+                showUpdateUserDialog(user)
+            }
+        )
+        familyRecyclerView.layoutManager = LinearLayoutManager(context)
+        familyRecyclerView.adapter = userMembershipAdapter
+
+        viewModel.users.observe(viewLifecycleOwner, Observer { users ->
+            userMembershipAdapter.updateData(users)
         })
+
+
         familyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         familyRecyclerView.adapter = userMembershipAdapter
 
@@ -60,7 +77,6 @@ class ManageFamilyFragment : Fragment() {
             }
             dialogFragment.show(parentFragmentManager, "AddUserDialog")
         }
-
 
 
         val searchToggleButton = view.findViewById<Button>(R.id.search_toggle_button)
@@ -103,6 +119,12 @@ class ManageFamilyFragment : Fragment() {
         viewModel.users.observe(viewLifecycleOwner, { users ->
             userMembershipAdapter.updateData(users)
         })
+    }
+    private fun showUpdateUserDialog(user: User) {
+        val dialogFragment = UpdateUserDialogFragment(user) { updateUserRequest ->
+            viewModel.updateUser(user.id, updateUserRequest)
+        }
+        dialogFragment.show(parentFragmentManager, "UpdateUserDialog")
     }
 }
 

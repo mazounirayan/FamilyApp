@@ -15,6 +15,7 @@ import retrofit2.Response
 import android.content.Context
 import android.widget.Toast
 import com.example.familyapp.data.model.user.AddUserRequest
+import com.example.familyapp.data.model.user.UpdateUserRequest
 import com.example.familyapp.network.dto.autentDto.FamilyInfo
 import com.example.familyapp.network.dto.autentDto.LoginRequest
 import com.example.familyapp.network.dto.userDto.UserDTO
@@ -67,6 +68,22 @@ class UserRepository(context: Context) {
             }
         })
     }
+    fun updateUser(userId: Int, updateUserRequest: UpdateUserRequest, onResult: (Result<Unit>) -> Unit) {
+        userService.updateUser(userId, updateUserRequest).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    onResult(Result.success(Unit))
+                } else {
+                    onResult(Result.failure(Exception("Failed to update user: ${response.message()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                onResult(Result.failure(Exception("Network error: ${t.message}")))
+            }
+        })
+    }
+
     // Dans UserRepository
     fun getMembers(familyId: Int): LiveData<List<User>> {
         val data = MutableLiveData<List<User>>()

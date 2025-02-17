@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.user.User
- import com.example.familyapp.views.Holders.UserMembershipHolder
+import com.example.familyapp.views.Holders.UserMembershipHolder
 import com.google.android.material.card.MaterialCardView
-
 
 class UserMembershipAdapter(
     private var members: MutableList<User>,
-    private val onDeleteUser: (Int) -> Unit
+    private val onDeleteUser: (Int) -> Unit,
+    private val onEditUser: (User) -> Unit
 ) : RecyclerView.Adapter<UserMembershipHolder>() {
 
     private var filteredMembers: MutableList<User> = ArrayList(members)
@@ -27,8 +27,14 @@ class UserMembershipAdapter(
         holder.userName.text = member.nom
         holder.userRole.text = member.role
 
+        // Supprimer un utilisateur
         holder.itemView.findViewById<MaterialCardView>(R.id.delete_button).setOnClickListener {
             onDeleteUser(member.id)
+        }
+
+        // Modifier un utilisateur
+        holder.itemView.findViewById<MaterialCardView>(R.id.edit_button).setOnClickListener {
+            onEditUser(member)
         }
     }
 
@@ -55,4 +61,3 @@ class UserMembershipAdapter(
         notifyDataSetChanged()
     }
 }
-

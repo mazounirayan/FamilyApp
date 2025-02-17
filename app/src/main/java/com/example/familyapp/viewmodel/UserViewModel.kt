@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.user.AddUserRequest
+import com.example.familyapp.data.model.user.UpdateUserRequest
 import com.example.familyapp.data.model.user.User
 
 
 class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
-
+    private val _successMessages = MutableLiveData<String>()
+    val successMessages: LiveData<String> = _successMessages
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> get() = _users
     private val _errorMessages = MutableLiveData<String>()
@@ -45,5 +47,17 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
             }
         }
     }
+    fun updateUser(userId: Int, updateUserRequest: UpdateUserRequest) {
+        userRepository.updateUser(userId, updateUserRequest) { result ->
+            result.onSuccess {
+                _successMessages.postValue("User successfully updated")
+                fetchUsers(1)
+            }
+            result.onFailure { error ->
+                _errorMessages.postValue(error.message ?: "An unknown error occurred")
+            }
+        }
+    }
+
 
 }

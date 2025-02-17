@@ -1,5 +1,6 @@
 package com.example.familyapp.network.services
 
+ import com.example.familyapp.data.model.user.UpdateUserRequest
  import com.example.familyapp.network.dto.autentDto.FamilyInfo
 import com.example.familyapp.network.dto.autentDto.LoginRequest
 import com.example.familyapp.network.dto.autentDto.LoginResponse
@@ -10,7 +11,8 @@ import com.example.familyapp.network.dto.userDto.UserDTO
  import retrofit2.http.Body
  import retrofit2.http.DELETE
  import retrofit2.http.GET
-import retrofit2.http.POST
+ import retrofit2.http.PATCH
+ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface UserService {
@@ -29,6 +31,9 @@ interface UserService {
 
     @DELETE("users/{idUser}")
     fun deleteUser(@Path("idUser") idUser: Int): Call<Void>
+
+    @PATCH("users/{id}")
+    fun updateUser(@Path("id") userId: Int, @Body updateUserRequest: UpdateUserRequest): Call<Void>
 
 
     @POST("users/{idUser}/famille")

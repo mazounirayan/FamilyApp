@@ -7,7 +7,7 @@ import com.example.familyapp.R
 import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.views.Holders.ConversationViewHolder
 
-class ConversationsAdapter(private var conversations: List<Conversation>) : RecyclerView.Adapter<ConversationViewHolder>() {
+class ConversationsAdapter(private var conversations: MutableList<Conversation> = mutableListOf()) : RecyclerView.Adapter<ConversationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_conversation, parent, false)
@@ -21,7 +21,8 @@ class ConversationsAdapter(private var conversations: List<Conversation>) : Recy
     override fun getItemCount(): Int = conversations.size
 
     fun updateConversations(newConversations: List<Conversation>) {
-        conversations = newConversations
+        conversations.clear()
+        conversations.addAll(newConversations)
         notifyDataSetChanged()
     }
 }
