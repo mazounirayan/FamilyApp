@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -29,7 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
 
     private lateinit var familyAppPager: ViewPager2
-    private lateinit var backButton: Button
+//    private lateinit var backButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +43,16 @@ class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        backButton = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
             handleBackNavigation()
         }
+
+       // backButton = findViewById(R.id.backButton)
+      //  backButton.setOnClickListener {
+         //   handleBackNavigation()
+      //  }
 
 
 

@@ -41,8 +41,8 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
 
     fun login() {
 
-        val emailValue = "a@a.aaa"//email.value.orEmpty().trim()
-        val passwordValue = "azerty"//password.value.orEmpty().trim()
+        val emailValue = "jean.dupont@example.com"//email.value.orEmpty().trim()
+        val passwordValue = "password123"//password.value.orEmpty().trim()
 
         if (emailValue.isEmpty() || passwordValue.isEmpty()) {
             _loginResult.value = Result.failure(Exception("Les champs ne peuvent pas être vides"))

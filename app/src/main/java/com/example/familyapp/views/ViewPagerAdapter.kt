@@ -19,7 +19,7 @@ class ViewPagerAdapter(activity: AppCompatActivity, private val pagerHandler: Pa
         return when (position) {
             0 -> SelectionFragment(pagerHandler)
             1 -> LoginFragment()
-           2 -> SignupFragment()
+            2 -> SignupFragment()
             else -> throw IllegalStateException("Position inconnue : $position")
         }
     }
