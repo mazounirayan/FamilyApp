@@ -13,7 +13,6 @@ fun mapTaskDtoToTask(taskDto: TaskDto): Task {
         type = taskDto.type,
         description = taskDto.description,
         priorite = taskDto.priorite,
-        idCategorie = taskDto.idCategorie,
         idUser = taskDto.idUser,
         idFamille = taskDto.idFamille,
     )

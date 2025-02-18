@@ -5,4 +5,18 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="ProfileTileStyle">
+        <item name="android:background">@drawable/profile_tile_background</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+  
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

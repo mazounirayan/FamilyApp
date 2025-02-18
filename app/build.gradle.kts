@@ -41,38 +41,52 @@ android {
 }
 
 dependencies {
+    implementation(libs.socket.io.client)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.recyclerview)
-    implementation("androidx.recyclerview:recyclerview:1.3.2") // ou une version plus récente
+    implementation(libs.androidx.recyclerview) // ou une version plus récente
     implementation(libs.androidx.lifecycle.viewmodel.android)
+
+    //splash
+    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation(libs.play.services.cast.framework)
+
+
+    implementation(libs.places)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.media3.common.ktx)
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation(libs.retrofit)
 
     // Convertisseur Gson pour parser les données JSON
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.converter.gson)
 // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+    implementation(libs.kotlinx.coroutines.android.v160)
 
-
+    implementation("com.google.android.material:material:1.11.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
-// ViewModel et LiveData
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0") // Version actuelle (assure-toi d'avoir la bonne version)
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0") // Si tu utilises LiveData avec coroutines
+    implementation(libs.glide.v4120)
+    annotationProcessor(libs.compiler)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+// ViewModel et LiveData
+    implementation(libs.androidx.lifecycle.viewmodel.ktx.v250)
+    implementation(libs.androidx.lifecycle.livedata.ktx.v250)
+
+    implementation(libs.androidx.fragment.ktx.v162)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.common)
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout")
-    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.swiperefreshlayout.swiperefreshlayout)
+    implementation(libs.glide.v4151)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation(libs.androidx.room.ktx)

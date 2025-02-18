@@ -7,11 +7,15 @@ import com.example.familyapp.viewmodel.UserViewModel
 
 class UserViewModelFactory(
     private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val fragment: Fragment
+
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-            return UserViewModel(userRepository) as T
+
+            return UserViewModel(userRepository, fragment) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

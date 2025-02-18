@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.task.Task
+import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.repositories.TaskRepository
 
 class TaskViewModel(
@@ -28,6 +30,19 @@ class TaskViewModel(
 
         this.taskRepo.getTaskFromUser(idUser)
     }
+
+    fun addTask(task:TaskDto){
+        this.taskRepo.addTask(task)
+    }
+
+    fun patchTask(id:Int,task: TaskUpdate){
+        this.taskRepo.patchTask(id,task)
+    }
+
+    /*fun refreshTasks() {
+        // Force une mise à jour des données observées
+        _task.postValue(_task.value)
+   */
     fun fetchAllTasks(idFamille: Int) {
         Log.d("TaskViewModel", "🔹 Début du fetchAllTasks pour idFamille : $idFamille") // 🔥 Vérifie si c'est bien appelé
 
