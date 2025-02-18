@@ -29,6 +29,9 @@ interface UserService {
     @POST("/auth/signup")
     fun signUp(@Body request: SignUpRequest): Call<UserDTO>
 
+    @GET("users/{userId}")
+    suspend fun getUserDetails(@Path("userId") userId: Int): User
+
     @DELETE("/auth/logout/{id}")
     fun logout(@Path("id") id:Int) : Call<LogoutResponse>
 

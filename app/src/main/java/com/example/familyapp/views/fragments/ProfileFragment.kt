@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.familyapp.AuthenticationActivity
+import com.example.familyapp.MainActivity
 import com.example.familyapp.R
 import com.example.familyapp.utils.LocalStorage
 import com.example.familyapp.utils.SessionManager
@@ -22,6 +23,7 @@ import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import com.example.familyapp.views.PagerHandlerProfile
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.delay
 
 class ProfileFragment : Fragment() {
 
@@ -134,6 +136,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout() {
+        sessionManager = SessionManager(requireContext())
+
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Déconnexion")
             .setMessage("Êtes-vous sûr de vouloir vous déconnecter ?")
@@ -150,9 +154,15 @@ class ProfileFragment : Fragment() {
 
                 val intent = Intent(requireContext(), AuthenticationActivity::class.java)
                 startActivity(intent)
+
                 requireActivity().finish()
             }
             .setNegativeButton("Annuler", null)
             .show()
     }
+
+
+
+
+
 }

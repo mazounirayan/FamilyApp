@@ -9,16 +9,17 @@
         android:padding="16dp">
 
         <!-- Profil utilisateur -->
-        <TextView
-            android:text="Profil utilisateur"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profil utilisateur"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/userEmail"
@@ -31,22 +32,9 @@
             android:background="@android:color/darker_gray"
             android:layout_marginVertical="8dp" />
 
-        <!-- Code d'invitation -->
-        <TextView
-            android:text="Code d'invitation"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/invitationCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <Button
-            android:text="Partager le code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
 
         <View
             android:layout_width="match_parent"
@@ -54,18 +42,6 @@
             android:background="@android:color/darker_gray"
             android:layout_marginVertical="8dp" />
 
-        <!-- Historique des activités -->
-        <TextView
-            android:text="Historique des activités"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activityHistoryRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scrollbars="vertical" />
 
         <View
             android:layout_width="match_parent"
@@ -73,20 +49,7 @@
             android:background="@android:color/darker_gray"
             android:layout_marginVertical="8dp" />
 
-        <!-- Changer le rôle -->
-        <TextView
-            android:text="Changer le rôle d'un enfant"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/changeRoleButton"
-            android:text="Changer le rôle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <!-- Confidentialité et support -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

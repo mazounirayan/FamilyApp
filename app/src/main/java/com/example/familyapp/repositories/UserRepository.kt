@@ -103,10 +103,8 @@ class UserRepository(context: Context) {
         call.enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
-                    // Inscription réussie
                     onResult(Result.success(true))
                 } else {
-                    // Gestion des erreurs HTTP avec un message détaillé
                     val errorMessage = "Erreur HTTP ${response.code()}: ${response.errorBody()?.string() ?: response.message()}"
                     Log.e("SignUpResponse", errorMessage)
                     onResult(Result.failure(Exception(errorMessage)))
@@ -114,7 +112,6 @@ class UserRepository(context: Context) {
             }
 
             override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                // Gestion des erreurs réseau
                 val errorMessage = t.message ?: "Erreur réseau inconnue"
                 Log.e("SignUpFailure", errorMessage)
                 onResult(Result.failure(Exception(errorMessage)))
