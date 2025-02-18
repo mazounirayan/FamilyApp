@@ -12,7 +12,6 @@ import com.example.familyapp.views.fragments.Conversation.ConversationsFragment
 import com.example.familyapp.views.fragments.DashboardFragment
 import com.example.familyapp.views.fragments.HomeFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
-import com.example.familyapp.views.fragments.ManageFamilyFragment
 import com.example.familyapp.views.fragments.message.ChatFragment
 
 object NavigationBar{
