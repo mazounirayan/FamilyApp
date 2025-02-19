@@ -1,7 +1,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="230dp"
+    android:layout_width="210dp"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     app:cardBackgroundColor="@color/bleu"
@@ -14,29 +14,53 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-         <TextView
+        <!-- Title -->
+        <TextView
             android:id="@+id/title_tasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tasks"
+            android:text="Total tasks"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/task_preview_recyclerview"
+        <!-- List of tasks -->
+        <LinearLayout
+            android:id="@+id/task_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="120dp"
-            android:overScrollMode="never"
-            android:nestedScrollingEnabled="false" />
+            android:orientation="vertical">
+            <!-- Exemple des utilisateurs -->
+            <TextView
+                android:id="@+id/task_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="menage"
+                android:paddingTop="4dp"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/task_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="vaiselle"
+                android:paddingTop="4dp"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/task_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="autre"
+                android:paddingTop="4dp"
+                android:textSize="16sp" />
+        </LinearLayout>
 
-         <TextView
+        <!-- View More -->
+        <TextView
             android:id="@+id/view_more_tasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="..."
+            android:text="voir plus"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
