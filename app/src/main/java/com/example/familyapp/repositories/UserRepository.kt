@@ -11,10 +11,14 @@ import kotlinx.coroutines.SupervisorJob
 import retrofit2.Callback
 import retrofit2.Response
 import android.content.Context
+import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.LogoutResponse
+import com.example.familyapp.data.model.user.UpdateUserRequest
+import com.example.familyapp.network.dto.autentDto.FamilyInfo
 import com.example.familyapp.network.dto.autentDto.LoginRequest
  import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import com.example.familyapp.network.dto.userDto.UserDTO
+import com.example.familyapp.network.mapper.mapAddUserRequestToUserDto
 import com.example.familyapp.network.mapper.mapUserDtoToUser
 
 
@@ -126,35 +130,24 @@ class UserRepository(context: Context) {
             }
         })
     }
-    
-    fun getMembers(id:Int) {
-        val call = userService.getMembers(id)
 
-        call.enqueue(object : Callback<List<UserDTO>> {
-            override fun onResponse(
-                call: Call<List<UserDTO>>,
-                response: Response<List<UserDTO>>
-            ) {
-
-
+    fun getMembers(familyId: Int): LiveData<List<User>> {
+        val data = MutableLiveData<List<User>>()
+        userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    _users.value = responseBody?.map { userDto ->
-                        mapUserDtoToUser(userDto) // Mapper chaque UserDTO en User
-                    }
-                }
-
-                 else {
-                    Log.e("UserRepository", "Erreur HTTP : ${response.code()}")
+                    data.postValue(response.body()?.map { dto -> mapUserDtoToUser(dto) } ?: emptyList())
+                } else {
+                    data.postValue(emptyList())
                 }
             }
 
             override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
-                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+                data.postValue(emptyList())
             }
         })
+        return data
     }
-
     fun logout(userId: Int) {
         val call = userService.logout(userId)
 
@@ -172,6 +165,89 @@ class UserRepository(context: Context) {
             override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
                 Log.e("UserRepository", "Erreur réseau : ${t.message}")
                 _logoutStatus.value = false
+            }
+        })
+    }
+    fun deleteUser(userId: Int, onResult: (Result<Unit>) -> Unit) {
+        userService.deleteUser(userId).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    onResult(Result.success(Unit))
+                } else {
+                    onResult(Result.failure(Exception("Erreur de suppression : ${response.code()} - ${response.message()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                onResult(Result.failure(Exception("Erreur réseau lors de la suppression: ${t.message}")))
+            }
+        })
+    }
+    fun createUser(addUserRequest: AddUserRequest, idFamille: Int, onResult: (Result<User>) -> Unit) {
+        val addUserRequestDTO = mapAddUserRequestToUserDto(addUserRequest)
+        userService.createUser(addUserRequestDTO).enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { userDto ->
+                        try {
+                            val user = mapUserDtoToUser(userDto)
+                            _users.postValue(listOf(user))
+                            addUserToFamille(user.id, idFamille, { familyResult ->
+                                if (familyResult.isSuccess) {
+                                    onResult(Result.success(user))
+                                } else {
+                                    onResult(Result.failure(Exception("Failed to add user to family")))
+                                }
+                            })
+                        } catch (e: Exception) {
+                            Log.e("CreateUser", "Failed to map user data: ${e.message}", e)
+                            onResult(Result.failure(Exception("Failed to map user data: ${e.message}")))
+                        }
+                    } ?: run {
+                        Log.e("CreateUser", "No user data received")
+                        onResult(Result.failure(Exception("Failed to parse user data")))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
+                    Log.e("CreateUser", "Failed to create user: $errorBody")
+                    onResult(Result.failure(Exception("Failed to create user: $errorBody")))
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                Log.e("CreateUser", "Network error: ${t.message}", t)
+                onResult(Result.failure(Exception("Network error: ${t.message}")))
+            }
+        })
+    }
+    fun addUserToFamille(idUser: Int, idFamille: Int, onFamilyResult: (Result<Unit>) -> Unit) {
+        val familyInfo = FamilyInfo(idFamille)
+        userService.addUserToFamille(idUser, familyInfo).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    onFamilyResult(Result.success(Unit))
+                } else {
+                    onFamilyResult(Result.failure(Exception("Failed to add user to family: ${response.message()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                onFamilyResult(Result.failure(Exception("Network error: ${t.message}")))
+            }
+        })
+    }
+    fun updateUser(userId: Int, updateUserRequest: UpdateUserRequest, onResult: (Result<Unit>) -> Unit) {
+        userService.updateUser(userId, updateUserRequest).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    onResult(Result.success(Unit))
+                } else {
+                    onResult(Result.failure(Exception("Failed to update user: ${response.message()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                onResult(Result.failure(Exception("Network error: ${t.message}")))
             }
         })
     }

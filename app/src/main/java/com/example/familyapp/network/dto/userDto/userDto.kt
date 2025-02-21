@@ -11,10 +11,11 @@ data class UserDTO(
     val motDePasse: String,
     val role: String,
     val dateInscription: String,
-    val avatar:String? ,
+    val avatar: String?,
     val coins: Int,
     val totalPoints: Int,
     val famille: FamilleDto?,
     val numTel: String,
-    val chats: List<Chat>
+    val chats: List<Chat>,
+   // val idFamille: Int
 )

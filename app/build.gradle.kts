@@ -94,5 +94,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation("com.google.protobuf:protobuf-javalite:3.24.0")
 
 }

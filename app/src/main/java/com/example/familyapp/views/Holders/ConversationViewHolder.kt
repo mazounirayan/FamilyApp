@@ -21,12 +21,12 @@ class ConversationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         contactName.text = conversation.name
         lastMessage.text = conversation.lastMessage
 
-         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         sdf.timeZone = TimeZone.getTimeZone("UTC")
         val date = sdf.parse(conversation.messageTime) ?: Date()
         messageTime.text = DateUtils.getRelativeTimeSpanString(date.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
 
-         Glide.with(itemView.context)
+        Glide.with(itemView.context)
             .load(conversation.profileImage)
             .placeholder(R.drawable.baseline_account_circle_24)
             .into(profileImage)

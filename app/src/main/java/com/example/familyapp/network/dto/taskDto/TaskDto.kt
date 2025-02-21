@@ -1,6 +1,7 @@
 package com.example.familyapp.network.dto.taskDto
 
 
+import com.example.familyapp.data.model.task.Priorite
 import com.google.gson.annotations.SerializedName
 
 data class TaskDto(
@@ -14,7 +15,7 @@ data class TaskDto(
     val status: String,
     val type: String,
     val description: String,
-    val priorite: String,
+    val priorite:  Priorite?,
     val idUser: Int,
     val idFamille: Int
 )

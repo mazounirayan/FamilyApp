@@ -33,7 +33,10 @@ class ManageFamilyFragment : Fragment() {
     private lateinit var userMembershipAdapter: UserMembershipAdapter
 
     private val viewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserRepository(this.requireContext()))
+        UserViewModelFactory(
+            UserRepository(this.requireContext()),
+            fragment = this
+        )
     }
 
 
@@ -122,7 +125,9 @@ class ManageFamilyFragment : Fragment() {
     }
     private fun showUpdateUserDialog(user: User) {
         val dialogFragment = UpdateUserDialogFragment(user) { updateUserRequest ->
-            viewModel.updateUser(user.id, updateUserRequest)
+            viewModel.updateUser(
+                user.id, updateUserRequest,
+            )
         }
         dialogFragment.show(parentFragmentManager, "UpdateUserDialog")
     }

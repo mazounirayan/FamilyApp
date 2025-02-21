@@ -26,26 +26,11 @@
         android:hint="Email"
         android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/et_profession"
+    <Spinner
+        android:id="@+id/spinner_role"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Profession"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/et_num_tel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Numéro de téléphone"
-        android:inputType="phone" />
-
-    <EditText
-        android:id="@+id/et_role"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Rôle"
-        android:inputType="text" />
+        android:entries="@array/role_options" />
 
     <Button
         android:id="@+id/btn_add_user"

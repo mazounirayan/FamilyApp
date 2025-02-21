@@ -17,7 +17,10 @@ import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 class UsersFragment : Fragment() {
 
     private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserRepository(this.requireContext()))
+        UserViewModelFactory(
+            UserRepository(this.requireContext()),
+            fragment = this
+        )
     }
 
     override fun onCreateView(

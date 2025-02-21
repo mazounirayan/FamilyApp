@@ -8,16 +8,19 @@ import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.UpdateUserRequest
 import com.example.familyapp.data.model.user.User
-
+import retrofit2.Callback
 import androidx.activity.result.launch
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import com.example.familyapp.network.RetrofitClient
+import com.example.familyapp.network.services.UserService
 import com.example.familyapp.utils.SessionManager
+import retrofit2.Call
+import retrofit2.Response
 
 class UserViewModel(private val userRepository: UserRepository, val context: LifecycleOwner) : ViewModel() {
     val email = MutableLiveData<String>()
@@ -36,7 +39,7 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
     private val _user = MutableLiveData<List<User>>()
     val user: LiveData<List<User>> get() = _user
     val logoutStatus: LiveData<Boolean> get() = userRepository.logoutStatus
-
+    private val userService = RetrofitClient.instance.create(UserService::class.java)
     init {
         role.observeForever { selectedRole ->
             isChild.value = selectedRole == "Enfant"
@@ -87,8 +90,8 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
             result.onFailure { error ->
                 _errorMessages.postValue(error.message ?: "An unknown error occurred")
             }
-
-
+        }
+    }
 
     
     val userData = userRepository.userData
@@ -179,4 +182,3 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
         this.taskRepo.getTaskFromUser(idUser)
     }*/
 }
-    }}

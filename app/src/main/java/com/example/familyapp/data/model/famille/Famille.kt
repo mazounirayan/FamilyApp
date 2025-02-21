@@ -1,10 +1,10 @@
 package com.example.familyapp.data.model.Famille
 
-import java.time.LocalDate
+import java.util.Date
 
 data class Famille(
     val idFamille: Int,
     val nom: String,
-    val dateCreation: LocalDate,
+    val dateCreation: Date,
     val codeInvitation: String,
 )

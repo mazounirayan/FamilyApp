@@ -31,7 +31,7 @@ data class Task(
     var status: String,
     val type: String,
     val description: String,
-    val priorite: String,
+    val priorite: Priorite?,
     val idUser: Int,
     val idFamille: Int
 )

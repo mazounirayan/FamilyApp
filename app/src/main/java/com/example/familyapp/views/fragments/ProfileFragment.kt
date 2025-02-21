@@ -136,7 +136,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout() {
-        sessionManager = SessionManager(requireContext())
+     //   sessionManager = SessionManager(requireContext())
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Déconnexion")

@@ -58,21 +58,10 @@ class RewardsViewModel (
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
     init {
-        loadMockData()
+       // loadMockData()
     }
 
-    private fun loadMockData() {
-        // Simulation des données
-        _currentUser.value = User(
-            1, "Martin", "Sophie", "sophie@email.com",
-            "xxx", "123456789", "ENFANT ", 1,
-            "2024-01-14",  1500, "avatar1.jpg",2000, listOf<Chat>()
-        )
 
-
-
-
-    }
 
 
     fun echangerRecompense(idRecompense: Int) {

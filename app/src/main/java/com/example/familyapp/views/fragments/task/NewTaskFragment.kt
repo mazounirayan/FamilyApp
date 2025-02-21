@@ -1,3 +1,4 @@
+
 package com.example.familyapp.views.fragments.task
 
 import UserRepository
@@ -160,15 +161,15 @@ class NewTaskFragment : Fragment() {
 
         taskViewModel.addTask(
             TaskDto(0,
-            nom = nomTask?.text.toString(),
-            dateDebut = dateDebut.toString() ,
-            dateFin = dateFin.toString(),
-            status = StatusTache.A_FAIRE.toString(),
-            type = typeTache.toString(),
-            description = descriptionTask?.text.toString() ,
-            priorite = typePriorite.toString(),
-            idUser = selectedUser.id,
-            idFamille = 1)
+                nom = nomTask?.text.toString(),
+                dateDebut = dateDebut.toString() ,
+                dateFin = dateFin.toString(),
+                status = StatusTache.A_FAIRE.toString(),
+                type = typeTache.toString(),
+                description = descriptionTask?.text.toString() ,
+                priorite = typePriorite,
+                idUser = selectedUser.id,
+                idFamille = 1)
         )
 
 
@@ -283,6 +284,6 @@ class NewTaskFragment : Fragment() {
                 setUpUsersSp(getUsers(data), fragmentView)
             }
         }
-      //  userViewModel.fetchUser(1)
+        //  userViewModel.fetchUser(1)
     }
 }
