@@ -20,7 +20,7 @@ fun mapAddUserRequestToUserDto(request: AddUserRequest): AddUserRequestDTO {
 }
 
 
-    fun mapUserToUserDto(user: User): UserDTO {
+  /*  fun mapUserToUserDto(user: User): UserDTO {
         return UserDTO(
             id = user.id,
             nom = user.nom,
@@ -33,24 +33,26 @@ fun mapAddUserRequestToUserDto(request: AddUserRequest): AddUserRequestDTO {
             dateInscription = user.dateInscription,
             avatar = user.avatar,
             coins = user.coins,
-            totalPoints = user.totalPoints
+            totalPoints = user.totalPoints,
         )
-    }
-    fun mapUserDtoToUser(userDto: UserDTO): User {
-        return User(
-            id = userDto.id,
-            nom = userDto.nom,
-            prenom = userDto.prenom,
-            email = userDto.email,
-            role = userDto.role,
-            numTel = userDto.numTel,
-            idFamille = userDto.idFamille,
-            dateInscription = userDto.dateInscription,
-            motDePasse = userDto.motDePasse,
-            avatar = userDto.avatar,
-            coins= userDto.coins,
-            totalPoints= userDto.totalPoints,
-        )
+    }*/
+        fun mapUserDtoToUser(userDto: UserDTO): User {
+            return User(
+                id = userDto.id,
+                nom = userDto.nom,
+                prenom = userDto.prenom,
+                email = userDto.email,
+                role = userDto.role,
+                numTel = userDto.numTel,
+                idFamille = userDto.famille?.idFamille,
+                dateInscription = userDto.dateInscription,
+                motDePasse = userDto.motDePasse,
+                avatar = userDto.avatar,
+                coins = userDto.coins,
+                totalPoints = userDto.totalPoints,
+                chats = userDto.chats,
+             //   idFamille = TODO()
+            )
     }
 
 

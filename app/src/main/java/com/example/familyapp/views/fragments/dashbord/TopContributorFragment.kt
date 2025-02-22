@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.repositories.TaskRepository
- import com.example.familyapp.viewmodel.TaskViewModel
+import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
@@ -19,7 +19,10 @@ import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 class TopContributorFragment : Fragment() {
 
     private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(UserRepository(this.requireContext()))
+        UserViewModelFactory(
+            UserRepository(this.requireContext()),
+            fragment = this
+        )
     }
 
     private val taskViewModel: TaskViewModel by viewModels {
@@ -40,7 +43,7 @@ class TopContributorFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.item_dashboard_top_contributor, container, false)
 
-         winnerNameTextView = view.findViewById(R.id.winner_name)
+        winnerNameTextView = view.findViewById(R.id.winner_name)
         progressEnCours = view.findViewById(R.id.progress_en_cours)
         progressFini = view.findViewById(R.id.progress_fini)
         progressNonCommence = view.findViewById(R.id.progress_non_commence)
@@ -48,7 +51,7 @@ class TopContributorFragment : Fragment() {
         percentFini = view.findViewById(R.id.percent_fini)
         percentNonCommence = view.findViewById(R.id.percent_non_commence)
 
-         userViewModel.users.observe(viewLifecycleOwner) { users ->
+        userViewModel.users.observe(viewLifecycleOwner) { users ->
             val topUser = users.maxByOrNull { it.totalPoints }
             topUser?.let { user ->
                 winnerNameTextView.text = "${user.prenom} ${user.nom}"
@@ -56,7 +59,7 @@ class TopContributorFragment : Fragment() {
             }
         }
 
-         userViewModel.fetchUsers(1)
+        userViewModel.fetchUsers(1)
 
         return view
     }
@@ -65,15 +68,15 @@ class TopContributorFragment : Fragment() {
         taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
             val totalTasks = tasks.size
             if (totalTasks > 0) {
-                 val notStartedTasks = tasks.count { it.status == "Non commencé" }
+                val notStartedTasks = tasks.count { it.status == "Non commencé" }
                 val inProgressTasks = tasks.count { it.status == "EN_COURS" }
                 val finishedTasks = tasks.count { it.status == "FINI" }
 
-                 val notStartedPercentage = (notStartedTasks * 100) / totalTasks
+                val notStartedPercentage = (notStartedTasks * 100) / totalTasks
                 val inProgressPercentage = (inProgressTasks * 100) / totalTasks
                 val finishedPercentage = (finishedTasks * 100) / totalTasks
 
-                 progressNonCommence.progress = notStartedPercentage
+                progressNonCommence.progress = notStartedPercentage
                 progressEnCours.progress = inProgressPercentage
                 progressFini.progress = finishedPercentage
 
@@ -83,6 +86,6 @@ class TopContributorFragment : Fragment() {
             }
         }
 
-         taskViewModel.fetchTask(userId)
+        taskViewModel.fetchTask(userId)
     }
 }

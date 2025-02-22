@@ -81,9 +81,9 @@ class DashboardFragment : Fragment() {
         val totalTasks = tasks.size.toFloat()
 
         // Compter les tâches par priorité
-        val hauteCount = tasks.count { it.priorite == Priorite.Haute }.toFloat()
-        val moyenneCount = tasks.count { it.priorite == Priorite.Moyenne }.toFloat()
-        val basseCount = tasks.count { it.priorite == Priorite.Basse }.toFloat()
+        val hauteCount = tasks.count { it.priorite == Priorite.HAUTE }.toFloat()
+        val moyenneCount = tasks.count { it.priorite == Priorite.MOYENNE }.toFloat()
+        val basseCount = tasks.count { it.priorite == Priorite.BASSE}.toFloat()
 
         // Calculer les pourcentages
         val hautePercentage = if (totalTasks > 0) (hauteCount / totalTasks) * 100 else 0f
@@ -102,4 +102,3 @@ class DashboardFragment : Fragment() {
         taskStatusRecyclerView.adapter = taskStatusAdapter
     }
 }
-

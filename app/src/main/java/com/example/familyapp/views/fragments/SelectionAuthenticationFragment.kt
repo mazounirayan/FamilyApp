@@ -10,6 +10,7 @@ import com.example.familyapp.R
 import com.example.familyapp.pages.interfaces.PagerHandler
 
 class SelectionFragment(private val pagerHandler: PagerHandler) : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {

@@ -59,4 +59,3 @@ class ConversationsFragment : Fragment() {
         adapter.updateConversations(filteredList)
     }
 }
-

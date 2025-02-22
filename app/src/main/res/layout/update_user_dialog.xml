@@ -10,7 +10,8 @@
         android:id="@+id/et_nom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       />
+        />
+
 
     <EditText
         android:id="@+id/et_prenom"
@@ -34,6 +35,7 @@
         android:id="@+id/btn_update_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-   />
+        />
 
 </LinearLayout>
+

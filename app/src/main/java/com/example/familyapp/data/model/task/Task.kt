@@ -1,24 +1,38 @@
 package com.example.familyapp.data.model.task
 
-import java.time.LocalDate
+import com.google.gson.annotations.SerializedName
 
 enum class Priorite {
-    Haute,
-    Moyenne,
-    Basse
+    HAUTE,
+    MOYENNE,
+    BASSE
 }
 
+enum class StatusTache {
+    A_FAIRE,
+    EN_COURS,
+    FINI,
+    SUSPENDU
+}
+
+enum class TypeTache {
+    TACHE_MENAGERE,
+    TACHES_FAMILIALES,
+    TACHES_ADMINISTRATIVES
+}
+
+
 data class Task(
+    @Transient
     val idTache: Int,
     val nom: String,
-    val dateDebut: LocalDate?,
-    val dateFin: LocalDate?,
-    val status: String?,
-    val type: String?,
-    val description: String?,
-    val priorite: Priorite?, //  "Haute", "Moyenne", ou "Basse"
-    val idCategorie: Int?,
-    val idUser: Int?,
-    val idFamille: Int?
+    val dateDebut: String,
+    val dateFin: String,
+    var status: String,
+    val type: String,
+    val description: String,
+    val priorite: Priorite?,
+    val idUser: Int,
+    val idFamille: Int
 )
 

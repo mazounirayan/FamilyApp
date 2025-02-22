@@ -1,3 +1,4 @@
+
 package com.example.familyapp.views.fragments.dashbord
 
 import android.os.Bundle
@@ -21,7 +22,7 @@ class PiechartFragment : Fragment() {
 
     private lateinit var pieChart: PieChart
 
-     private val taskViewModel: TaskViewModel by viewModels {
+    private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory(TaskRepository(this.requireContext()), this)
     }
 
@@ -31,31 +32,31 @@ class PiechartFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.item_dashboard_tsk_progress, container, false)
 
-         pieChart = view.findViewById(R.id.pie_chart)
+        pieChart = view.findViewById(R.id.pie_chart)
 
-         taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
+        taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
             if (tasks.isNotEmpty()) {
                 updatePieChart(tasks)
             }
         }
 
-         taskViewModel.fetchAllTasks(1) // Remplace 1 par l'ID de la famille
+        taskViewModel.fetchAllTasks(1) // Remplace 1 par l'ID de la famille
 
         return view
     }
 
-     private fun updatePieChart(tasks: List<Task>) {
+    private fun updatePieChart(tasks: List<Task>) {
         val totalTasks = tasks.size.toFloat()
 
-         val notStartedTasks = tasks.count { it.status == "Non commencé" }.toFloat()
+        val notStartedTasks = tasks.count { it.status == "Non commencé" }.toFloat()
         val inProgressTasks = tasks.count { it.status == "En cours" }.toFloat()
         val finishedTasks = tasks.count { it.status == "Fini" }.toFloat()
 
-         val notStartedPercentage = if (totalTasks > 0) (notStartedTasks / totalTasks) * 100 else 0f
+        val notStartedPercentage = if (totalTasks > 0) (notStartedTasks / totalTasks) * 100 else 0f
         val inProgressPercentage = if (totalTasks > 0) (inProgressTasks / totalTasks) * 100 else 0f
         val finishedPercentage = if (totalTasks > 0) (finishedTasks / totalTasks) * 100 else 0f
 
-         val entries = listOf(
+        val entries = listOf(
             PieEntry(notStartedPercentage, "Non commencé"),
             PieEntry(inProgressPercentage, "En cours"),
             PieEntry(finishedPercentage, "Fini")
@@ -67,7 +68,7 @@ class PiechartFragment : Fragment() {
 
         val pieData = PieData(dataSet)
 
-         pieChart.data = pieData
+        pieChart.data = pieData
         pieChart.description.isEnabled = false
         pieChart.centerText = "Tâches"
         pieChart.setEntryLabelTextSize(12f)
