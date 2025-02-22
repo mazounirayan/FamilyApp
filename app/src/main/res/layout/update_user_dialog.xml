@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         />
 
+
     <EditText
         android:id="@+id/et_prenom"
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
         android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+         />
 
     <Spinner
         android:id="@+id/spinner_role"
@@ -37,3 +38,4 @@
         />
 
 </LinearLayout>
+

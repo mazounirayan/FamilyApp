@@ -3,7 +3,7 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Mot de passe</string>
     <string name="button_login">Se connecter</string>
-    <string name="logo_family_app">Logo de lapplication familiale</string>
+    <string name="logo_family_app">Logo de l application familiale</string>
     <string name="new_task">Créer une nouvelle tache !</string>
     <string name="task_name_form">Nom de la tache</string>
     <string name="task_description_form">Description de la tache</string>
@@ -13,12 +13,16 @@
     <string name="task_form_save_cancel">Annuler</string>
     <string name="manage_tasks">Mes taches !</string>
     <string name="recent">Récent</string>
-    <string name="today">Audj</string>
+    <string name="today">Aujourd hui</string>
     <string name="fini">Fini</string>
     <string name="prioritaire">Prioritaire</string>
     <string name="filter">Filtre</string>
     <string name="progress">Progression :</string>
-    <string name="retour">retour</string>
-    <string name="plus_d_information_sur_l_utilisateur">Plus d\'information sur l\'utilisateur</string>
+    <string name="retour">Retour</string>
+    <string name="plus_d_information_sur_l_utilisateur">Plus dinformation sur lutilisateur</string>
 
+    <string-array name="role_options">
+        <item>Parent</item>
+        <item>Enfant</item>
+    </string-array>
 </resources>
