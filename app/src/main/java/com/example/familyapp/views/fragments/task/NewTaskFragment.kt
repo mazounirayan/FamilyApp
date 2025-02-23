@@ -1,3 +1,4 @@
+
 package com.example.familyapp.views.fragments.task
 
 import UserRepository
@@ -25,7 +26,9 @@ import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TypeTache
 import com.example.familyapp.data.model.user.User
+import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
@@ -101,6 +104,8 @@ class NewTaskFragment : Fragment() {
             addTask()
         }
 
+        userViewModel.fetchUser(SessionManager.currentUser!!.id)
+
         return view
     }
 
@@ -154,18 +159,18 @@ class NewTaskFragment : Fragment() {
         Log.d("addTask", "dateFin : ${LocalDate.of(endYear,endMonth,endDay)}")
         */
 
-        taskViewModel.addTask(Task(
-            0,
-            nom = nomTask?.text.toString(),
-            dateDebut = dateDebut.toString() ,
-            dateFin = dateFin.toString(),
-            status = StatusTache.A_FAIRE.toString(),
-            type = typeTache.toString(),
-            description = descriptionTask?.text.toString() ,
-            priorite = typePriorite.toString(),
-            idUser = selectedUser.id,
-            idFamille = 1
-        ))
+        taskViewModel.addTask(
+            TaskDto(0,
+                nom = nomTask?.text.toString(),
+                dateDebut = dateDebut.toString() ,
+                dateFin = dateFin.toString(),
+                status = StatusTache.A_FAIRE.toString(),
+                type = typeTache.toString(),
+                description = descriptionTask?.text.toString() ,
+                priorite = typePriorite,
+                idUser = selectedUser.id,
+                idFamille = 1)
+        )
 
 
     }
@@ -279,6 +284,6 @@ class NewTaskFragment : Fragment() {
                 setUpUsersSp(getUsers(data), fragmentView)
             }
         }
-      //  userViewModel.fetchUser(1)
+        //  userViewModel.fetchUser(1)
     }
 }

@@ -7,8 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.familyapp.views.fragments.task.ManageTaskFragment
+import com.example.familyapp.data.model.conversation.Conversation
+import com.example.familyapp.views.fragments.Conversation.ConversationsFragment
+import com.example.familyapp.views.fragments.DashboardFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
+import com.example.familyapp.views.fragments.task.ManageTaskFragment
 import com.example.familyapp.views.fragments.message.ChatFragment
 
 object NavigationBar{
@@ -26,9 +29,9 @@ object NavigationBar{
             val supportFragmentManager = activity.supportFragmentManager
 
             supportFragmentManager.commit {
-                replace<RewardsFragment>(R.id.fragment_container)
+                replace<DashboardFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
+                addToBackStack("name")
             }
 
         }
@@ -50,7 +53,7 @@ object NavigationBar{
             supportFragmentManager.commit {
                 replace<ManageFamilyFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
+                addToBackStack("name")
             }
         }
 

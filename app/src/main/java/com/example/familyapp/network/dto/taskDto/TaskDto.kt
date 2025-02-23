@@ -1,12 +1,11 @@
 package com.example.familyapp.network.dto.taskDto
 
+
 import com.example.familyapp.data.model.task.Priorite
-import com.example.familyapp.data.model.task.StatusTache
-import com.example.familyapp.data.model.task.TypeTache
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
 
 data class TaskDto(
+    @Transient
     val idTache: Int,
     val nom: String,
     @SerializedName("date_debut")
@@ -16,7 +15,7 @@ data class TaskDto(
     val status: String,
     val type: String,
     val description: String,
-    val priorite: String,
+    val priorite:  Priorite?,
     val idUser: Int,
     val idFamille: Int
 )

@@ -49,7 +49,7 @@ class TaskRepository(context: Context) {
         })
     }
 
-    fun addTask(task:Task){
+    fun addTask(task:TaskDto){
         val call = taskService.addTask(task)
 
         call.enqueue(object : Callback<TaskDto> {
@@ -95,4 +95,27 @@ class TaskRepository(context: Context) {
             }
         })
     }
+    fun getAllTasks(idFamille: Int) {
+        Log.d("TaskRepository", "🔹 Requête API envoyée pour getAllTasks de la famille ID : $idFamille")
+
+        val call = taskService.getAllTasks(idFamille)
+        call.enqueue(object : Callback<List<TaskDto>> {
+            override fun onResponse(call: Call<List<TaskDto>>, response: Response<List<TaskDto>>) {
+                if (response.isSuccessful) {
+                    val response = response.body()
+                    Log.d("TaskRepository", "🔹 Réponse API reçue, taille : ${response?.size}")
+
+                    _tasks.value = response?.map { mapTaskDtoToTask(it) }
+                    Log.d("TaskRepository", "🔹 Tâches après mapping : ${_tasks.value?.size}")
+                } else {
+                    Log.e("TaskRepository", "❌ Erreur HTTP : ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<TaskDto>>, t: Throwable) {
+                Log.e("TaskRepository", "❌ Erreur réseau : ${t.message}")
+            }
+        })
+    }
+
 }

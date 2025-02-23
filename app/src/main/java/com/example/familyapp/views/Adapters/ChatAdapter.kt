@@ -1,4 +1,5 @@
 package com.example.familyapp.views.Adapters
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ class ChatAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (messages[position].idUser == currentUserId) {
+        return if (messages[position].user.id == currentUserId) {
             VIEW_TYPE_SENT
         } else {
             VIEW_TYPE_RECEIVED
@@ -48,25 +49,28 @@ class ChatAdapter(
 
     override fun getItemCount(): Int = messages.size
 
-    // ViewHolder pour les messages envoyés (par l'utilisateur actuel)
     class SentMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val contenuText = itemView.findViewById<TextView>(R.id.text_gchat_message_me)
         private val dateText = itemView.findViewById<TextView>(R.id.text_gchat_timestamp_me)
 
+        @SuppressLint("SetTextI18n")
         fun bind(message: Message) {
             contenuText.text = message.contenu
-            dateText.text = message.date_envoie
+            dateText.text = message.dateEnvoie
+
         }
     }
 
-    // ViewHolder pour les messages reçus (d'autres utilisateurs)
     class ReceivedMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val contenuText = itemView.findViewById<TextView>(R.id.text_gchat_message_other)
         private val dateText = itemView.findViewById<TextView>(R.id.text_gchat_timestamp_other)
+        private val nameSender = itemView.findViewById<TextView>(R.id.text_gchat_user_other)
 
+        @SuppressLint("SetTextI18n")
         fun bind(message: Message) {
             contenuText.text = message.contenu
-            dateText.text = message.date_envoie
+            dateText.text = message.dateEnvoie
+            nameSender.text = message.user.prenom + " " +message.user.nom
         }
     }
 }

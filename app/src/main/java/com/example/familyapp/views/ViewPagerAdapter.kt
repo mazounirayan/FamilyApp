@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.familyapp.views.fragments.SelectionFragment
 
 import com.example.familyapp.pages.interfaces.PagerHandler
-import com.example.familyapp.LoginFragment
+import com.example.familyapp.views.fragments.LoginFragment
 import com.example.familyapp.views.fragments.SignupFragment
 
 class ViewPagerAdapter(activity: AppCompatActivity, private val pagerHandler: PagerHandler) :

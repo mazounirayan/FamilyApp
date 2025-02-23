@@ -54,6 +54,7 @@ dependencies {
 
     implementation(libs.places)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.media3.common.ktx)
     val roomVersion = "2.6.1"
     // Retrofit pour les requêtes HTTP
     implementation(libs.retrofit)
@@ -86,12 +87,13 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.swiperefreshlayout.swiperefreshlayout)
     implementation(libs.glide.v4151)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
-
+    implementation("com.google.protobuf:protobuf-javalite:3.24.0")
 
 }

@@ -1,5 +1,6 @@
 package com.example.familyapp.views.fragments
 
+import UserRepository
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,20 +13,30 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.familyapp.AuthenticationActivity
 import com.example.familyapp.MainActivity
 import com.example.familyapp.R
+import com.example.familyapp.utils.LocalStorage
 import com.example.familyapp.utils.SessionManager
+import com.example.familyapp.viewmodel.UserViewModel
+import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import com.example.familyapp.views.PagerHandlerProfile
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 
 class ProfileFragment : Fragment() {
-    private lateinit var sessionManager: SessionManager
+
+    private lateinit var localStorage: LocalStorage
+
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory(UserRepository(this.requireContext()),this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        localStorage = LocalStorage(requireContext())
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -125,13 +136,19 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout() {
-        sessionManager = SessionManager(requireContext())
+     //   sessionManager = SessionManager(requireContext())
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Déconnexion")
             .setMessage("Êtes-vous sûr de vouloir vous déconnecter ?")
             .setPositiveButton("Déconnexion") { _, _ ->
-                sessionManager.logout()
+                userViewModel.logout(SessionManager.currentUser!!.id)
+                localStorage.logout()
+
+                requireContext().getSharedPreferences("user_session", AppCompatActivity.MODE_PRIVATE)
+                    .edit()
+                    .clear()
+                    .apply()
 
                 Toast.makeText(requireContext(), "Déconnecté avec succès", Toast.LENGTH_SHORT).show()
 

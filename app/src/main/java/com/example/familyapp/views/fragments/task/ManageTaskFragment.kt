@@ -22,6 +22,7 @@ import com.example.familyapp.R
 import com.example.familyapp.app_utils.TaskUpdateListener
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.views.recycler_view_adapter.TasksRvAdapter
@@ -157,12 +158,12 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
             setUpTasksRv(getTasks(data), fragmentView)
             this.swipeRefreshLayout.isRefreshing = false
         }
-        taskViewModel.fetchTask(1)
+        taskViewModel.fetchTask(SessionManager.currentUser!!.id)
     }
 
     private fun setUpSwipeToRefreshListeners() {
         this.swipeRefreshLayout.setOnRefreshListener {
-            this.taskViewModel.fetchTask(1)
+            this.taskViewModel.fetchTask(SessionManager.currentUser!!.id)
         }
     }
 

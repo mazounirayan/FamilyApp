@@ -1,17 +1,25 @@
 package com.example.familyapp.views.fragments.message
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.se.omapi.Session
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.message.Message
+import com.example.familyapp.data.model.user.UserMessage
+import com.example.familyapp.network.dto.messageDto.NewMessageDto
+import com.example.familyapp.repositories.MessageRepository
+import com.example.familyapp.utils.SessionManager
+import com.example.familyapp.viewmodel.MessageViewModel
+import com.example.familyapp.viewmodel.factories.MessageViewModelFactory
 import com.example.familyapp.views.Adapters.ChatAdapter
 import com.example.familyapp.websocket.SocketIOClient
 import org.json.JSONObject
@@ -21,14 +29,20 @@ import java.util.Locale
 
 class ChatFragment : Fragment() {
 
-    private val currentUserId = 1 // ID de l'utilisateur actuel
+    private val currentUserId = SessionManager.currentUser!!.id
     private val chatId = 1 // ID du chat (constante)
 
     private lateinit var webSocketClient: SocketIOClient
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
     private val messages = mutableListOf<Message>()
+    private val nom = SessionManager.currentUser!!.nom
+    private val prenom = SessionManager.currentUser!!.prenom
 
+
+    private val messageViewModel: MessageViewModel by viewModels {
+        MessageViewModelFactory(MessageRepository(requireContext()),this)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +78,10 @@ class ChatFragment : Fragment() {
         val sendButton = view.findViewById<Button>(R.id.button_gchat_send)
         val messageInput = view.findViewById<EditText>(R.id.edit_gchat_message)
 
+        observeMessages()
+
+        messageViewModel.fetchMessagesOfChat(chatId)
+
         sendButton.setOnClickListener {
             val content = messageInput.text.toString().trim()
             if (content.isNotEmpty()) {
@@ -72,37 +90,46 @@ class ChatFragment : Fragment() {
             }
         }
 
-        // Chargez les messages initiaux
-        loadInitialMessages()
+
     }
 
     private fun sendMessage(content: String) {
-        addMessageToChat(content, currentUserId)
+
+        val newMessageDto = NewMessageDto(
+            contenu = content,
+            idUser = currentUserId,
+            idChat = chatId,
+            dateEnvoie = getCurrentTimestamp(),
+            isVue = false // Par défaut, le message n'est pas vu au moment de l'envoi
+        )
+        messageViewModel.addMessage(newMessageDto)
+
+        addMessageToChat(content, currentUserId, nom, prenom)
         webSocketClient.sendMessage(createMessageJson(content).toString())
     }
 
 
-    fun messageReceived(content: String, userId: Int) {
+    fun messageReceived(content: String, userId: Int, nom:String, prenom: String) {
         requireActivity().runOnUiThread {
-            addMessageToChat(content, userId)
+            addMessageToChat(content, userId, nom,prenom)
         }
     }
 
     /**
      * Ajoute un message à la liste et met à jour l'interface utilisateur.
      */
-    private fun addMessageToChat(content: String, userId: Int) {
+    private fun addMessageToChat(content: String, userId: Int, nom:String, prenom:String) {
         if (!::chatAdapter.isInitialized) {
             println("Erreur : chatAdapter n'est pas encore initialisé")
             return
         }
 
         val newMessage = Message(
-            id = System.currentTimeMillis().toString(),
+            idMessage = System.currentTimeMillis().toString(),
             contenu = content,
-            date_envoie = getCurrentTimestamp(),
+            dateEnvoie = getCurrentTimestamp(),
             isVue = false,
-            idUser = userId,
+            user = UserMessage(userId,nom,prenom),
             idChat = chatId
         )
 
@@ -111,15 +138,6 @@ class ChatFragment : Fragment() {
         recyclerView.scrollToPosition(messages.size - 1)
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun loadInitialMessages() {
-        // Simuler des messages initiaux (remplacez par un appel API ou une base de données)
-        messages.add(Message("1", "Bonjour !", "2023-10-01 10:00", true, 2, chatId))
-        messages.add(Message("2", "Salut ! Comment ça va ?", "2023-10-01 10:01", true, currentUserId, chatId))
-
-        chatAdapter.notifyDataSetChanged()
-    }
 
     private fun getCurrentTimestamp(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -130,7 +148,18 @@ class ChatFragment : Fragment() {
         return JSONObject().apply {
             put("familyId", chatId)
             put("senderId", currentUserId)
+            put("senderNom", nom)
+            put("senderPrenom", prenom)
             put("content", content)
         }
+    }
+
+    private fun observeMessages() {
+        messageViewModel.messages.observe(viewLifecycleOwner, Observer { newMessages ->
+            messages.clear()
+            messages.addAll(newMessages)
+            chatAdapter.notifyDataSetChanged()
+            recyclerView.scrollToPosition(messages.size - 1) // Scroller vers le dernier message
+        })
     }
 }

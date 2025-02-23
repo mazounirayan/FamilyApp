@@ -1,7 +1,7 @@
 package com.example.familyapp.network.dto.userDto
 
-import com.example.familyapp.network.dto.familleDto.FamilleDTO
-
+import com.example.familyapp.data.model.chat.Chat
+import com.example.familyapp.network.dto.familleDto.FamilleDto
 
 data class UserDTO(
     val id: Int,
@@ -14,6 +14,8 @@ data class UserDTO(
     val avatar: String?,
     val coins: Int,
     val totalPoints: Int,
-    val famille: FamilleDTO?,
-    val numTel: String
+    val famille: FamilleDto?,
+    val numTel: String,
+    val chats: List<Chat>,
+   // val idFamille: Int
 )

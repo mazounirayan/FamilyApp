@@ -1,11 +1,12 @@
 package com.example.familyapp.data.model.message
 
-data class Message(
-    val id: String,
-    val contenu: String,
-    val date_envoie: String,
-    val isVue: Boolean,
-    val idUser: Int,
-    val idChat: Int,
+import com.example.familyapp.data.model.user.UserMessage
 
+data class Message(
+    val idMessage: String,
+    val contenu: String,
+    val dateEnvoie: String,
+    val isVue: Boolean,
+    val user: UserMessage,
+    val idChat: Int,
 )
