@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Créer une conversation"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/etConversationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom de la conversation"
+            android:layout_below="@id/tvTitle"
+            android:layout_marginTop="16dp"/>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/etConversationName"
+            android:layout_above="@id/btnConfirmSelection"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btnConfirmSelection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Créer la conversation"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</layout>

@@ -1,5 +1,6 @@
 package com.example.familyapp.network.services
 
+import com.example.familyapp.data.model.chat.Chat
 import com.example.familyapp.data.model.message.Message
 import com.example.familyapp.network.dto.messageDto.NewMessageDto
 import retrofit2.Call

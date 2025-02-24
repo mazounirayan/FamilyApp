@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.data.model.user.User
- import com.example.familyapp.viewmodel.UserViewModel
+import com.example.familyapp.utils.SessionManager
+import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
+import com.example.familyapp.views.fragments.ManageFamilyFragment
 
 class UsersFragment : Fragment() {
 
@@ -22,6 +24,7 @@ class UsersFragment : Fragment() {
             fragment = this
         )
     }
+    private val currentUserIdFamille= SessionManager.currentUser!!.idFamille ?:-1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,12 +57,12 @@ class UsersFragment : Fragment() {
     }
 
     private fun redirectToFullUsersFragment() {
-        /*
-        val fragment = FullUsersFragment() // À créer si besoin
+
+        val fragment = ManageFamilyFragment()
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
-        */
+
     }
 }

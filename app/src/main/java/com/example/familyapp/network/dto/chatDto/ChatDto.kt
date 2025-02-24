@@ -1,7 +1,11 @@
 package com.example.familyapp.network.dto.chatDto
 
+import com.example.familyapp.data.model.user.User
+
 data class ChatDto(
-    @Transient
     val idChat: Int,
-    val libelle: String
+    val libelle: String,
+    val participants: List<User>
+
+
 )

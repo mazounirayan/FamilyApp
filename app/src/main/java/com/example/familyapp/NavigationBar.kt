@@ -40,9 +40,9 @@ object NavigationBar{
             val supportFragmentManager = activity.supportFragmentManager
 
             supportFragmentManager.commit {
-                replace<ChatFragment>(R.id.fragment_container)
+                replace<ConversationsFragment>(R.id.fragment_container)
                 setReorderingAllowed(true)
-                addToBackStack("name") // Name can be null
+                addToBackStack("name")
             }
         }
 

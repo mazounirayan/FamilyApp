@@ -12,12 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.familyapp.R
 import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.databinding.FragmentConversationsBinding
 import com.example.familyapp.repositories.ConversationRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.ConversationsViewModelFactory
 import com.example.familyapp.views.Adapters.ConversationsAdapter
+import com.example.familyapp.views.fragments.message.ChatFragment
 
 class ConversationsFragment : Fragment() {
     private lateinit var binding: FragmentConversationsBinding
@@ -26,10 +29,19 @@ class ConversationsFragment : Fragment() {
     }
     private lateinit var adapter: ConversationsAdapter
     private var allConversations = mutableListOf<Conversation>()
+    private val currentUserId = SessionManager.currentUser!!.id
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentConversationsBinding.inflate(inflater, container, false)
-        adapter = ConversationsAdapter(mutableListOf())
+
+        adapter = ConversationsAdapter(mutableListOf()) { conversation ->
+            val chatFragment = ChatFragment.newInstance(conversation.id)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, chatFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
         binding.conversationsList.adapter = adapter
         binding.conversationsList.layoutManager = LinearLayoutManager(context)
 
@@ -40,16 +52,34 @@ class ConversationsFragment : Fragment() {
 
         binding.searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(s: Editable?) {
                 filterConversations(s.toString())
             }
         })
 
-        viewModel.loadConversations(1)
+
+        binding.btnCreatePrivateChat.setOnClickListener {
+            openSelectUsersFragment(isGroup = false)
+        }
+
+
+        binding.btnCreateGroupChat.setOnClickListener {
+            openSelectUsersFragment(isGroup = true)
+        }
+
+        viewModel.loadConversations(currentUserId)
         return binding.root
+    }
+
+
+
+    private fun openSelectUsersFragment(isGroup: Boolean) {
+        val selectUsersFragment = SelectUsersFragment.newInstance(isGroup)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, selectUsersFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun filterConversations(query: String) {

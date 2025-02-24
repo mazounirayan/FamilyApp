@@ -18,6 +18,7 @@ import com.example.familyapp.R
 import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.User
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
@@ -31,6 +32,7 @@ class ManageFamilyFragment : Fragment() {
 
     private lateinit var familyRecyclerView: RecyclerView
     private lateinit var userMembershipAdapter: UserMembershipAdapter
+    private val currentUserIdFamily = SessionManager.currentUser!!.idFamille ?: -1
 
     private val viewModel: UserViewModel by viewModels {
         UserViewModelFactory(

@@ -12,6 +12,7 @@ import com.example.familyapp.data.model.task.Priorite
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskStatus
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.views.fragments.dashboard.TopContributorFragment
@@ -22,6 +23,7 @@ import com.example.familyapp.views.fragments.dashbord.UsersFragment
 
 
 class DashboardFragment : Fragment() {
+    private val currentUserId = SessionManager.currentUser!!.id
     private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory(TaskRepository(requireContext()), this)
     }
@@ -74,7 +76,7 @@ class DashboardFragment : Fragment() {
         }
 
         // Charger les tâches de l'API
-        taskViewModel.fetchAllTasks(1) //
+        taskViewModel.fetchAllTasks(currentUserId) //
         return view
     }
     private fun updateTaskStatus(tasks: List<Task>) {

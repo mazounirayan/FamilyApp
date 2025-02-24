@@ -7,7 +7,10 @@ import com.example.familyapp.R
 import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.views.Holders.ConversationViewHolder
 
-class ConversationsAdapter(private var conversations: MutableList<Conversation> = mutableListOf()) : RecyclerView.Adapter<ConversationViewHolder>() {
+class ConversationsAdapter(
+    private var conversations: MutableList<Conversation> = mutableListOf(),
+    private val onConversationClick: (Conversation) -> Unit
+) : RecyclerView.Adapter<ConversationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_conversation, parent, false)
@@ -15,7 +18,12 @@ class ConversationsAdapter(private var conversations: MutableList<Conversation> 
     }
 
     override fun onBindViewHolder(holder: ConversationViewHolder, position: Int) {
-        holder.bind(conversations[position])
+        val conversation = conversations[position]
+        holder.bind(conversation)
+
+         holder.itemView.setOnClickListener {
+            onConversationClick(conversation)
+        }
     }
 
     override fun getItemCount(): Int = conversations.size

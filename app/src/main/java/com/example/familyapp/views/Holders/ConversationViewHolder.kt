@@ -19,15 +19,29 @@ class ConversationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun bind(conversation: Conversation) {
         contactName.text = conversation.name
-        lastMessage.text = conversation.lastMessage
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
-        val date = sdf.parse(conversation.messageTime) ?: Date()
-        messageTime.text = DateUtils.getRelativeTimeSpanString(date.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
+
+        lastMessage.text = conversation.lastMessage ?: "Aucun message pour le moment"
+
+
+        if (conversation.messageTime != null) {
+            try {
+                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                sdf.timeZone = TimeZone.getTimeZone("UTC")
+                val date = sdf.parse(conversation.messageTime) ?: Date()
+                messageTime.text = DateUtils.getRelativeTimeSpanString(
+                    date.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
+                )
+            } catch (e: Exception) {
+                messageTime.text = ""
+            }
+        } else {
+            messageTime.text = ""
+        }
+
 
         Glide.with(itemView.context)
-            .load(conversation.profileImage)
+            .load(conversation.profileImage ?: R.drawable.baseline_account_circle_24)
             .placeholder(R.drawable.baseline_account_circle_24)
             .into(profileImage)
     }

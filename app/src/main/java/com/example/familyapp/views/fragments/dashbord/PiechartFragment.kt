@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.github.mikephil.charting.charts.PieChart
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 
 class PiechartFragment : Fragment() {
+    private val currentUserIdFamille= SessionManager.currentUser!!.idFamille ?:-1
 
     private lateinit var pieChart: PieChart
 
@@ -40,7 +42,7 @@ class PiechartFragment : Fragment() {
             }
         }
 
-        taskViewModel.fetchAllTasks(1) // Remplace 1 par l'ID de la famille
+        taskViewModel.fetchAllTasks(1)
 
         return view
     }

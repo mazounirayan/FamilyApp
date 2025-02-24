@@ -24,15 +24,15 @@ class UserMembershipAdapter(
 
     override fun onBindViewHolder(holder: UserMembershipHolder, position: Int) {
         val member = filteredMembers[position]
-        holder.userName.text = member.nom
-        holder.userRole.text = member.role
+        holder.userName.text = "${member.prenom} ${member.nom}"
+        holder.userRole.text = "Rôle: ${member.role}"
+        holder.userEmail.text = "Email: ${member.email}"
+        holder.userPoints.text = "Points: ${member.totalPoints}"
 
-        // Supprimer un utilisateur
         holder.itemView.findViewById<MaterialCardView>(R.id.delete_button).setOnClickListener {
             onDeleteUser(member.id)
         }
 
-        // Modifier un utilisateur
         holder.itemView.findViewById<MaterialCardView>(R.id.edit_button).setOnClickListener {
             onEditUser(member)
         }

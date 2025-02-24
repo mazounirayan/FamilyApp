@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient   {
-    private const val BASE_URL = "https://androidfamilyapi.onrender.com/"
+    private const val BASE_URL = "https://androidfamilyapi.onrender.com"
 
     private val okHttpClient = OkHttpClient.Builder().build()
 

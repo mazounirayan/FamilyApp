@@ -44,7 +44,7 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
         val view = inflater.inflate(R.layout.fragment_manage_task, container, false)
 
         taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
-            updateProgress(tasks) // Mettre à jour les valeurs initiales
+            updateProgress(tasks)
         }
 
         val filterSpinner = view.findViewById<Spinner>(R.id.filter_spinner)
@@ -58,7 +58,7 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         filterSpinner.adapter = spinnerAdapter
 
-        // Gérer la sélection du filtre
+
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedFilter = filterOptions[position]
@@ -90,14 +90,14 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
                 "À faire" -> tasks.filter { it.status == "A_FAIRE" }
                 "En cours" -> tasks.filter { it.status == "EN_COURS" }
                 "Fini" -> tasks.filter { it.status == "FINI" }
-                else -> tasks // Tous les éléments
+                else -> tasks
             }
             (tasksRv.adapter as TasksRvAdapter).updateTasks(filteredTasks)
         }
     }
 
     override fun onTaskUpdated() {
-        // Recalculer et mettre à jour les valeurs après un changement de statut
+
         updateProgress(taskViewModel.task.value ?: emptyList())
     }
 

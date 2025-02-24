@@ -39,21 +39,15 @@ class TaskViewModel(
         this.taskRepo.patchTask(id,task)
     }
 
-    /*fun refreshTasks() {
-        // Force une mise à jour des données observées
-        _task.postValue(_task.value)
-   */
-    fun fetchAllTasks(idFamille: Int) {
-        Log.d("TaskViewModel", "🔹 Début du fetchAllTasks pour idFamille : $idFamille") // 🔥 Vérifie si c'est bien appelé
 
-        _task.value = emptyList() // Réinitialise la liste des tâches avant de charger
+    fun fetchAllTasks(idFamille: Int) {
+
+        _task.value = emptyList()
         this.taskRepo.tasks.observe(this.context) { data ->
-            Log.d("TaskViewModel", "🔹 Tâches reçues du repo : ${data.size}") // 🔥 Vérifie si le repo retourne des données
-            _task.value = data
+             _task.value = data
         }
 
         this.taskRepo.getAllTasks(idFamille)
-        Log.d("TaskViewModel", "🔹 Après appel de getAllTasks dans le repository") // 🔥 Vérifie si ça plante après
-    }
+     }
 
 }

@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 
 class TopContributorFragment : Fragment() {
+    private val currentUserIdFamille= SessionManager.currentUser!!.idFamille ?:-1
 
     private val userViewModel: UserViewModel by viewModels {
         UserViewModelFactory(
