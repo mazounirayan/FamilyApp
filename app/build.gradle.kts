@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -44,8 +44,11 @@ dependencies {
     implementation(libs.socket.io.client)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.recyclerview) // ou une version plus récente
+
     implementation(libs.androidx.lifecycle.viewmodel.android)
+
+
+
 
     //splash
     implementation("androidx.core:core-splashscreen:1.0.0")
@@ -55,7 +58,7 @@ dependencies {
     implementation(libs.places)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.media3.common.ktx)
-    val roomVersion = "2.6.1"
+
     // Retrofit pour les requêtes HTTP
     implementation(libs.retrofit)
 
@@ -84,7 +87,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.swiperefreshlayout.swiperefreshlayout)
     implementation(libs.glide.v4151)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
@@ -93,6 +95,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+
+    ksp("androidx.room:room-compiler:2.6.1")
+
 
     implementation("com.google.protobuf:protobuf-javalite:3.24.0")
 

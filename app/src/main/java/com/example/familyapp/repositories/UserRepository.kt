@@ -6,14 +6,17 @@ import com.example.familyapp.data.model.user.User
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.autentDto.LoginResponse
 import retrofit2.Call
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
+
 import retrofit2.Callback
 import retrofit2.Response
 import android.content.Context
+import androidx.room.Room
 import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.LogoutResponse
 import com.example.familyapp.data.model.user.UpdateUserRequest
+import com.example.familyapp.db.AppDatabase
+import com.example.familyapp.db.dao.UserDao
+import com.example.familyapp.db.entities.UserEntity
 import com.example.familyapp.network.dto.autentDto.FamilyInfo
 import com.example.familyapp.network.dto.autentDto.LoginRequest
  import com.example.familyapp.network.dto.autentDto.SignUpRequest
@@ -24,6 +27,9 @@ import com.example.familyapp.network.mapper.mapUserDtoToUser
 
 import com.example.familyapp.network.services.UserService
 import com.example.familyapp.utils.SessionManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class UserRepository(context: Context) {
@@ -45,7 +51,15 @@ class UserRepository(context: Context) {
           AppDatabase::class.java, "family_app_db"
       ).build()
   */
-    val scope = CoroutineScope(SupervisorJob())
+    private val userDao: UserDao
+    private val db: AppDatabase = Room.databaseBuilder(
+        context.applicationContext,
+        AppDatabase::class.java, "family_app_db"
+    ).build()
+
+    init {
+        userDao = db.userDao()
+    }
 
 
     fun login(email: String, password: String, onResult: (Result<Unit>) -> Unit) {
@@ -61,7 +75,19 @@ class UserRepository(context: Context) {
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
-
+                        val userEntity = UserEntity(
+                            id = it.user.id,
+                            nom = it.user.nom,
+                            prenom = it.user.prenom,
+                            email = it.user.email,
+                            numTel = it.user.numTel,
+                            role = it.user.role,
+                            idFamille = it.user.famille?.idFamille ?: 0,
+                            profession = TODO()
+                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            userDao.insertUser(userEntity)
+                        }
                         /*scope.launch {
                             insertUserInDb(user)
                         }*/
@@ -81,17 +107,28 @@ class UserRepository(context: Context) {
         })
     }
 
-    /*private suspend fun insertUserInDb(user: User) {
-
-    }*/
-      fun getUserByToken(token: String, onResult: (Result<Unit>) -> Unit) {
+    fun getUserByToken(token: String, onResult: (Result<Unit>) -> Unit) {
         val call = userService.getUserByToken(token)
         call.enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     val userDto = response.body()
                     userDto?.let {
-                        val user = mapUserDtoToUser(it) // Convertir UserDTO en User
+                        val user = mapUserDtoToUser(it)
+                        val userEntity = UserEntity(
+                            id = it.id,
+                            nom = it.nom,
+                            prenom = it.prenom,
+                            email = it.email,
+                            numTel = it.numTel,
+                            role = it.role,
+                            idFamille = it.famille?.idFamille ?: 0,
+                            profession = ""
+                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            userDao.insertUser(   userEntity)
+
+                        }// Convertir UserDTO en User
                         _userDataByToken.value = user
                         SessionManager.currentUser = user
                         onResult(Result.success(Unit))
@@ -108,7 +145,6 @@ class UserRepository(context: Context) {
         })
     }
 
-    
     fun signUp(signUpRequest: SignUpRequest, onResult: (Result<Boolean>) -> Unit) {
         val call = userService.signUp(signUpRequest)
 
@@ -192,8 +228,26 @@ class UserRepository(context: Context) {
                         try {
                             val user = mapUserDtoToUser(userDto)
                             _users.postValue(listOf(user))
+
+
+                            val userEntity = UserEntity(
+                                id = user.id,
+                                nom = user.nom,
+                                prenom = user.prenom,
+                                email = user.email,
+                                numTel = user.numTel,
+                                role = user.role,
+                                idFamille = idFamille,
+                                profession = "" ?: ""
+                            )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                userDao.insertUser(userEntity)
+                            }
+
                             addUserToFamille(user.id, idFamille, { familyResult ->
                                 if (familyResult.isSuccess) {
+
+
                                     onResult(Result.success(user))
                                 } else {
                                     onResult(Result.failure(Exception("Failed to add user to family")))
@@ -225,6 +279,9 @@ class UserRepository(context: Context) {
         userService.addUserToFamille(idUser, familyInfo).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        userDao.updateUserFamille(idUser, idFamille)
+                    }
                     onFamilyResult(Result.success(Unit))
                 } else {
                     onFamilyResult(Result.failure(Exception("Failed to add user to family: ${response.message()}")))
@@ -240,6 +297,9 @@ class UserRepository(context: Context) {
         userService.updateUser(userId, updateUserRequest).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        updateUserInRoom(userId, updateUserRequest)
+                    }
                     onResult(Result.success(Unit))
                 } else {
                     onResult(Result.failure(Exception("Failed to update user: ${response.message()}")))
@@ -251,4 +311,13 @@ class UserRepository(context: Context) {
             }
         })
     }
+    private suspend fun updateUserInRoom(userId: Int, updateUserRequest: UpdateUserRequest) {
+        with(userDao) {
+            updateUserRequest.nom?.takeIf { it.isNotEmpty() }?.let { updateNom(userId, it) }
+            updateUserRequest.prenom?.takeIf { it.isNotEmpty() }?.let { updatePrenom(userId, it) }
+            updateUserRequest.email?.takeIf { it.isNotEmpty() }?.let { updateEmail(userId, it) }
+            updateUserRequest.role?.takeIf { it.isNotEmpty() }?.let { updateRole(userId, it) }
+        }
+    }
+
 }

@@ -4,24 +4,29 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.familyapp.MainApplication
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.db.daos.TaskDao
+import com.example.familyapp.db.entities.TaskEntity
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.mapper.mapTaskDtoToTask
 import com.example.familyapp.network.services.TaskService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TaskRepository(context: Context) {
+class TaskRepository(context: Context,private val taskDao: TaskDao) {
 
     private val taskService = RetrofitClient.instance.create(TaskService::class.java)
 
     private val _tasks = MutableLiveData<List<Task>>()
 
     val tasks: LiveData<List<Task>> get() = _tasks
-
     fun getTaskFromUser(idUser: Int) {
         val call = taskService.getTaskFromUser(idUser)
 
@@ -37,6 +42,9 @@ class TaskRepository(context: Context) {
                         it.map{ value ->
                             mapTaskDtoToTask(value)
                         }
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        taskDao.insertAll(tasks.map { mapTaskToEntity(it) })
                     }
                 } else {
                     Log.e("TaskRepository", "Erreur HTTP : ${response.code()}")
@@ -117,5 +125,25 @@ class TaskRepository(context: Context) {
             }
         })
     }
+
+    private fun mapTaskToEntity(task: Task): TaskEntity {
+        return TaskEntity(
+            id =
+            nom = task.nom,
+            description = task.description,
+            dateEcheance = task.dateEcheance,
+            idUser = task.idUser,
+            idFamille = task.idFamille,
+            etat = task.etat,
+            idTache = task.idTache,,
+            nom = TODO(),
+            dateDebut = TODO(),
+            dateFin = TODO(),
+            status = TODO(),
+            type = TODO(),
+            priorite = TODO()
+        )
+    }
+
 
 }

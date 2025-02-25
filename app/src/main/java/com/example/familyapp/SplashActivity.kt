@@ -20,7 +20,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Initialisation du LocalStorage
+
+
+
         localStorage = LocalStorage(this)
 
         val userRepository = UserRepository(this)
@@ -43,7 +45,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun observeUserByToken(token: String) {
-        // Observez les données utilisateur récupérées par le token
         userViewModel.userDataByToken.observe(this) { user ->
             if (user != null) {
                 navigateToMain()
@@ -52,7 +53,6 @@ class SplashActivity : AppCompatActivity() {
             }
         }
 
-        // Observez les erreurs potentielles lors de la requête
         userViewModel.userByTokenResult.observe(this) { result ->
             result.fold(
                 onSuccess = {
