@@ -159,9 +159,7 @@ class UserRepository(context: Context) {
         userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
-                    val users = response.body()?.map { dto -> mapUserDtoToUser(dto) } ?: emptyList()
-                    Log.d("UserRepository", "Membres récupérés : ${users.size}")
-                    data.postValue(users)
+                    data.postValue(response.body()?.map { dto -> mapUserDtoToUser(dto) } ?: emptyList())
                 } else {
                     Log.e("UserRepository", "Échec de la récupération des membres: ${response.code()}")
                     data.postValue(emptyList())
