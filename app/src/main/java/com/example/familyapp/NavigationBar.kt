@@ -1,18 +1,15 @@
 package com.example.familyapp
 
-import RewardsFragment
 import android.content.Intent
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.views.fragments.Conversation.ConversationsFragment
 import com.example.familyapp.views.fragments.DashboardFragment
 import com.example.familyapp.views.fragments.ManageFamilyFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
-import com.example.familyapp.views.fragments.message.ChatFragment
 
 object NavigationBar{
 

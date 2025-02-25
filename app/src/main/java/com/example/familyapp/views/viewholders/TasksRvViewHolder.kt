@@ -12,6 +12,7 @@ import com.example.familyapp.R
 
 class TasksRvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val taskName: TextView = itemView.findViewById(R.id.task_name)
+    var taskNameUser: TextView = itemView.findViewById(R.id.user_task)
     val taskDetailsSection: LinearLayout = itemView.findViewById(R.id.task_details_section)
     val taskDescription: TextView = itemView.findViewById(R.id.task_description)
     val taskDueDate: TextView = itemView.findViewById(R.id.task_due_date)

@@ -61,11 +61,7 @@ class UserRepository(context: Context) {
                     loginResponse?.let {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
-
-                        /*scope.launch {
-                            insertUserInDb(user)
-                        }*/
-
+                        _tokenData.value = it.token
                         onResult(Result.success(Unit))
 
                     }
@@ -130,14 +126,44 @@ class UserRepository(context: Context) {
             }
         })
     }
+    fun getMembersTask(id:Int) {
+        val call = userService.getMembers(id)
+
+        call.enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(
+                call: Call<List<UserDTO>>,
+                response: Response<List<UserDTO>>
+            ) {
+
+
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    _users.value = responseBody?.map { userDto ->
+                        mapUserDtoToUser(userDto) // Mapper chaque UserDTO en User
+                    }
+                }
+
+                else {
+                    Log.e("UserRepository", "Erreur HTTP : ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
+                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+            }
+        })
+    }
 
     fun getMembers(familyId: Int): LiveData<List<User>> {
         val data = MutableLiveData<List<User>>()
         userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
-                    data.postValue(response.body()?.map { dto -> mapUserDtoToUser(dto) } ?: emptyList())
+                    val users = response.body()?.map { dto -> mapUserDtoToUser(dto) } ?: emptyList()
+                    Log.d("UserRepository", "Membres récupérés : ${users.size}")
+                    data.postValue(users)
                 } else {
+                    Log.e("UserRepository", "Échec de la récupération des membres: ${response.code()}")
                     data.postValue(emptyList())
                 }
             }
@@ -148,6 +174,8 @@ class UserRepository(context: Context) {
         })
         return data
     }
+
+
     fun logout(userId: Int) {
         val call = userService.logout(userId)
 

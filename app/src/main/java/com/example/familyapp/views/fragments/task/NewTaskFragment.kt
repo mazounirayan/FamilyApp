@@ -23,12 +23,12 @@ import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.data.model.task.Priorite
 import com.example.familyapp.data.model.task.StatusTache
-import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TypeTache
 import com.example.familyapp.data.model.user.User
 import com.example.familyapp.network.dto.taskDto.TaskDto
+import com.example.familyapp.network.dto.taskDto.TaskRequestDto
+import com.example.familyapp.network.mapper.mapUserToUserDto
 import com.example.familyapp.repositories.TaskRepository
-import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
@@ -104,7 +104,7 @@ class NewTaskFragment : Fragment() {
             addTask()
         }
 
-        userViewModel.fetchUser(SessionManager.currentUser!!.id)
+        userViewModel.fetchUser(1)
 
         return view
     }
@@ -123,9 +123,6 @@ class NewTaskFragment : Fragment() {
 
         val nomTask = view?.findViewById<TextView>(R.id.task_name_form)
         val descriptionTask = view?.findViewById<TextView>(R.id.task_description_form)
-
-
-
 
 
         if(nomTask.toString() == "" || startYear == 0 || startMonth == 0 || startDay == 0 || endYear == 0 || endMonth == 0 || endDay == 0  || descriptionTask.toString() == "" ){
@@ -160,7 +157,7 @@ class NewTaskFragment : Fragment() {
         */
 
         taskViewModel.addTask(
-            TaskDto(0,
+            TaskRequestDto(0,
                 nom = nomTask?.text.toString(),
                 dateDebut = dateDebut.toString() ,
                 dateFin = dateFin.toString(),
@@ -169,7 +166,8 @@ class NewTaskFragment : Fragment() {
                 description = descriptionTask?.text.toString() ,
                 priorite = typePriorite,
                 idUser = selectedUser.id,
-                idFamille = 1)
+                idFamille = 1
+            )
         )
 
 

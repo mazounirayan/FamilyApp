@@ -8,6 +8,7 @@ import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.taskDto.TaskDto
+import com.example.familyapp.network.dto.taskDto.TaskRequestDto
 import com.example.familyapp.network.mapper.mapTaskDtoToTask
 import com.example.familyapp.network.services.TaskService
 import retrofit2.Call
@@ -49,7 +50,7 @@ class TaskRepository(context: Context) {
         })
     }
 
-    fun addTask(task:TaskDto){
+    fun addTask(task: TaskRequestDto){
         val call = taskService.addTask(task)
 
         call.enqueue(object : Callback<TaskDto> {

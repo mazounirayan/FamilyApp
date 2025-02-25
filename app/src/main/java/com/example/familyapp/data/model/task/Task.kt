@@ -1,5 +1,6 @@
 package com.example.familyapp.data.model.task
 
+import com.example.familyapp.data.model.user.User
 import com.google.gson.annotations.SerializedName
 
 enum class Priorite {
@@ -23,7 +24,6 @@ enum class TypeTache {
 
 
 data class Task(
-    @Transient
     val idTache: Int,
     val nom: String,
     val dateDebut: String,
@@ -32,7 +32,7 @@ data class Task(
     val type: String,
     val description: String,
     val priorite: Priorite?,
-    val idUser: Int,
+    val user: User,
     val idFamille: Int
 )
 

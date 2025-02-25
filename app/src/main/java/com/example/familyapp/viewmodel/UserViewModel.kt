@@ -8,19 +8,13 @@ import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.UpdateUserRequest
 import com.example.familyapp.data.model.user.User
-import retrofit2.Callback
-import androidx.activity.result.launch
 import androidx.lifecycle.viewModelScope
 import com.example.familyapp.network.dto.autentDto.SignUpRequest
-import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 import kotlinx.coroutines.launch
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.services.UserService
-import com.example.familyapp.utils.SessionManager
-import retrofit2.Call
-import retrofit2.Response
+
 
 class UserViewModel(private val userRepository: UserRepository, val context: LifecycleOwner) : ViewModel() {
     val email = MutableLiveData<String>()
@@ -52,6 +46,7 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
     private val _errorMessages = MutableLiveData<String>()
     val errorMessages: LiveData<String>
         get() = _errorMessages
+
     fun fetchUsers(familyId: Int) {
         userRepository.getMembers(familyId).observeForever { fetchedUsers ->
             _users.value = fetchedUsers ?: emptyList()
@@ -102,8 +97,8 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
 
     fun login() {
 
-        val emailValue = "jean.dupont@example.com"//email.value.orEmpty().trim()
-        val passwordValue = "password123"//password.value.orEmpty().trim()
+        val emailValue = "marie.dupont@example.com" //"jean.dupont@example.com"//"marie.dupont@example.com"//email.value.orEmpty().trim()
+        val passwordValue = "password456"//"password123"//password.value.orEmpty().trim()
 
         if (emailValue.isEmpty() || passwordValue.isEmpty()) {
             _loginResult.value = Result.failure(Exception("Les champs ne peuvent pas être vides"))
@@ -163,14 +158,19 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
     fun logout(userId: Int) {
         userRepository.logout(userId)
     }
-    
+
     fun fetchUser(id:Int){
         _user.value
+        Log.d("UserViewModel", "_user.value : ${_user.value}")
+
         this.userRepository.users.observe(this.context) { data ->
+            Log.d("UserViewModel", "data  : $data")
+
             this@UserViewModel._user.value = data
         }
 
-        this.userRepository.getMembers(id)
+        userRepository.getMembersTask(id)
+
     }
 
     /*fun fetchTask(idUser: Int) {

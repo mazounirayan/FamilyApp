@@ -1,7 +1,6 @@
-package com.example.familyapp.views.fragments.message
+package com.example.familyapp.views.fragments.Conversation
 
 import android.os.Bundle
-import android.se.omapi.Session
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +66,7 @@ class ChatFragment : Fragment() {
         }
 
         webSocketClient = SocketIOClient(this)
-        webSocketClient.connect(currentUserId)
+        webSocketClient.connect(chatId)
 
         return view
     }
@@ -136,7 +135,6 @@ class ChatFragment : Fragment() {
 
     private fun createMessageJson(content: String): JSONObject {
         return JSONObject().apply {
-            put("familyId", chatId)
             put("senderId", currentUserId)
             put("senderNom", nom)
             put("senderPrenom", prenom)

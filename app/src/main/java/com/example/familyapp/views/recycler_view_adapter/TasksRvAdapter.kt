@@ -38,6 +38,7 @@ class TasksRvAdapter(
         val taskData = tasks[position]
 
         holder.taskName.text = taskData.nom
+        holder.taskNameUser.text = taskData.user.prenom + " " +taskData.user.nom
         holder.taskDescription.text = taskData.description
         holder.taskDueDate.text = "Date limite : ${taskData.dateFin}"
         holder.taskDetailsSection.visibility = if (expandedPositions.contains(position)) View.VISIBLE else View.GONE

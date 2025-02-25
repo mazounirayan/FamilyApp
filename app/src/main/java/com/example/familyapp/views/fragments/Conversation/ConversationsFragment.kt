@@ -4,7 +4,6 @@ import ConversationsViewModel
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +16,8 @@ import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.databinding.FragmentConversationsBinding
 import com.example.familyapp.repositories.ConversationRepository
 import com.example.familyapp.utils.SessionManager
-import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.ConversationsViewModelFactory
 import com.example.familyapp.views.Adapters.ConversationsAdapter
-import com.example.familyapp.views.fragments.message.ChatFragment
 
 class ConversationsFragment : Fragment() {
     private lateinit var binding: FragmentConversationsBinding

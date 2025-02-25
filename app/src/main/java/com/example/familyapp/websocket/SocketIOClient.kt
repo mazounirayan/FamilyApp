@@ -1,5 +1,5 @@
 package com.example.familyapp.websocket
-import com.example.familyapp.views.fragments.message.ChatFragment
+import com.example.familyapp.views.fragments.Conversation.ChatFragment
 import com.example.instaclone.app_utils.URL_WEBSOCKET
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -9,7 +9,7 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
 
     private lateinit var socket: Socket
 
-    fun connect(userId: Int) {
+    fun connect(chatId: Int) {
         try {
             val options = IO.Options()
             options.transports = arrayOf("websocket")
@@ -19,7 +19,7 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
 
             socket.on(Socket.EVENT_CONNECT) {
                 println("Connexion réussie")
-                socket.emit("joinFamily", userId)
+                socket.emit("joinChat", chatId)
             }
 
             socket.on("message") { args ->
@@ -29,7 +29,6 @@ class SocketIOClient(private val chatFragment: ChatFragment) {
                     val idUser = data.getInt("senderId")
                     val nomUser = data.getString("senderNom")
                     val prenomUser = data.getString("senderPrenom")
-
                     chatFragment.messageReceived(messageReceived, idUser, nomUser, prenomUser)
                     println("Message reçu : $data")
                 }

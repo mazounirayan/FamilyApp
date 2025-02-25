@@ -16,13 +16,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
-import com.example.familyapp.data.model.user.User
 import com.example.familyapp.repositories.ConversationRepository
 import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.ConversationsViewModelFactory
 import com.example.familyapp.views.Adapters.SelectUsersAdapter
-import com.example.familyapp.views.fragments.message.ChatFragment
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 
 

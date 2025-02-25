@@ -20,7 +20,7 @@ fun mapAddUserRequestToUserDto(request: AddUserRequest): AddUserRequestDTO {
 }
 
 
-  /*  fun mapUserToUserDto(user: User): UserDTO {
+    fun mapUserToUserDto(user: User): UserDTO {
         return UserDTO(
             id = user.id,
             nom = user.nom,
@@ -29,13 +29,14 @@ fun mapAddUserRequestToUserDto(request: AddUserRequest): AddUserRequestDTO {
             motDePasse = user.motDePasse,
             numTel = user.numTel,
             role = user.role,
-            idFamille = user.idFamille,
             dateInscription = user.dateInscription,
             avatar = user.avatar,
             coins = user.coins,
             totalPoints = user.totalPoints,
+            famille = null,
+            chats = null
         )
-    }*/
+    }
         fun mapUserDtoToUser(userDto: UserDTO): User {
             return User(
                 id = userDto.id,
@@ -50,8 +51,6 @@ fun mapAddUserRequestToUserDto(request: AddUserRequest): AddUserRequestDTO {
                 avatar = userDto.avatar,
                 coins = userDto.coins,
                 totalPoints = userDto.totalPoints,
-                chats = userDto.chats,
-             //   idFamille = TODO()
             )
     }
 
