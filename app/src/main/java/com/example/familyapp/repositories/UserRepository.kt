@@ -96,7 +96,7 @@ class UserRepository(context: Context) {
                             userDao.insertUser(userEntity)
                         }
                         /*scope.launch {
-                            insertUserInDb(user)
+                            insertUserInDb(user)a
                         }*/
 
                         onResult(Result.success(Unit))

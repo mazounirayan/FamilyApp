@@ -82,7 +82,7 @@ class ChatRepository(context : Context) {
     }
     fun syncChats() {
         scope.launch {
-            val unsyncedChats = chatDao.getUnsyncedChats() // Vous devez implémenter cette méthode dans votre DAO
+            val unsyncedChats = chatDao.getUnsyncedChats()
             unsyncedChats.forEach { chat ->
                 val createChat = CreateChat(idUser = chat.idUser, idChat = chat.idChat ?: -1)
                 val call = chatService.addMessage(createChat)
@@ -92,7 +92,6 @@ class ChatRepository(context : Context) {
                         if (response.isSuccessful) {
                             val createdChat = response.body()
                             createdChat?.let {
-                                // Mettre à jour l'ID du chat local avec l'ID du serveur
                                 scope.launch {
                                     chatDao.updateChatId(chat.localId, it.idChat) // Vous devez implémenter cette méthode dans votre DAO
                                 }
