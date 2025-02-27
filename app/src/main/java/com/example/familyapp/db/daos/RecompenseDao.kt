@@ -1,5 +1,6 @@
 package com.example.familyapp.db.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,15 +11,15 @@ import com.example.familyapp.db.entities.RecompenseEntity
 
 @Dao
 interface RecompenseDao {
-    @Query("SELECT * FROM recompenses WHERE idFamille = :familleId")
-    suspend fun getRecompensesByFamille(familleId: Int): List<RecompenseEntity>
+    @Query("SELECT * FROM recompenses")
+    fun getAllRecompenses(): LiveData<List<RecompenseEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecompense(recompense: RecompenseEntity)
+    suspend fun insertRecompenses(recompenses: List<RecompenseEntity>)
 
-    @Update
-    suspend fun updateRecompense(recompense: RecompenseEntity)
+    @Query("DELETE FROM recompenses WHERE idRecompense = :idRecompense")
+    suspend fun deleteRecompenseById(idRecompense: Int)
 
-    @Delete
-    suspend fun deleteRecompense(recompense: RecompenseEntity)
+    @Query("DELETE FROM recompenses")
+    suspend fun deleteAllRecompenses()
 }

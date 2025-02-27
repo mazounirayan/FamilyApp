@@ -1,5 +1,6 @@
 package com.example.familyapp.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -28,5 +29,9 @@ interface UserDao {
 
     @Query("UPDATE users SET email = :email WHERE id = :id")
     suspend fun updateEmail(id: Int, email: String)
+    @Query("SELECT * FROM users WHERE idFamille = :idFamille")
+    fun getMembersByFamilyId(idFamille: Int): LiveData<List<UserEntity>>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMembers(users: List<UserEntity>)
 }

@@ -4,12 +4,18 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.familyapp.MainApplication
+import com.example.familyapp.app_utils.NetworkUtils
 import com.example.familyapp.data.model.recompense.Recompense
+import com.example.familyapp.db.entities.RecompenseEntity
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.rewardsDto.rewardsDto
 
 import com.example.familyapp.network.mapper.mapRewardDtoToReward
 import com.example.familyapp.network.services.RewardService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,40 +28,54 @@ class RewardsRepository(context: Context) {
     private val _rewards = MutableLiveData<List<Recompense>>()
 
     val rewards: LiveData<List<Recompense>> get() = _rewards
-
+    private val db = MainApplication.database
+    private val recompenseDao = db.recompenseDao()
+    private val context = context
+    private val scope = CoroutineScope(   SupervisorJob())
     fun getRewards(idFamille: Int) {
         val call = rewardService.getRecompense(idFamille)
+        if (NetworkUtils.isOnline(context)){
+            call.enqueue(object : Callback<List<rewardsDto>> {
+                override fun onResponse(
+                    call: Call<List<rewardsDto>>,
+                    response: Response<List<rewardsDto>>
+                ) {
 
-        call.enqueue(object : Callback<List<rewardsDto>> {
-            override fun onResponse(
-                call: Call<List<rewardsDto>>,
-                response: Response<List<rewardsDto>>
-            ) {
+                    if (response.isSuccessful) {
 
-                if (response.isSuccessful) {
-                    val response = response.body()
-                    _rewards.value = response?.let {
-                        it.map{ value ->
-                            mapRewardDtoToReward(value)
+
+                        val responseBody = response.body()
+                        responseBody?.let {
+                            // Convertir les DTO en modèles
+                            val recompenses = it.map { value ->
+                                mapRewardDtoToReward(value)
+                            }
+                            _rewards.value = recompenses
+
+                            // Sauvegarder les récompenses dans la base de données locale
+                            scope.launch {
+                                saveRecompensesLocally(recompenses)
+                            }
                         }
-                    }
-                } else {
-                    Log.e("TaskRepository", "Erreur HTTP : ${response.code()}")
-                }
-            }
 
-            override fun onFailure(call: Call<List<rewardsDto>>, t: Throwable) {
-                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
-            }
-        })
+                    } else {
+                        Log.e("TaskRepository", "Erreur HTTP : ${response.code()}")
+                        loadRecompensesFromLocalDb()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<rewardsDto>>, t: Throwable) {
+                    Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+                    loadRecompensesFromLocalDb()
+                }
+            })
+        }else{
+            loadRecompensesFromLocalDb()
+        }
+
     }
 
-/* "idRecompense": 1,
-            "nom": "Récompense 1",
-            "cout": 50,
-            "description": "Description de la récompense 1",
-            "stock": 10,
-            "estDisponible": true*/
+
 
     fun ajouterRecompense(idFamille: Int, newReward: rewardsDto): Recompense? {
         val call = rewardService.addRecompense(idFamille, newReward)
@@ -148,5 +168,44 @@ class RewardsRepository(context: Context) {
             }
         })
     }
+
+
+
+    private suspend fun saveRecompensesLocally(recompenses: List<Recompense>) {
+        // Convertir les récompenses en entités
+        val recompenseEntities = recompenses.map {
+            RecompenseEntity(
+                idRecompense = it.idRecompense,
+                nom = it.nom,
+                cout = it.cout,
+                description = it.description,
+                stock = it.stock,
+                estDisponible = it.estDisponible,
+            )
+        }
+
+        // Sauvegarder les entités dans la base de données locale
+        recompenseDao.insertRecompenses(recompenseEntities)
+    }
+    private fun loadRecompensesFromLocalDb() {
+        // Récupérer les récompenses locales depuis la base de données
+        val localRecompenses = recompenseDao.getAllRecompenses()
+        localRecompenses.observeForever {
+            // Convertir les entités en modèles
+            val recompenses = it.map { entity ->
+                Recompense(
+                    idRecompense = entity.idRecompense,
+                    nom = entity.nom,
+                    cout = entity.cout,
+                    description = entity.description,
+                    stock = entity.stock,
+                    estDisponible = entity.estDisponible
+                )
+            }
+            // Mettre à jour les données avec les récompenses locales
+            _rewards.postValue(recompenses)
+        }
+    }
+
 
 }

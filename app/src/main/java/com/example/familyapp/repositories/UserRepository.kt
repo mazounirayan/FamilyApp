@@ -10,7 +10,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.content.Context
+import androidx.lifecycle.MediatorLiveData
 import androidx.room.Room
+import com.example.familyapp.app_utils.NetworkUtils
 import com.example.familyapp.data.model.user.AddUserRequest
 import com.example.familyapp.data.model.user.LogoutResponse
 import com.example.familyapp.data.model.user.UpdateUserRequest
@@ -37,7 +39,7 @@ class UserRepository(context: Context) {
     private val _userData = MutableLiveData<User>()
     private val _tokenData = MutableLiveData<String>()
     val tokenData: LiveData<String> get() = _tokenData
-
+    private val context = context ;
     private val userService = RetrofitClient.instance.create(UserService::class.java)
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> get() = _users
@@ -45,6 +47,7 @@ class UserRepository(context: Context) {
     val logoutStatus: MutableLiveData<Boolean> get() = _logoutStatus
     private val _userDataByToken = MutableLiveData<User>()
     val userDataByToken: LiveData<User> get() = _userDataByToken
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     /*
       private val db = Room.databaseBuilder(
           context,
@@ -76,14 +79,18 @@ class UserRepository(context: Context) {
                         val user = mapUserDtoToUser(it.user)
                         _userData.value = user
                         val userEntity = UserEntity(
-                            id = it.user.id,
-                            nom = it.user.nom,
-                            prenom = it.user.prenom,
-                            email = it.user.email,
-                            numTel = it.user.numTel,
-                            role = it.user.role,
-                            idFamille = it.user.famille?.idFamille ?: 0,
-                            profession = TODO()
+                            id = user.id,
+                            nom = user.nom,
+                            prenom = user.prenom,
+                            email = user.email,
+                            motDePasse = user.motDePasse,
+                            numTel = user.numTel,
+                            role = user.role,
+                            idFamille = user.idFamille,
+                            dateInscription = user.dateInscription,
+                            coins = user.coins,
+                            avatar = user.avatar,
+                            totalPoints = user.totalPoints
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             userDao.insertUser(userEntity)
@@ -115,15 +122,19 @@ class UserRepository(context: Context) {
                     val userDto = response.body()
                     userDto?.let {
                         val user = mapUserDtoToUser(it)
-                        val userEntity = UserEntity(
+                        val userEntity =    UserEntity(
                             id = it.id,
                             nom = it.nom,
-                            prenom = it.prenom,
-                            email = it.email,
-                            numTel = it.numTel,
-                            role = it.role,
-                            idFamille = it.famille?.idFamille ?: 0,
-                            profession = ""
+                            prenom = user.prenom,
+                            email = user.email,
+                            motDePasse = user.motDePasse,
+                            numTel = user.numTel,
+                            role = user.role,
+                            idFamille = user.idFamille,
+                            dateInscription = user.dateInscription,
+                            coins = user.coins,
+                            avatar = user.avatar,
+                            totalPoints = user.totalPoints
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             userDao.insertUser(   userEntity)
@@ -166,24 +177,90 @@ class UserRepository(context: Context) {
             }
         })
     }
+    fun mapUserToEntity(user: User): UserEntity {
+        return UserEntity(
+            id = user.id,
+            nom = user.nom,
+            prenom = user.prenom,
+            email = user.email,
+            motDePasse = user.motDePasse,
+            numTel = user.numTel,
+            role = user.role,
+            idFamille = user.idFamille,
+            dateInscription = user.dateInscription,
+            coins = user.coins,
+            avatar = user.avatar,
+            totalPoints = user.totalPoints
+        )
+    }
+    fun mapUserEntityToUser(entity: UserEntity): User {
+        return User(
+            id = entity.id,
+            nom = entity.nom,
+            prenom = entity.prenom,
+            email = entity.email,
+            motDePasse = "", // Remplir avec une valeur par défaut ou le récupérer d'une autre source
+            numTel = entity.numTel,
+            role = entity.role,
+            idFamille = entity.idFamille,
+            dateInscription =entity.dateInscription,
+            coins = entity.coins,
+            avatar = entity.avatar,
+            totalPoints = entity.totalPoints,
+            chats = emptyList()
+        )
+    }
+
 
     fun getMembers(familyId: Int): LiveData<List<User>> {
-        val data = MutableLiveData<List<User>>()
-        userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {
-            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
-                if (response.isSuccessful) {
-                    data.postValue(response.body()?.map { dto -> mapUserDtoToUser(dto) } ?: emptyList())
-                } else {
-                    data.postValue(emptyList())
-                }
-            }
+        val result = MediatorLiveData<List<User>>()
 
-            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
-                data.postValue(emptyList())
+        // Charger les données locales en premier
+        val localDataSource = userDao.getMembersByFamilyId(familyId)
+        result.addSource(localDataSource) { localUsers ->
+            localUsers?.let {
+                result.postValue(it.map { entity -> mapUserEntityToUser(entity) })
             }
-        })
-        return data
+        }
+
+        // Vérifier si l'appareil est en ligne avant d'appeler l'API
+        if (NetworkUtils.isOnline(context)) {
+            userService.getMembers(familyId).enqueue(object : Callback<List<UserDTO>> {
+                override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { userDtoList ->
+                            val users = userDtoList.map { dto -> mapUserDtoToUser(dto) }
+
+                            // Mettre à jour la base de données locale
+                            scope.launch {
+                                try {
+                                    val entities = users.map { user -> mapUserToEntity(user) }
+                                    userDao.insertMembers(entities)
+                                    Log.d("UserRepository", "Base de données locale mise à jour avec ${entities.size} membres")
+                                } catch (e: Exception) {
+                                    Log.e("UserRepository", "Erreur lors de la mise à jour locale: ${e.message}")
+                                }
+                            }
+
+                            // Mettre à jour les données affichées
+                            result.postValue(users)
+                        }
+                    } else {
+                        Log.e("UserRepository", "Erreur HTTP: ${response.code()} - ${response.message()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
+                    Log.e("UserRepository", "Erreur réseau: ${t.message}")
+                }
+            })
+        } else {
+            Log.d("UserRepository", "Appareil hors ligne, utilisation des données locales uniquement")
+        }
+
+        return result
     }
+
     fun logout(userId: Int) {
         val call = userService.logout(userId)
 
@@ -235,10 +312,14 @@ class UserRepository(context: Context) {
                                 nom = user.nom,
                                 prenom = user.prenom,
                                 email = user.email,
+                                motDePasse = user.motDePasse,
                                 numTel = user.numTel,
                                 role = user.role,
-                                idFamille = idFamille,
-                                profession = "" ?: ""
+                                idFamille = user.idFamille,
+                                dateInscription = user.dateInscription,
+                                coins = user.coins,
+                                avatar = user.avatar,
+                                totalPoints = user.totalPoints
                             )
                             CoroutineScope(Dispatchers.IO).launch {
                                 userDao.insertUser(userEntity)
@@ -319,5 +400,4 @@ class UserRepository(context: Context) {
             updateUserRequest.role?.takeIf { it.isNotEmpty() }?.let { updateRole(userId, it) }
         }
     }
-
 }

@@ -9,8 +9,11 @@ import com.example.familyapp.db.entities.MessageEntity
 @Dao
 interface MessageDao {
     @Query("SELECT * FROM messages WHERE idChat = :chatId ORDER BY dateEnvoie DESC")
-    suspend fun getMessagesForChat(chatId: Int): List<MessageEntity>
+    suspend fun getMessagesByChatId(chatId: Int): List<MessageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMessage(message: MessageEntity)
+    suspend fun insertMessages(messages: List<MessageEntity>)
+
+    @Query("DELETE FROM messages WHERE idMessage = :chatId")
+    suspend fun deleteMessagesByChatId(chatId: Int)
 }

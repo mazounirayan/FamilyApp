@@ -12,5 +12,4 @@ data class RecompenseEntity(
     val cout: Int,
     val stock: Int,
     val estDisponible: Boolean,
-    val idFamille: Int
 )

@@ -14,4 +14,15 @@ interface ChatDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addChats(chats: List<ChatEntity>)
+    @Query("SELECT * FROM chats WHERE idChat IS NULL")
+    suspend fun getUnsyncedChats(): List<ChatEntity>
+
+
+    @Query("UPDATE chats SET idChat = :newId WHERE localId = :localId")
+    suspend fun updateChatId(localId: Long, newId: Int)
+
+
+
+    @Query("DELETE FROM chats")
+    suspend fun deleteAllChats()
 }

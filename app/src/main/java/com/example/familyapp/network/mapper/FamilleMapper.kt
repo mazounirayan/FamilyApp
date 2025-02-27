@@ -8,7 +8,7 @@ fun mapFamilleDtoToFamille(familleDto: FamilleDto): Famille {
         return Famille(
             idFamille =familleDto.idFamille,
             nom =familleDto.nom,
-            dateCreation =familleDto.date_de_creation,
+            dateCreation = familleDto.date_de_creation.toString(),
             codeInvitation =familleDto.code_invitation,
 
             )

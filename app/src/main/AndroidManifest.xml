@@ -30,6 +30,12 @@
             android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false"   />
 
+        <receiver android:name=".app_utils.NetworkChangeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
