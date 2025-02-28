@@ -13,7 +13,7 @@ class MessageViewModelFactory (
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MessageViewModel::class.java)) {
-            return MessageViewModel(repository, fragment) as T
+            return MessageViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

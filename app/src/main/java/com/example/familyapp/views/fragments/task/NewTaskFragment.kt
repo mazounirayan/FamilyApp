@@ -25,10 +25,9 @@ import com.example.familyapp.data.model.task.Priorite
 import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.TypeTache
 import com.example.familyapp.data.model.user.User
-import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.dto.taskDto.TaskRequestDto
-import com.example.familyapp.network.mapper.mapUserToUserDto
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
@@ -43,6 +42,9 @@ class NewTaskFragment : Fragment() {
     private lateinit var typePrioriteSp: Spinner
     private lateinit var startDateTextView: TextView
     private lateinit var endDateTextView:TextView
+
+    private var idFamille = SessionManager.currentUser!!.idFamille
+    private var user = SessionManager.currentUser
 
     private var startDay: Int = 0
     private var startMonth: Int = 0
@@ -104,7 +106,11 @@ class NewTaskFragment : Fragment() {
             addTask()
         }
 
-        userViewModel.fetchUser(1)
+        userViewModel.user.observe(viewLifecycleOwner) { users ->
+            Log.d("NewTaskFragment", "Utilisateurs récupérés : $users")
+        }
+
+        idFamille?.let { userViewModel.fetchUser(it) }
 
         return view
     }
@@ -147,16 +153,7 @@ class NewTaskFragment : Fragment() {
         }
 
 
-        /*Log.d("addTask", "Nom task : ${nomTask?.text.toString()}")
-        Log.d("addTask", "description task : ${descriptionTask?.text.toString()}")
-        Log.d("addTask", "typeTaskSp : $typeTache")
-        Log.d("addTask", "typePrioriteSp : $typePriorite")
-        Log.d("addTask", "usersSp : ${selectedUser.id}")
-        Log.d("addTask", "dateDebut : ${LocalDate.of(startYear,startMonth,startDay)}")
-        Log.d("addTask", "dateFin : ${LocalDate.of(endYear,endMonth,endDay)}")
-        */
-
-        taskViewModel.addTask(
+        idFamille?.let {
             TaskRequestDto(0,
                 nom = nomTask?.text.toString(),
                 dateDebut = dateDebut.toString() ,
@@ -166,9 +163,13 @@ class NewTaskFragment : Fragment() {
                 description = descriptionTask?.text.toString() ,
                 priorite = typePriorite,
                 idUser = selectedUser.id,
-                idFamille = 1
+                idFamille = it
             )
-        )
+        }?.let {
+            taskViewModel.addTask(
+                it
+            )
+        }
 
 
     }
@@ -282,6 +283,5 @@ class NewTaskFragment : Fragment() {
                 setUpUsersSp(getUsers(data), fragmentView)
             }
         }
-        //  userViewModel.fetchUser(1)
     }
 }

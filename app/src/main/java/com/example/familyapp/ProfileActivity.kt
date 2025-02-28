@@ -30,7 +30,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
 
     private lateinit var familyAppPager: ViewPager2
-//    private lateinit var backButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +47,6 @@ class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
         toolbar.setNavigationOnClickListener {
             handleBackNavigation()
         }
-
-       // backButton = findViewById(R.id.backButton)
-      //  backButton.setOnClickListener {
-         //   handleBackNavigation()
-      //  }
 
 
 

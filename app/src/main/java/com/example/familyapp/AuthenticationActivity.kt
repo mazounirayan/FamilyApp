@@ -63,7 +63,4 @@ class AuthenticationActivity : AppCompatActivity(), PagerHandler {
         this.familyAppPager.currentItem = 1
     }
 
-
-
-
 }

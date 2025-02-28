@@ -7,6 +7,7 @@ package com.example.familyapp.network.services
 import com.example.familyapp.network.dto.autentDto.LoginRequest
 import com.example.familyapp.network.dto.autentDto.LoginResponse
  import com.example.familyapp.network.dto.autentDto.SignUpRequest
+ import com.example.familyapp.network.dto.messageDto.MaxIdMessageDto
  import com.example.familyapp.network.dto.userDto.UserDTO
  import com.example.familyapp.network.dto.userDto.AddUserRequestDTO
 
@@ -43,6 +44,9 @@ interface UserService {
     @POST("users/{idUser}/famille")
     fun addUserToFamille(@Path("idUser") idUser: Int, @Body familyInfo: FamilyInfo): Call<Void>
 
+
+    @GET("messages/maxid/{id}")
+    fun getMaxMessageId(@Path("id") id:Int): Call<MaxIdMessageDto>
 
 
 

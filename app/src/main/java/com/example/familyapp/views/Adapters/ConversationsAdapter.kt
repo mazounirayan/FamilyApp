@@ -1,5 +1,7 @@
 package com.example.familyapp.views.Adapters
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +11,8 @@ import com.example.familyapp.views.Holders.ConversationViewHolder
 
 class ConversationsAdapter(
     private var conversations: MutableList<Conversation> = mutableListOf(),
-    private val onConversationClick: (Conversation) -> Unit
+    private val onConversationClick: (Conversation) -> Unit,
+    val context: Context
 ) : RecyclerView.Adapter<ConversationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
@@ -28,9 +31,20 @@ class ConversationsAdapter(
 
     override fun getItemCount(): Int = conversations.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateConversations(newConversations: List<Conversation>) {
         conversations.clear()
         conversations.addAll(newConversations)
         notifyDataSetChanged()
     }
+
+    fun deleteItem(position: Int) {
+        conversations.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun getConversationAt(position: Int): Conversation {
+        return conversations[position]
+    }
+
 }

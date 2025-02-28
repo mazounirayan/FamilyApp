@@ -1,4 +1,4 @@
-package com.example.familyapp.views.fragments
+package com.example.familyapp.views.fragments.dashbord
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +16,6 @@ import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.views.fragments.dashboard.TopContributorFragment
-import com.example.familyapp.views.fragments.dashbord.PiechartFragment
-import com.example.familyapp.views.fragments.dashbord.TaskStatusAdapter
-import com.example.familyapp.views.fragments.dashbord.TasksFragment
-import com.example.familyapp.views.fragments.dashbord.UsersFragment
 
 
 class DashboardFragment : Fragment() {
@@ -30,12 +26,16 @@ class DashboardFragment : Fragment() {
 
     private lateinit var taskStatusRecyclerView: RecyclerView
     private lateinit var taskStatusAdapter: TaskStatusAdapter
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_dashbord, container, false)
 
+
+        val view = inflater.inflate(R.layout.fragment_dashbord, container, false)
 
 
         val tasksFragment = TasksFragment()
@@ -103,4 +103,5 @@ class DashboardFragment : Fragment() {
         taskStatusAdapter = TaskStatusAdapter(taskStatuses)
         taskStatusRecyclerView.adapter = taskStatusAdapter
     }
+
 }

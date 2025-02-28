@@ -11,12 +11,12 @@ import com.example.familyapp.data.model.user.User
 import androidx.lifecycle.viewModelScope
 import com.example.familyapp.network.dto.autentDto.SignUpRequest
 import kotlinx.coroutines.launch
-import androidx.lifecycle.LifecycleOwner
 import com.example.familyapp.network.RetrofitClient
+import com.example.familyapp.network.dto.messageDto.MaxIdMessageDto
 import com.example.familyapp.network.services.UserService
 
 
-class UserViewModel(private val userRepository: UserRepository, val context: LifecycleOwner) : ViewModel() {
+class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val nom = MutableLiveData<String>()
@@ -31,8 +31,11 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
     private val _signInResult = MutableLiveData<Result<Unit>>()
     val signInResult: LiveData<Result<Unit>> = _signInResult
     private val _user = MutableLiveData<List<User>>()
-    val user: LiveData<List<User>> get() = _user
+    val user: LiveData<List<User>> = userRepository.users
     val logoutStatus: LiveData<Boolean> get() = userRepository.logoutStatus
+    private val _maxMessageIds = MutableLiveData<MaxIdMessageDto>()
+    val maxMessageIds: LiveData<MaxIdMessageDto> get() = _maxMessageIds
+
     private val userService = RetrofitClient.instance.create(UserService::class.java)
     init {
         role.observeForever { selectedRole ->
@@ -60,6 +63,17 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
             }
             result.onFailure { error ->
 
+            }
+        }
+    }
+
+    fun fetchMaxMessageId(familyId: Int) {
+        userRepository.getMaxMessageId(familyId) { result ->
+            result.onSuccess { maxIds ->
+                _maxMessageIds.postValue(maxIds)
+            }
+            result.onFailure { error ->
+                Log.e("UserViewModel", "Erreur lors de la récupération du maxMessageId : ${error.message}")
             }
         }
     }
@@ -159,19 +173,10 @@ class UserViewModel(private val userRepository: UserRepository, val context: Lif
         userRepository.logout(userId)
     }
 
-    fun fetchUser(id:Int){
-        _user.value
-        Log.d("UserViewModel", "_user.value : ${_user.value}")
-
-        this.userRepository.users.observe(this.context) { data ->
-            Log.d("UserViewModel", "data  : $data")
-
-            this@UserViewModel._user.value = data
-        }
-
+    fun fetchUser(id: Int) {
         userRepository.getMembersTask(id)
-
     }
+
 
     /*fun fetchTask(idUser: Int) {
         _task.value

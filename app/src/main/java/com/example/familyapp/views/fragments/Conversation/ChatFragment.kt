@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.familyapp.MainActivity
 import com.example.familyapp.R
 import com.example.familyapp.data.model.message.Message
 import com.example.familyapp.data.model.user.UserMessage
@@ -34,6 +35,7 @@ class ChatFragment : Fragment() {
     private lateinit var webSocketClient: SocketIOClient
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
+
     private val messages = mutableListOf<Message>()
     private val nom = SessionManager.currentUser!!.nom
     private val prenom = SessionManager.currentUser!!.prenom
@@ -43,7 +45,7 @@ class ChatFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(chatId: Int): ChatFragment {
+        fun newInstance(chatId: Int): ChatFragment  {
             val fragment = ChatFragment()
             val bundle = Bundle()
             bundle.putInt("chatId", chatId)
@@ -64,9 +66,9 @@ class ChatFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
             stackFromEnd = true
         }
-
         webSocketClient = SocketIOClient(this)
         webSocketClient.connect(chatId)
+
 
         return view
     }
@@ -76,6 +78,11 @@ class ChatFragment : Fragment() {
 
         val sendButton = view.findViewById<Button>(R.id.button_gchat_send)
         val messageInput = view.findViewById<EditText>(R.id.edit_gchat_message)
+        val btnAddMember = view.findViewById<Button>(R.id.btn_add_user_on_chat)
+
+        view.findViewById<ImageView>(R.id.button_gchat_back).setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
 
         observeMessages()
         messageViewModel.fetchMessagesOfChat(chatId)
@@ -87,7 +94,18 @@ class ChatFragment : Fragment() {
                 messageInput.text.clear()
             }
         }
+
+        btnAddMember.setOnClickListener{
+            val group = 2
+            val selectUsersFragment = SelectUsersFragment.newInstance(group, chatId)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, selectUsersFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
+
+
 
     private fun sendMessage(content: String) {
         val newMessageDto = NewMessageDto(
@@ -143,11 +161,23 @@ class ChatFragment : Fragment() {
     }
 
     private fun observeMessages() {
-        messageViewModel.messages.observe(viewLifecycleOwner, Observer { newMessages ->
+        messageViewModel.messages.observe(viewLifecycleOwner, { newMessages ->
             messages.clear()
             messages.addAll(newMessages)
             chatAdapter.notifyDataSetChanged()
             recyclerView.scrollToPosition(messages.size - 1)
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        SessionManager.isChatActive = true
+        (activity as? MainActivity)?.removeNotificationBadge()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SessionManager.isChatActive = false
+    }
+
 }

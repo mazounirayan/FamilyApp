@@ -13,7 +13,7 @@ class ChatViewModelFactory (
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MessageViewModel::class.java)) {
-            return MessageViewModel(repository, fragment) as T
+            return ChatViewModelFactory(repository, fragment) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.familyapp.MainActivity
 import com.example.familyapp.R
 import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.databinding.FragmentConversationsBinding
@@ -29,20 +30,27 @@ class ConversationsFragment : Fragment() {
     private val currentUserId = SessionManager.currentUser!!.id
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+
         binding = FragmentConversationsBinding.inflate(inflater, container, false)
 
-        adapter = ConversationsAdapter(mutableListOf()) { conversation ->
+        adapter = ConversationsAdapter(mutableListOf(), { conversation ->
             val chatFragment = ChatFragment.newInstance(conversation.id)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, chatFragment)
                 .addToBackStack(null)
                 .commit()
-        }
+        }, requireContext())
+
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter, viewModel, SessionManager.currentUser!!.id, viewLifecycleOwner))
+
+        itemTouchHelper.attachToRecyclerView(binding.conversationsList)
 
         binding.conversationsList.adapter = adapter
         binding.conversationsList.layoutManager = LinearLayoutManager(context)
 
-        viewModel.conversations.observe(viewLifecycleOwner, Observer { conversations ->
+        viewModel.conversations.observe(viewLifecycleOwner, { conversations ->
             allConversations = conversations.toMutableList()
             adapter.updateConversations(conversations)
         })
@@ -57,12 +65,12 @@ class ConversationsFragment : Fragment() {
 
 
         binding.btnCreatePrivateChat.setOnClickListener {
-            openSelectUsersFragment(isGroup = false)
+            openSelectUsersFragment(group = 0)
         }
 
 
         binding.btnCreateGroupChat.setOnClickListener {
-            openSelectUsersFragment(isGroup = true)
+            openSelectUsersFragment(group = 1)
         }
 
         viewModel.loadConversations(currentUserId)
@@ -71,8 +79,8 @@ class ConversationsFragment : Fragment() {
 
 
 
-    private fun openSelectUsersFragment(isGroup: Boolean) {
-        val selectUsersFragment = SelectUsersFragment.newInstance(isGroup)
+    private fun openSelectUsersFragment(group: Int) {
+        val selectUsersFragment = SelectUsersFragment.newInstance(group)
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, selectUsersFragment)
             .addToBackStack(null)
@@ -85,4 +93,19 @@ class ConversationsFragment : Fragment() {
         }
         adapter.updateConversations(filteredList)
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        SessionManager.isChatActive = true
+        (activity as? MainActivity)?.removeNotificationBadge()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SessionManager.isChatActive = false
+    }
+
 }
+
+

@@ -28,6 +28,7 @@ import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 import com.example.familyapp.views.recycler_view_adapter.TasksRvAdapter
 
 class ManageTaskFragment : Fragment(), TaskUpdateListener {
+    private var idFamille = SessionManager.currentUser!!.idFamille
     private var user = SessionManager.currentUser
     private lateinit var tasksRv: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -194,6 +195,7 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
     }
 
     private fun fetchData(fragmentView: View) {
+        idFamille?.let { taskViewModel.fetchTask(it) }
         taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
             setUpTasksRv(tasks, fragmentView)
             swipeRefreshLayout.isRefreshing = false
@@ -214,17 +216,17 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
             }
         }
 
-        val familyId = if (user?.role == "Parent") 1 else user?.id
-        familyId?.let { taskViewModel.fetchTask(it) }
+        userViewModel.user.observe(viewLifecycleOwner) { users ->
+            Log.d("ManageTaskFragment", "Utilisateurs récupérés : $users")
+        }
 
-        userViewModel.fetchUser(1)
+        idFamille?.let { userViewModel.fetchUser(it) }
     }
 
 
     private fun setUpSwipeToRefreshListeners() {
         this.swipeRefreshLayout.setOnRefreshListener {
-            val familyId = if (user?.role == "Parent") 1 else user?.id
-            familyId?.let { taskViewModel.fetchTask(it) }
+            idFamille?.let { taskViewModel.fetchTask(it) }
             swipeRefreshLayout.isRefreshing = false
         }
     }

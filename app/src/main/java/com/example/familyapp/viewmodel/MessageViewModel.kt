@@ -8,14 +8,17 @@ import com.example.familyapp.data.model.message.Message
 import com.example.familyapp.network.dto.messageDto.MessageDto
 import com.example.familyapp.network.dto.messageDto.NewMessageDto
 import com.example.familyapp.repositories.MessageRepository
+import java.util.Date
 
 class MessageViewModel(
     private val messageRepo: MessageRepository,
-    private val fragment: Fragment
 ) : ViewModel() {
 
     private val _messages = MutableLiveData<List<Message>>()
     val messages: LiveData<List<Message>> get() = _messages
+
+    private val _newMessages = MutableLiveData<List<Message>>()
+    val newMessages: LiveData<List<Message>> get() = _newMessages
 
     private val _messageCreationStatus = MutableLiveData<Boolean>()
     val messageCreationStatus: LiveData<Boolean> get() = _messageCreationStatus
@@ -31,9 +34,18 @@ class MessageViewModel(
         val tempLiveData = MutableLiveData<Boolean>()
         messageRepo.addMessage(message)
 
-        // Observer temporaire pour capter l'état de création du message
         tempLiveData.observeForever { status ->
             _messageCreationStatus.value = status
         }
     }
+
+
+    fun fetchNewMessagesForUser(userId: Int, date: String) {
+        messageRepo.newMessages.observeForever { messages ->
+            _newMessages.value = messages
+        }
+        messageRepo.getNewMessagesForUser(userId, date)
+    }
+
+
 }

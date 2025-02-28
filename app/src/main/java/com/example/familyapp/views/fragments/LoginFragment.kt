@@ -1,6 +1,7 @@
 package com.example.familyapp.views.fragments
 
 import UserRepository
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -44,6 +45,7 @@ class LoginFragment : Fragment() {
                     Toast.makeText(requireContext(), "Connexion réussie", Toast.LENGTH_SHORT).show()
 
                     SessionManager.currentUser = viewModel.userData.value
+
                     viewModel.tokenData.value?.let { token ->
                         Log.d("LoginFragment", "Token reçu : $token")
                         localStorage.saveLoginState(token)

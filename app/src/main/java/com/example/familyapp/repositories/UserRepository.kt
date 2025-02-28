@@ -17,6 +17,7 @@ import com.example.familyapp.data.model.user.UpdateUserRequest
 import com.example.familyapp.network.dto.autentDto.FamilyInfo
 import com.example.familyapp.network.dto.autentDto.LoginRequest
  import com.example.familyapp.network.dto.autentDto.SignUpRequest
+import com.example.familyapp.network.dto.messageDto.MaxIdMessageDto
 import com.example.familyapp.network.dto.userDto.UserDTO
 import com.example.familyapp.network.mapper.mapAddUserRequestToUserDto
 import com.example.familyapp.network.mapper.mapUserDtoToUser
@@ -277,4 +278,27 @@ class UserRepository(context: Context) {
             }
         })
     }
+
+    fun getMaxMessageId(familyId: Int, onResult: (Result<MaxIdMessageDto>) -> Unit) {
+        userService.getMaxMessageId(familyId).enqueue(object : Callback<MaxIdMessageDto> {
+            override fun onResponse(
+                call: Call<MaxIdMessageDto>,
+                response: Response<MaxIdMessageDto>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let { maxIdList ->
+                        onResult(Result.success(maxIdList))
+                    } ?: onResult(Result.failure(Exception("Réponse vide")))
+                } else {
+                    onResult(Result.failure(Exception("Erreur HTTP : ${response.code()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<MaxIdMessageDto>, t: Throwable) {
+                onResult(Result.failure(t))
+            }
+        })
+    }
+
+
 }

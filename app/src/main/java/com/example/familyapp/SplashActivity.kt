@@ -20,11 +20,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Initialisation du LocalStorage
         localStorage = LocalStorage(this)
 
         val userRepository = UserRepository(this)
-        userViewModel = UserViewModel(userRepository, this)
+        userViewModel = UserViewModel(userRepository)
 
         lifecycleScope.launch {
             delay(2000)
@@ -63,7 +62,6 @@ class SplashActivity : AppCompatActivity() {
             )
         }
 
-        // Appel à la méthode `getUserByToken` dans le ViewModel
         userViewModel.getUserByToken(token)
     }
 

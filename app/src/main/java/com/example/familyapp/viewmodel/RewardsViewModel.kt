@@ -25,7 +25,6 @@ class RewardsViewModel (
     val users = userRepository.users
 
     private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
     fun fetchRecompense(idFamille: Int) {
         viewModelScope.launch {
             try {

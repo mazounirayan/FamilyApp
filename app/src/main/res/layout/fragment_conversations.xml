@@ -13,7 +13,6 @@
             android:drawablePadding="10dp"
             android:hint="Search for messages or users"
             android:padding="12dp"
-
             android:layout_margin="8dp"
             android:inputType="text"/>
         <!-- ➕ Bouton pour conversation privée -->

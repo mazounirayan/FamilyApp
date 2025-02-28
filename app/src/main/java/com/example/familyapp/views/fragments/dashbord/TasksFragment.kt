@@ -11,9 +11,9 @@ import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.repositories.TaskRepository
-import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
+
 
 
 class TasksFragment : Fragment() {
@@ -21,12 +21,12 @@ class TasksFragment : Fragment() {
     private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory(TaskRepository(requireContext()), this)
     }
-    private val currentUserIdFamille= SessionManager.currentUser!!.idFamille ?:-1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.item_dashboard_tasks_list, container, false)
         val taskListLayout = view.findViewById<LinearLayout>(R.id.task_list)
 

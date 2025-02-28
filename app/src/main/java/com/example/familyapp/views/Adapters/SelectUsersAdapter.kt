@@ -8,7 +8,7 @@ import com.example.familyapp.data.model.user.User
 import com.example.familyapp.views.Holders.SelectUserViewHolder
 
 class SelectUsersAdapter(
-    private val isMultipleSelection: Boolean = true,
+    private val isMultipleSelection: Int = 1,
     private val onUserSelected: (Int, Boolean) -> Unit
 ) : RecyclerView.Adapter<SelectUserViewHolder>() {
 
@@ -33,7 +33,7 @@ class SelectUsersAdapter(
 
         holder.bind(user, isSelected) { userId, isChecked ->
             if (isChecked) {
-                if (!isMultipleSelection) {
+                if (isMultipleSelection==0) {
                     selectedUserIds.clear()
                     selectedUserIds.add(userId)
                     notifyDataSetChanged()

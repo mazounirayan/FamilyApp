@@ -14,7 +14,7 @@ data class UserDTO(
     val avatar: String?,
     val coins: Int,
     val totalPoints: Int,
-    val famille: FamilleDto?,
+    val idFamille: Int,
     val numTel: String,
     val chats: List<Chat>?,
    // val idFamille: Int

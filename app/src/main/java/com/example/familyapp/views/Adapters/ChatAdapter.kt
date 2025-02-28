@@ -1,12 +1,11 @@
 package com.example.familyapp.views.Adapters
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.message.Message
+import com.example.familyapp.views.Holders.ReceivedMessageViewHolder
+import com.example.familyapp.views.Holders.SentMessageViewHolder
 
 class ChatAdapter(
     private val messages: List<Message>,
@@ -40,37 +39,17 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messages[position]
-        if (holder is SentMessageViewHolder) {
-            holder.bind(message)
-        } else if (holder is ReceivedMessageViewHolder) {
-            holder.bind(message)
+        val previousMessage = if (position > 0) messages[position - 1] else null
+
+        when (holder) {
+            is SentMessageViewHolder -> holder.bind(message, previousMessage)
+            is ReceivedMessageViewHolder -> holder.bind(message, previousMessage)
         }
     }
+
 
     override fun getItemCount(): Int = messages.size
 
-    class SentMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val contenuText = itemView.findViewById<TextView>(R.id.text_gchat_message_me)
-        private val dateText = itemView.findViewById<TextView>(R.id.text_gchat_timestamp_me)
 
-        @SuppressLint("SetTextI18n")
-        fun bind(message: Message) {
-            contenuText.text = message.contenu
-            dateText.text = message.dateEnvoie
 
-        }
-    }
-
-    class ReceivedMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val contenuText = itemView.findViewById<TextView>(R.id.text_gchat_message_other)
-        private val dateText = itemView.findViewById<TextView>(R.id.text_gchat_timestamp_other)
-        private val nameSender = itemView.findViewById<TextView>(R.id.text_gchat_user_other)
-
-        @SuppressLint("SetTextI18n")
-        fun bind(message: Message) {
-            contenuText.text = message.contenu
-            dateText.text = message.dateEnvoie
-            nameSender.text = message.user.prenom + " " +message.user.nom
-        }
-    }
 }
