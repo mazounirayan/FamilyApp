@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.example.familyapp.R
 import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.repositories.TaskRepository
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 
@@ -21,6 +22,7 @@ class TasksFragment : Fragment() {
     private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory(TaskRepository(requireContext()), this)
     }
+    private var idFamille = SessionManager.currentUser!!.idFamille
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +46,7 @@ class TasksFragment : Fragment() {
         }
 
 
-        taskViewModel.fetchAllTasks(1)
+        idFamille?.let { taskViewModel.fetchAllTasks(it) }
 
         val viewMoreTasks = view.findViewById<TextView>(R.id.view_more_tasks)
         viewMoreTasks.setOnClickListener {

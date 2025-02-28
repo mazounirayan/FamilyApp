@@ -1,13 +1,12 @@
 package com.example.familyapp.viewmodel
 
 
-import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
-import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.dto.taskDto.TaskRequestDto
 import com.example.familyapp.repositories.TaskRepository
 import com.example.familyapp.utils.SessionManager

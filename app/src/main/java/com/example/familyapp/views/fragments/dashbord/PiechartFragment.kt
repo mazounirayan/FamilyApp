@@ -1,4 +1,3 @@
-
 package com.example.familyapp.views.fragments.dashbord
 
 import android.os.Bundle
@@ -42,7 +41,7 @@ class PiechartFragment : Fragment() {
             }
         }
 
-        taskViewModel.fetchAllTasks(1)
+        taskViewModel.fetchAllTasks(currentUserIdFamille)
 
         return view
     }
@@ -50,9 +49,9 @@ class PiechartFragment : Fragment() {
     private fun updatePieChart(tasks: List<Task>) {
         val totalTasks = tasks.size.toFloat()
 
-        val notStartedTasks = tasks.count { it.status == "Non commencé" }.toFloat()
-        val inProgressTasks = tasks.count { it.status == "En cours" }.toFloat()
-        val finishedTasks = tasks.count { it.status == "Fini" }.toFloat()
+        val notStartedTasks = tasks.count { it.status == "A_FAIRE" }.toFloat()
+        val inProgressTasks = tasks.count { it.status == "EN_COURS" }.toFloat()
+        val finishedTasks = tasks.count { it.status == "FINI" }.toFloat()
 
         val notStartedPercentage = if (totalTasks > 0) (notStartedTasks / totalTasks) * 100 else 0f
         val inProgressPercentage = if (totalTasks > 0) (inProgressTasks / totalTasks) * 100 else 0f

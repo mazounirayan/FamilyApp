@@ -4,9 +4,9 @@ import com.example.familyapp.data.model.user.User
 import com.google.gson.annotations.SerializedName
 
 enum class Priorite {
-    HAUTE,
-    MOYENNE,
-    BASSE
+    Haute,
+    Moyenne,
+    Basse
 }
 
 enum class StatusTache {

@@ -14,6 +14,6 @@ fun mapTaskDtoToTask(taskDto: TaskDto): Task {
         description = taskDto.description,
         priorite = taskDto.priorite,
         user = mapUserDtoToUser(taskDto.user),
-        idFamille = taskDto.idFamille,
+        idFamille = taskDto.user.idFamille,
     )
 }
