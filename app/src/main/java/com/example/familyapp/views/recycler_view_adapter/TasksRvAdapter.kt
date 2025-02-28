@@ -1,6 +1,7 @@
 package com.example.familyapp.views.recycler_view_adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.app_utils.TaskUpdateListener
+import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
@@ -17,9 +19,12 @@ import com.example.familyapp.views.viewholders.TasksRvViewHolder
 
 
 class TasksRvAdapter(
-    private var tasks: List<Task>,
+    private var tasks: MutableList<Task>,
     private val taskViewModel: TaskViewModel,
-    private val taskUpdateListener: TaskUpdateListener
+    private val taskUpdateListener: TaskUpdateListener,
+    val context: Context
+
+
 ) : RecyclerView.Adapter<TasksRvViewHolder>() {
 
     private val expandedPositions = mutableSetOf<Int>()
@@ -29,8 +34,17 @@ class TasksRvAdapter(
         return TasksRvViewHolder(view)
     }
 
+    fun deleteItem(position: Int) {
+        tasks.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun getItemCount(): Int {
         return tasks.size
+    }
+
+    fun getTaskAt(position: Int): Task {
+        return tasks[position]
     }
 
     @SuppressLint("SetTextI18n")
@@ -97,7 +111,7 @@ class TasksRvAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateTasks(newTasks: List<Task>) {
-        this.tasks = newTasks
+        this.tasks = newTasks.toMutableList()
         notifyDataSetChanged()
     }
 }

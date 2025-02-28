@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.views.Adapters.ConversationsAdapter
 
-class SwipeToDeleteCallback(private val adapter: ConversationsAdapter, private val viewModel: ConversationsViewModel, private val userId: Int, private val lifecycleOwner: LifecycleOwner) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+class SwipeToDeleteChatCallback(private val adapter: ConversationsAdapter, private val viewModel: ConversationsViewModel, private val userId: Int, private val lifecycleOwner: LifecycleOwner) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         return false
@@ -25,6 +25,8 @@ class SwipeToDeleteCallback(private val adapter: ConversationsAdapter, private v
                 viewModel.chatQuitStatus.observe(lifecycleOwner) { success ->
                     if (success) {
                         adapter.deleteItem(position)
+                        adapter.notifyItemChanged(position)
+
                     } else {
                         Toast.makeText(adapter.context, "Erreur lors de la sortie du groupe", Toast.LENGTH_SHORT).show()
                         adapter.notifyItemChanged(position)

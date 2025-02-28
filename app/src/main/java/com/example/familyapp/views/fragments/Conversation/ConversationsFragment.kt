@@ -43,7 +43,7 @@ class ConversationsFragment : Fragment() {
         }, requireContext())
 
 
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter, viewModel, SessionManager.currentUser!!.id, viewLifecycleOwner))
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteChatCallback(adapter, viewModel, SessionManager.currentUser!!.id, viewLifecycleOwner))
 
         itemTouchHelper.attachToRecyclerView(binding.conversationsList)
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -191,7 +192,10 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
     private fun setUpTasksRv(tasks: List<Task>, fragmentView: View) {
         this.tasksRv = fragmentView.findViewById(R.id.list_tasks_rv)
         this.tasksRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        this.tasksRv.adapter = TasksRvAdapter(tasks, taskViewModel, this)
+        this.tasksRv.adapter = context?.let { TasksRvAdapter(tasks.toMutableList(), taskViewModel, this, it) }
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteTaskCallback(tasksRv.adapter as TasksRvAdapter, taskViewModel, viewLifecycleOwner))
+        itemTouchHelper.attachToRecyclerView(tasksRv)
     }
 
     private fun fetchData(fragmentView: View) {

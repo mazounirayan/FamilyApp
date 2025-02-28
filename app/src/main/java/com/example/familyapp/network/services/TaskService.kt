@@ -5,6 +5,7 @@ import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.dto.taskDto.TaskRequestDto
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -25,4 +26,7 @@ interface TaskService {
 
     @PATCH("taches/{id}")
     fun patchTask(@Path("id") id:Int, @Body task: TaskUpdate): Call<TaskDto>
+
+    @DELETE("taches/{id}")
+    fun deleteTask(@Path("id") id:Int) : Call<Void>
 }

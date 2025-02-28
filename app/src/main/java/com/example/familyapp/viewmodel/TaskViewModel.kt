@@ -21,7 +21,8 @@ class TaskViewModel(
     private val _task = MutableLiveData<List<Task>>()
 
     val task: LiveData<List<Task>> get() = _task
-
+    private val _taskDeletionStatus = MutableLiveData<Boolean>()
+    val taskDeletionStatus: LiveData<Boolean> get() = _taskDeletionStatus
     fun fetchTask(id: Int) {
         _task.value
         this.taskRepo.tasks.observe(this.context) { data ->
@@ -42,6 +43,16 @@ class TaskViewModel(
         this.taskRepo.patchTask(id,task)
     }
 
+    fun deleteTask(taskId: Int) {
+        taskRepo.deleteTask(taskId) { result ->
+            result.onSuccess {
+                _taskDeletionStatus.postValue(true)
+            }
+            result.onFailure {
+                _taskDeletionStatus.postValue(false)
+            }
+        }
+    }
 
     fun fetchAllTasks(idFamille: Int) {
 

@@ -24,6 +24,23 @@ class TaskRepository(context: Context) {
 
     val tasks: LiveData<List<Task>> get() = _tasks
 
+    fun deleteTask(taskId: Int, onResult: (Result<Unit>) -> Unit) {
+        taskService.deleteTask(taskId).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    onResult(Result.success(Unit))
+                } else {
+                    onResult(Result.failure(Exception("Échec de la suppression : ${response.code()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                onResult(Result.failure(Exception("Erreur réseau : ${t.message}")))
+            }
+        })
+    }
+
+
     fun getTaskFromUser(idUser: Int) {
         val call = taskService.getTaskFromUser(idUser)
 
