@@ -2,6 +2,7 @@ package com.example.familyapp.repositories
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.familyapp.data.model.task.Task

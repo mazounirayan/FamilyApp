@@ -76,11 +76,13 @@ class DashboardFragment : Fragment() {
         val totalTasks = tasks.size.toFloat()
 
 
-        val hauteCount = tasks.count { it.priorite == Priorite.Haute }.toFloat()
+        val hauteCount = tasks.count { it.priorite == Priorite.Haute}.toFloat()
         val moyenneCount = tasks.count { it.priorite == Priorite.Moyenne }.toFloat()
-        val basseCount = tasks.count { it.priorite == Priorite.Basse
-        }.toFloat()
+        val basseCount = tasks.count { it.priorite == Priorite.Basse }.toFloat()
 
+        println("ICIIIIIII " + hauteCount)
+        println("ICIIIIIII " + moyenneCount)
+        println("ICIIIIIII " + basseCount)
 
         val hautePercentage = if (totalTasks > 0) (hauteCount / totalTasks) * 100 else 0f
         val moyennePercentage = if (totalTasks > 0) (moyenneCount / totalTasks) * 100 else 0f

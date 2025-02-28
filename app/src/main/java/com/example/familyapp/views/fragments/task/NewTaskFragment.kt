@@ -18,6 +18,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.text.toUpperCase
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.familyapp.R
