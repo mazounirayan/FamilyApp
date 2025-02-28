@@ -29,6 +29,7 @@ class SwipeToDeleteChatCallback(private val adapter: ConversationsAdapter, priva
 
                     } else {
                         Toast.makeText(adapter.context, "Erreur lors de la sortie du groupe", Toast.LENGTH_SHORT).show()
+
                         adapter.notifyItemChanged(position)
                     }
                 }
