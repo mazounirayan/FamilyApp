@@ -30,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
 
     private lateinit var familyAppPager: ViewPager2
+//    private lateinit var backButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +43,19 @@ class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        setUpPager()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener {
             handleBackNavigation()
         }
+
+        // backButton = findViewById(R.id.backButton)
+        //  backButton.setOnClickListener {
+        //   handleBackNavigation()
+        //  }
 
 
 
@@ -65,7 +74,7 @@ class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
         val pagerAdapter = ViewPagerAdapteurProfile(this)
         this.familyAppPager.adapter = pagerAdapter
 
-        displayProfilePage() // Display the first page (profile) on startup
+        displayProfilePage()
     }
 
     override fun displayProfilePage() {
@@ -80,4 +89,3 @@ class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
         this.familyAppPager.currentItem = 2
     }
 }
-
