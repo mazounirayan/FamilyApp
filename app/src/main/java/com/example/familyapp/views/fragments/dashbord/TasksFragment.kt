@@ -57,10 +57,12 @@ class TasksFragment : Fragment() {
     }
 
     private fun redirectToFullTasksFragment() {
-         val fragment = ManageTaskFragment()
-         parentFragmentManager.beginTransaction()
-             .replace(R.id.fragment_container, fragment)
-             .addToBackStack(null)
-             .commit()
+        val fragment = ManageTaskFragment()
+
+        // Utilisez l'activity parent pour accéder au FragmentManager principal
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

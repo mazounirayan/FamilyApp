@@ -36,7 +36,7 @@ class UsersFragment : Fragment() {
          userViewModel.users.observe(viewLifecycleOwner) { users ->
             userList.removeAllViews()
 
-            users.take(3).forEach { user ->
+            users.take(2).forEach { user ->
                 val userTextView = TextView(context).apply {
                     text = "${user.prenom} ${user.nom}"
                     textSize = 16f
@@ -59,8 +59,8 @@ class UsersFragment : Fragment() {
     private fun redirectToFullUsersFragment() {
 
         val fragment = ManageFamilyFragment()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // Assurez-vous que ce conteneur existe dans votre activité
             .addToBackStack(null)
             .commit()
 

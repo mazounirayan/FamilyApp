@@ -19,7 +19,9 @@ class FamilleRepository(context: Context) {
 
     private val _familles = MutableLiveData<List<Famille>>()
     val familles: LiveData<List<Famille>> get() = _familles
-
+   // private val db = MainApplication.database
+    //private val familleDao = db.familleDao()
+    private val context = context
     fun getFamilles(idFamille: Int) {
         val call = familleService.getFamilles(idFamille)
 
