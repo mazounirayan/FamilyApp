@@ -20,12 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_task"
-        android:fontFamily="@font/baby_sparkle"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:layout_centerHorizontal="true"
-        android:layout_toEndOf="@id/back_button_create_task"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="50dp"/>
 
     <!-- Task Name EditText -->
@@ -34,24 +32,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/task_name_form"
-        android:fontFamily="@font/christmas_stories"
         android:inputType="text"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:layout_below="@id/title_create_task" />
 
     <!-- Task Description EditText -->
     <EditText
         android:id="@+id/task_description_form"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:hint="@string/task_description_form"
-        android:fontFamily="@font/christmas_stories"
         android:inputType="text"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:layout_below="@id/task_name_form"
         android:layout_marginTop="20dp" />
 
@@ -90,12 +86,11 @@
         android:id="@+id/start_date_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/christmas_stories"
         android:textStyle="bold"
+        android:backgroundTint="@color/button"
         android:text="@string/task_form_choose_start_date"
         android:layout_below="@id/typePrioriteSpinner"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/lavender" />
+        android:layout_marginTop="20dp" />
 
     <!-- Start Date TextView -->
     <TextView
@@ -113,8 +108,8 @@
         android:id="@+id/end_date_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/christmas_stories"
         android:textStyle="bold"
+        android:backgroundTint="@color/button"
         android:text="@string/task_form_choose_end_date"
         android:layout_below="@id/start_date_textview"
         android:layout_marginTop="20dp" />
@@ -145,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/task_form_save_button"
-            android:fontFamily="@font/christmas_stories"
+            android:backgroundTint="@color/primary_buttons"
             android:textStyle="bold"
             android:layout_marginEnd="10dp" />
 
@@ -154,8 +149,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/primary_red"
             android:text="@string/task_form_save_cancel"
-            android:fontFamily="@font/christmas_stories"
             android:textStyle="bold" />
     </LinearLayout>
 

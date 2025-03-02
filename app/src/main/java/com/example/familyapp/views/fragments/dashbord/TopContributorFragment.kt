@@ -18,7 +18,7 @@ import com.example.familyapp.viewmodel.factories.TaskViewModelFactory
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 
 class TopContributorFragment : Fragment() {
-    private val currentUserIdFamille= SessionManager.currentUser!!.idFamille ?:-1
+    private var idFamille = SessionManager.currentUser!!.idFamille
 
     private val userViewModel: UserViewModel by viewModels {
         UserViewModelFactory(
@@ -61,7 +61,7 @@ class TopContributorFragment : Fragment() {
             }
         }
 
-        userViewModel.fetchUsers(1)
+        idFamille?.let { userViewModel.fetchUsers(it) }
 
         return view
     }
@@ -70,7 +70,7 @@ class TopContributorFragment : Fragment() {
         taskViewModel.task.observe(viewLifecycleOwner) { tasks ->
             val totalTasks = tasks.size
             if (totalTasks > 0) {
-                val notStartedTasks = tasks.count { it.status == "Non commencé" }
+                val notStartedTasks = tasks.count { it.status == "A_FAIRE" }
                 val inProgressTasks = tasks.count { it.status == "EN_COURS" }
                 val finishedTasks = tasks.count { it.status == "FINI" }
 

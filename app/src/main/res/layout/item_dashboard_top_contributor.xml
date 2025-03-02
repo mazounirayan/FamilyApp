@@ -4,7 +4,7 @@
     android:layout_width="210dp"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardBackgroundColor="@color/bleu"
+    app:cardBackgroundColor="@color/card_dashbord"
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp">
 
@@ -22,7 +22,7 @@
             android:text="Winner"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="#ffbd00" />
 
         <TextView
             android:id="@+id/winner_name"
@@ -31,7 +31,7 @@
             android:text="Chargement..."
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_green_dark"
+            android:textColor="#1982c4"
             android:layout_marginTop="4dp" />
 
         <!-- Statistiques des tâches -->

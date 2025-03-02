@@ -13,6 +13,7 @@ import retrofit2.http.POST
 
 
 interface ChatService {
+
     @GET("users/{userId}/chats")
     fun listChatsByUser(@Path("userId") userId: Int): Call<List<ConversationDto>>
 

@@ -1,4 +1,4 @@
-package com.example.familyapp.views.Holders
+package com.example.familyapp.views.holders
 
 import android.text.format.DateUtils
 import android.view.View

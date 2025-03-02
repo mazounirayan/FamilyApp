@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="@color/bleu"
+    app:cardBackgroundColor="@color/card_dashbord"
     app:cardCornerRadius="20dp"
     android:padding="16dp">
 
@@ -18,7 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+
             android:orientation="vertical"
+            android:layout_margin="12dp"
             android:paddingEnd="16dp">
 
             <TextView
@@ -53,7 +56,7 @@
                 android:text="Points : 0"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Icons (Edit & Delete) -->
@@ -68,118 +71,37 @@
                 android:id="@+id/edit_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:cardCornerRadius="20dp"
+                android:layout_marginEnd="8dp"
                 app:cardBackgroundColor="@android:color/transparent"
-                app:strokeWidth="1dp"
+                app:cardCornerRadius="20dp"
                 app:strokeColor="@color/bleu"
-                android:layout_marginEnd="8dp">
+                app:strokeWidth="1dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/baseline_edit_24"
-                    android:contentDescription="Modifier" />
+                    android:contentDescription="Modifier"
+                    android:src="@drawable/baseline_edit_24" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/delete_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:cardCornerRadius="20dp"
                 app:cardBackgroundColor="@android:color/transparent"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/bleu">
+                app:cardCornerRadius="20dp"
+                app:strokeColor="@color/bleu"
+                app:strokeWidth="1dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/baseline_delete_outline_24"
-                    android:contentDescription="Supprimer" />
+                    android:contentDescription="Supprimer"
+                    android:src="@drawable/baseline_delete_outline_24" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Task Progress Section -->
-        <LinearLayout
-            android:id="@+id/task_progress_section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_details_section"
-            android:layout_marginTop="12dp"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:background="@android:color/white"
-            app:cardCornerRadius="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Progression des tâches"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Non commencé"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
-
-                <ProgressBar
-                    android:id="@+id/progressNonCommence"
-                    style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:progressTint="@android:color/holo_red_light" />
-
-                <TextView
-                    android:id="@+id/percentNonCommence"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0%"
-                    android:paddingStart="8dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="En cours"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
-
-                <ProgressBar
-                    android:id="@+id/progressEnCours"
-                    style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:progressTint="@android:color/holo_orange_light" />
-
-                <TextView
-                    android:id="@+id/percentEnCours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0%"
-                    android:paddingStart="8dp" />
-            </LinearLayout>
-
-
-
-        </LinearLayout>
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

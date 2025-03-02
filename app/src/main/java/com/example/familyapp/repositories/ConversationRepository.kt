@@ -29,6 +29,7 @@ class ConversationRepository(context: Context) {
     val chatQuitStatus: LiveData<Boolean> get() = _chatQuitStatus
     private val _chatCreationStatus = MutableLiveData<Boolean>()
     val chatCreationStatus: MutableLiveData<Boolean> get() = _chatCreationStatus
+
     fun getChatsByUserId(userId: Int): LiveData<List<Conversation>> {
         val data = MutableLiveData<List<Conversation>>()
         chatService.listChatsByUser(userId).enqueue(object : Callback<List<ConversationDto>> {

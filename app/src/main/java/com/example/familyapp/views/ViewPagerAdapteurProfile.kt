@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.familyapp.views.fragments.ProfileFragment
-import com.example.familyapp.views.fragments.Settings.SettingsFragment
+import com.example.familyapp.views.fragments.settings.SettingsFragment
 
 interface PagerHandlerProfile {
     fun displayProfilePage()

@@ -1,4 +1,4 @@
-package com.example.familyapp.views.fragments.Conversation
+package com.example.familyapp.views.fragments.conversation
 
 import ConversationsViewModel
 import android.app.AlertDialog
@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.familyapp.views.Adapters.ConversationsAdapter
+import com.example.familyapp.views.adapters.ConversationsAdapter
 
 class SwipeToDeleteChatCallback(private val adapter: ConversationsAdapter, private val viewModel: ConversationsViewModel, private val userId: Int, private val lifecycleOwner: LifecycleOwner) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 

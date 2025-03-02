@@ -10,12 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.app_utils.TaskUpdateListener
-import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.views.viewholders.TasksRvViewHolder
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class TasksRvAdapter(
@@ -52,9 +53,22 @@ class TasksRvAdapter(
         val taskData = tasks[position]
 
         holder.taskName.text = taskData.nom
-        holder.taskNameUser.text = taskData.user.prenom + " " +taskData.user.nom
+        holder.taskNameUser.text = taskData.user.prenom + " " + taskData.user.nom
         holder.taskDescription.text = taskData.description
-        holder.taskDueDate.text = "Date limite : ${taskData.dateFin}"
+
+        // Formatage de la date
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH)
+
+        val dateFormatted = try {
+            val date = inputFormat.parse(taskData.dateFin)
+            outputFormat.format(date!!)
+        } catch (e: Exception) {
+            taskData.dateFin // En cas d'erreur, afficher la date brute
+        }
+
+        holder.taskDueDate.text = "Date limite : $dateFormatted"
+
         holder.taskDetailsSection.visibility = if (expandedPositions.contains(position)) View.VISIBLE else View.GONE
 
         TransitionManager.beginDelayedTransition(holder.itemView as ViewGroup)

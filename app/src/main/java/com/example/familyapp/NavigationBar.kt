@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.familyapp.views.fragments.Conversation.ConversationsFragment
+import com.example.familyapp.views.fragments.conversation.ConversationsFragment
 import com.example.familyapp.views.fragments.dashbord.DashboardFragment
-import com.example.familyapp.views.fragments.ManageFamilyFragment
+import com.example.familyapp.views.fragments.manageFamily.ManageFamilyFragment
 import com.example.familyapp.views.fragments.task.ManageTaskFragment
 
 object NavigationBar{

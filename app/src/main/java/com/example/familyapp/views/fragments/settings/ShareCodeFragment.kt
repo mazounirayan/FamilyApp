@@ -1,7 +1,6 @@
-package com.example.familyapp.views.fragments.Settings
+package com.example.familyapp.views.fragments.settings
 
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context

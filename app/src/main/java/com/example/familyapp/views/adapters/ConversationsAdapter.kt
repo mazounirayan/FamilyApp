@@ -1,4 +1,4 @@
-package com.example.familyapp.views.Adapters
+package com.example.familyapp.views.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.conversation.Conversation
-import com.example.familyapp.views.Holders.ConversationViewHolder
+import com.example.familyapp.views.holders.ConversationViewHolder
 
 class ConversationsAdapter(
     private var conversations: MutableList<Conversation> = mutableListOf(),

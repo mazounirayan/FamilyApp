@@ -1,4 +1,4 @@
-package com.example.familyapp.views.fragments.Settings
+package com.example.familyapp.views.fragments.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

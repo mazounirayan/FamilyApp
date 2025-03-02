@@ -1,31 +1,14 @@
 package com.example.familyapp
 
-import RewardsFragment
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.commit
 import androidx.viewpager2.widget.ViewPager2
-import com.example.familyapp.viewmodel.ProfileViewModel
 import com.example.familyapp.views.PagerHandlerProfile
 import com.example.familyapp.views.ViewPagerAdapteurProfile
-import com.example.familyapp.views.fragments.Settings.ChangeRoleFragment
-import com.example.familyapp.views.fragments.Settings.EditProfileFragment
-import com.example.familyapp.views.fragments.Settings.SettingsFragment
-import com.example.familyapp.views.fragments.Settings.ShareCodeFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ProfileActivity : AppCompatActivity(), PagerHandlerProfile {
 

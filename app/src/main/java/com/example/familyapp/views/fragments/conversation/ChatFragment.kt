@@ -1,4 +1,4 @@
-package com.example.familyapp.views.fragments.Conversation
+package com.example.familyapp.views.fragments.conversation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,7 @@ import com.example.familyapp.repositories.MessageRepository
 import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.MessageViewModel
 import com.example.familyapp.viewmodel.factories.MessageViewModelFactory
-import com.example.familyapp.views.Adapters.ChatAdapter
+import com.example.familyapp.views.adapters.ChatAdapter
 import com.example.familyapp.websocket.SocketIOClient
 import org.json.JSONObject
 import java.text.SimpleDateFormat

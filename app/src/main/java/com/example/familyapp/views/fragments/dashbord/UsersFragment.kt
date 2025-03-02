@@ -10,13 +10,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.familyapp.R
-import com.example.familyapp.data.model.user.User
 import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.UserViewModel
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
-import com.example.familyapp.views.fragments.ManageFamilyFragment
+import com.example.familyapp.views.fragments.manageFamily.ManageFamilyFragment
 
 class UsersFragment : Fragment() {
+    private var idFamille = SessionManager.currentUser!!.idFamille
 
     private val userViewModel: UserViewModel by viewModels {
         UserViewModelFactory(
@@ -24,7 +24,6 @@ class UsersFragment : Fragment() {
             fragment = this
         )
     }
-    private val currentUserIdFamille= SessionManager.currentUser!!.idFamille ?:-1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +45,7 @@ class UsersFragment : Fragment() {
             }
         }
 
-         userViewModel.fetchUsers(1)
+        idFamille?.let { userViewModel.fetchUsers(it) }
 
          val viewMoreUsers = view.findViewById<TextView>(R.id.view_more_users)
         viewMoreUsers.setOnClickListener {

@@ -6,10 +6,11 @@ import com.example.familyapp.data.model.chat.Chat
 import com.example.familyapp.data.model.chat.CreateChat
 import com.example.familyapp.data.model.conversation.Conversation
 import com.example.familyapp.repositories.ConversationRepository
+import com.example.familyapp.utils.SessionManager
 
 class ConversationsViewModel(private val repository: ConversationRepository) : ViewModel() {
 
-    private var currentUserId: Int = 1
+    private var currentUserId: Int = SessionManager.currentUser!!.id
 
     val conversations: LiveData<List<Conversation>> by lazy {
         repository.getChatsByUserId(currentUserId)

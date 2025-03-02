@@ -1,4 +1,4 @@
-package com.example.familyapp.views.fragments.Conversation
+package com.example.familyapp.views.fragments.conversation
 
 import ConversationsViewModel
 import android.os.Bundle
@@ -18,7 +18,7 @@ import com.example.familyapp.databinding.FragmentConversationsBinding
 import com.example.familyapp.repositories.ConversationRepository
 import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.factories.ConversationsViewModelFactory
-import com.example.familyapp.views.Adapters.ConversationsAdapter
+import com.example.familyapp.views.adapters.ConversationsAdapter
 
 class ConversationsFragment : Fragment() {
     private lateinit var binding: FragmentConversationsBinding
@@ -107,5 +107,3 @@ class ConversationsFragment : Fragment() {
     }
 
 }
-
-

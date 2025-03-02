@@ -1,4 +1,4 @@
-package com.example.familyapp.views.fragments.Conversation
+package com.example.familyapp.views.fragments.conversation
 import ConversationsViewModel
 import UserRepository
 import android.content.ContentValues.TAG
@@ -21,9 +21,8 @@ import com.example.familyapp.data.model.user.User
 import com.example.familyapp.repositories.ConversationRepository
 import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.UserViewModel
-import com.example.familyapp.viewmodel.factories.ChatViewModelFactory
 import com.example.familyapp.viewmodel.factories.ConversationsViewModelFactory
-import com.example.familyapp.views.Adapters.SelectUsersAdapter
+import com.example.familyapp.views.adapters.SelectUsersAdapter
 import com.example.familyapp.viewmodel.factories.UserViewModelFactory
 
 

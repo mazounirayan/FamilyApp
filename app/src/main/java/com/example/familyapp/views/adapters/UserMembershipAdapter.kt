@@ -1,11 +1,12 @@
-package com.example.familyapp.views.Adapters
+package com.example.familyapp.views.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.user.User
-import com.example.familyapp.views.Holders.UserMembershipHolder
+import com.example.familyapp.views.holders.UserMembershipHolder
 import com.google.android.material.card.MaterialCardView
 
 class UserMembershipAdapter(
@@ -22,6 +23,7 @@ class UserMembershipAdapter(
         return UserMembershipHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: UserMembershipHolder, position: Int) {
         val member = filteredMembers[position]
         holder.userName.text = "${member.prenom} ${member.nom}"
@@ -40,6 +42,7 @@ class UserMembershipAdapter(
 
     override fun getItemCount(): Int = filteredMembers.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newMembers: List<User>) {
         members.clear()
         members.addAll(newMembers)
@@ -47,6 +50,7 @@ class UserMembershipAdapter(
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun filter(query: String) {
         filteredMembers = if (query.isEmpty()) {
             ArrayList(members)

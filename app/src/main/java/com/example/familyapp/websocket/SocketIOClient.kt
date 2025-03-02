@@ -1,5 +1,5 @@
 package com.example.familyapp.websocket
-import com.example.familyapp.views.fragments.Conversation.ChatFragment
+import com.example.familyapp.views.fragments.conversation.ChatFragment
 import com.example.instaclone.app_utils.URL_WEBSOCKET
 import io.socket.client.IO
 import io.socket.client.Socket

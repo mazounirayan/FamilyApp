@@ -1,11 +1,11 @@
-package com.example.familyapp.views.Adapters
+package com.example.familyapp.views.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.user.User
-import com.example.familyapp.views.Holders.SelectUserViewHolder
+import com.example.familyapp.views.holders.SelectUserViewHolder
 
 class SelectUsersAdapter(
     private val isMultipleSelection: Int = 1,
