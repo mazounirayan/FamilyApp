@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.data.model.task.TaskUpdateFull
 import com.example.familyapp.network.dto.taskDto.TaskRequestDto
 import com.example.familyapp.repositories.TaskRepository
 import com.example.familyapp.utils.SessionManager
@@ -23,6 +24,7 @@ class TaskViewModel(
     val task: LiveData<List<Task>> get() = _task
     private val _taskDeletionStatus = MutableLiveData<Boolean>()
     val taskDeletionStatus: LiveData<Boolean> get() = _taskDeletionStatus
+
     fun fetchTask(id: Int) {
         _task.value
         this.taskRepo.tasks.observe(this.context) { data ->
@@ -42,6 +44,12 @@ class TaskViewModel(
     fun patchTask(id:Int,task: TaskUpdate){
         this.taskRepo.patchTask(id,task)
     }
+
+
+    fun patchTaskFull(id:Int,task: TaskUpdateFull){
+        this.taskRepo.patchTaskFull(id,task)
+    }
+
 
     fun deleteTask(taskId: Int) {
         taskRepo.deleteTask(taskId) { result ->

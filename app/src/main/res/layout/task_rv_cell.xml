@@ -45,6 +45,8 @@
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
+
+
             <ImageButton
                 android:id="@+id/task_unfold_button"
                 android:layout_width="25dp"
@@ -59,7 +61,17 @@
             android:orientation="vertical"
             android:paddingTop="8dp">
 
-        <TextView
+
+                <ImageView
+                    android:id="@+id/edit_task_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Modifier"
+                    android:src="@drawable/baseline_edit_24" />
+
+
+            <TextView
             android:id="@+id/task_description"
             android:gravity="center"
             android:layout_width="match_parent"

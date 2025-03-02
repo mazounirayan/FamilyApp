@@ -56,7 +56,6 @@
 
 
         </LinearLayout>
-        <!-- More Users -->
         <TextView
             android:id="@+id/view_more_users"
 

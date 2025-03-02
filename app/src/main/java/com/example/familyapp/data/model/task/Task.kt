@@ -25,14 +25,14 @@ enum class TypeTache {
 
 data class Task(
     val idTache: Int,
-    val nom: String,
+    var nom: String,
     val dateDebut: String,
     val dateFin: String,
     var status: String,
     val type: String,
-    val description: String,
+    var description: String,
     val priorite: Priorite?,
-    val user: User,
+    var user: User,
     val idFamille: Int
 )
 

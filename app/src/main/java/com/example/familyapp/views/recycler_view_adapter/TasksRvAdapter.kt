@@ -1,11 +1,15 @@
 package com.example.familyapp.views.recycler_view_adapter
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
@@ -13,6 +17,8 @@ import com.example.familyapp.app_utils.TaskUpdateListener
 import com.example.familyapp.data.model.task.StatusTache
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.data.model.task.TaskUpdateFull
+import com.example.familyapp.data.model.user.User
 import com.example.familyapp.viewmodel.TaskViewModel
 import com.example.familyapp.views.viewholders.TasksRvViewHolder
 import java.text.SimpleDateFormat
@@ -23,8 +29,8 @@ class TasksRvAdapter(
     private var tasks: MutableList<Task>,
     private val taskViewModel: TaskViewModel,
     private val taskUpdateListener: TaskUpdateListener,
-    val context: Context
-
+    val context: Context,
+    private val users: List<User>
 
 ) : RecyclerView.Adapter<TasksRvViewHolder>() {
 
@@ -113,6 +119,11 @@ class TasksRvAdapter(
         holder.buttonToDo.setOnClickListener {
             updateTaskStatus(taskData.idTache, StatusTache.A_FAIRE.name, position)
         }
+
+        holder.buttonEdit.setOnClickListener {
+            openEditTaskDialog(taskData)
+        }
+
     }
 
     private fun updateTaskStatus(id: Int, status: String, position: Int) {
@@ -128,4 +139,54 @@ class TasksRvAdapter(
         this.tasks = newTasks.toMutableList()
         notifyDataSetChanged()
     }
+
+    @SuppressLint("MissingInflatedId")
+    private fun openEditTaskDialog(task: Task) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_task, null)
+        val editTextName = dialogView.findViewById<EditText>(R.id.edit_task_name)
+        val editTextDescription = dialogView.findViewById<EditText>(R.id.edit_task_description)
+        val assigneeSpinner = dialogView.findViewById<Spinner>(R.id.edit_task_assignee_spinner)
+
+        editTextName.setText(task.nom)
+        editTextDescription.setText(task.description)
+
+        // Configuration du Spinner des utilisateurs
+        val adapter = ArrayAdapter(
+            context,
+            android.R.layout.simple_spinner_item,
+            users.map { "${it.prenom} ${it.nom}" } // Affiche "Prénom Nom"
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        assigneeSpinner.adapter = adapter
+
+        // Sélectionner l'utilisateur actuel de la tâche
+        val currentIndex = users.indexOfFirst { it.id == task.user.id }
+        if (currentIndex != -1) {
+            assigneeSpinner.setSelection(currentIndex)
+        }
+
+        AlertDialog.Builder(context)
+            .setTitle("Modifier la tâche")
+            .setView(dialogView)
+            .setPositiveButton("Modifier") { _, _ ->
+                val updatedTask = TaskUpdateFull(
+                    nom = editTextName.text.toString(),
+                    description = editTextDescription.text.toString(),
+                    idUser = users[assigneeSpinner.selectedItemPosition].id // Nouvel utilisateur sélectionné
+                )
+
+                taskViewModel.patchTaskFull(task.idTache, updatedTask)
+
+                // Mettre à jour l'affichage de la tâche
+                task.nom = updatedTask.nom ?: task.nom
+                task.description = updatedTask.description ?: task.description
+                task.user = users[assigneeSpinner.selectedItemPosition]
+                notifyDataSetChanged()
+                taskUpdateListener.onTaskUpdated()
+            }
+            .setNegativeButton("Annuler", null)
+            .show()
+    }
+
+
 }

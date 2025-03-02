@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.familyapp.data.model.task.Task
 import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.data.model.task.TaskUpdateFull
 import com.example.familyapp.network.RetrofitClient
 import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.dto.taskDto.TaskRequestDto
@@ -114,6 +115,31 @@ class TaskRepository(context: Context) {
             }
         })
     }
+
+    fun patchTaskFull(id:Int, task: TaskUpdateFull){
+        val call = taskService.patchTaskFull(id,task)
+
+        call.enqueue(object : Callback<TaskDto> {
+            override fun onResponse(
+                call: Call<TaskDto>,
+                response: Response<TaskDto>
+            ) {
+
+                if (response.isSuccessful) {
+                    return
+                } else {
+                    Log.e("TaskRepository", "Erreur HTTP : ${response.errorBody()?.contentType()}")
+                    Log.e("TaskRepository", "Erreur HTTP : ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TaskDto>, t: Throwable) {
+                Log.e("TaskRepository", "Erreur réseau : ${t.message}")
+            }
+        })
+    }
+
+
     fun getAllTasks(idFamille: Int) {
         Log.d("TaskRepository", "🔹 Requête API envoyée pour getAllTasks de la famille ID : $idFamille")
 

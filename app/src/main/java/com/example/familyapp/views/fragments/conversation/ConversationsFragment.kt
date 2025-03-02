@@ -19,6 +19,9 @@ import com.example.familyapp.repositories.ConversationRepository
 import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.viewmodel.factories.ConversationsViewModelFactory
 import com.example.familyapp.views.adapters.ConversationsAdapter
+import java.text.SimpleDateFormat
+import java.text.ParseException
+import java.util.*
 
 class ConversationsFragment : Fragment() {
     private lateinit var binding: FragmentConversationsBinding
@@ -50,10 +53,14 @@ class ConversationsFragment : Fragment() {
         binding.conversationsList.adapter = adapter
         binding.conversationsList.layoutManager = LinearLayoutManager(context)
 
-        viewModel.conversations.observe(viewLifecycleOwner, { conversations ->
-            allConversations = conversations.toMutableList()
-            adapter.updateConversations(conversations)
-        })
+        viewModel.conversations.observe(viewLifecycleOwner){ conversations ->
+            allConversations = conversations
+                .sortedByDescending { conversation -> parseDate(conversation.messageTime) }
+                .toMutableList()
+
+            adapter.updateConversations(allConversations)
+        }
+
 
         binding.searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -104,6 +111,18 @@ class ConversationsFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         SessionManager.isChatActive = false
+    }
+
+    private fun parseDate(dateString: String?): Long {
+        if (dateString.isNullOrEmpty()) return 0L
+
+        return try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
+            sdf.parse(dateString)?.time ?: 0L
+        } catch (e: ParseException) {
+            0L
+        }
     }
 
 }

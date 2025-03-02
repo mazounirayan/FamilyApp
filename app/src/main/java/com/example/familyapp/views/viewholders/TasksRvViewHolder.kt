@@ -3,6 +3,7 @@ package com.example.familyapp.views.viewholders
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -21,5 +22,6 @@ class TasksRvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val buttonToDo: Button = itemView.findViewById(R.id.button_to_do)
     val cardViewTask: CardView = itemView.findViewById(R.id.card_view_task)
     val taskUnfoldButton: ImageButton= itemView.findViewById(R.id.task_unfold_button)
+    val buttonEdit: ImageView = itemView.findViewById(R.id.edit_task_button)
 
 }

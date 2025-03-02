@@ -18,7 +18,6 @@ class TaskDashboardAdapter(private val taskList: List<TaskDashbord>) : RecyclerV
     override fun onBindViewHolder(holder: TaskDashboardHolder, position: Int) {
         val task = taskList[position]
         holder.taskTitle.text = task.taskTitle
-       // holder.progressBar.progress = task.progress
         holder.progressText.text = "${task.progress}%"
     }
 }

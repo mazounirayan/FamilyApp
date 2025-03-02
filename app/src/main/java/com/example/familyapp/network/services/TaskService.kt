@@ -1,6 +1,7 @@
 package com.example.familyapp.network.services
 
 import com.example.familyapp.data.model.task.TaskUpdate
+import com.example.familyapp.data.model.task.TaskUpdateFull
 import com.example.familyapp.network.dto.taskDto.TaskDto
 import com.example.familyapp.network.dto.taskDto.TaskRequestDto
 import retrofit2.Call
@@ -29,4 +30,8 @@ interface TaskService {
 
     @DELETE("taches/{id}")
     fun deleteTask(@Path("id") id:Int) : Call<Void>
+
+    @PATCH("taches/{id}")
+    fun patchTaskFull(@Path("id") id:Int, @Body task: TaskUpdateFull): Call<TaskDto>
+
 }

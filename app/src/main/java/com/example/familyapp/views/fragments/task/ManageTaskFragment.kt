@@ -192,11 +192,11 @@ class ManageTaskFragment : Fragment(), TaskUpdateListener {
     private fun setUpTasksRv(tasks: List<Task>, fragmentView: View) {
         this.tasksRv = fragmentView.findViewById(R.id.list_tasks_rv)
         this.tasksRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        this.tasksRv.adapter = context?.let { TasksRvAdapter(tasks.toMutableList(), taskViewModel, this, it) }
 
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteTaskCallback(tasksRv.adapter as TasksRvAdapter, taskViewModel, viewLifecycleOwner))
-        itemTouchHelper.attachToRecyclerView(tasksRv)
+        val adapter = TasksRvAdapter(tasks.toMutableList(), taskViewModel, this, requireContext(), familyMembers)
+        this.tasksRv.adapter = adapter
     }
+
 
     private fun fetchData(fragmentView: View) {
         idFamille?.let { taskViewModel.fetchTask(it) }

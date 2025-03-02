@@ -1,5 +1,6 @@
 package com.example.familyapp.views.fragments.conversation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -160,13 +161,14 @@ class ChatFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun observeMessages() {
-        messageViewModel.messages.observe(viewLifecycleOwner, { newMessages ->
+        messageViewModel.messages.observe(viewLifecycleOwner){ newMessages ->
             messages.clear()
             messages.addAll(newMessages)
             chatAdapter.notifyDataSetChanged()
             recyclerView.scrollToPosition(messages.size - 1)
-        })
+        }
     }
 
     override fun onResume() {
