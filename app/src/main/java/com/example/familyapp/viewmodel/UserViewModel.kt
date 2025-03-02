@@ -111,8 +111,8 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     fun login() {
 
-        val emailValue = "marie.dupont@example.com" //"jean.dupont@example.com"//"marie.dupont@example.com"//email.value.orEmpty().trim()
-        val passwordValue = "password456"//"password123"//password.value.orEmpty().trim()
+        val emailValue = email.value.orEmpty().trim() //"maya@gmail.Com" //"jean.dupont@example.com"//"marie.dupont@example.com"//email.value.orEmpty().trim()
+        val passwordValue = password.value.orEmpty().trim() //"aya335"//"password123"//password.value.orEmpty().trim()
 
         if (emailValue.isEmpty() || passwordValue.isEmpty()) {
             _loginResult.value = Result.failure(Exception("Les champs ne peuvent pas être vides"))

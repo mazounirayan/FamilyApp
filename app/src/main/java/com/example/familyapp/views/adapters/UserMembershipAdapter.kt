@@ -1,12 +1,16 @@
 package com.example.familyapp.views.adapters
 
+import android.util.Log
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familyapp.R
 import com.example.familyapp.data.model.user.User
+import com.example.familyapp.utils.SessionManager
 import com.example.familyapp.views.holders.UserMembershipHolder
+
 import com.google.android.material.card.MaterialCardView
 
 class UserMembershipAdapter(
@@ -16,6 +20,8 @@ class UserMembershipAdapter(
 ) : RecyclerView.Adapter<UserMembershipHolder>() {
 
     private var filteredMembers: MutableList<User> = ArrayList(members)
+    private val currentUserRole = SessionManager.currentUser!!.role
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserMembershipHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,10 +33,18 @@ class UserMembershipAdapter(
     override fun onBindViewHolder(holder: UserMembershipHolder, position: Int) {
         val member = filteredMembers[position]
         holder.userName.text = "${member.prenom} ${member.nom}"
-        holder.userRole.text = "Rôle: ${member.role}"
+        holder.userRole.text = "RÃ´le: ${member.role}"
         holder.userEmail.text = "Email: ${member.email}"
         holder.userPoints.text = "Points: ${member.totalPoints}"
+        Log.d("UserMembershipAdapter", "currentUserRole = $currentUserRole")
 
+        if (currentUserRole == "Parent") {
+            holder.editButton.visibility = View.VISIBLE
+            holder.deleteButton.visibility = View.VISIBLE
+        } else {
+            holder.editButton.visibility = View.GONE
+            holder.deleteButton.visibility = View.GONE
+        }
         holder.itemView.findViewById<MaterialCardView>(R.id.delete_button).setOnClickListener {
             onDeleteUser(member.id)
         }

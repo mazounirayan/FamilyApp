@@ -161,8 +161,4 @@ class ProfileFragment : Fragment() {
             .show()
     }
 
-
-
-
-
 }
